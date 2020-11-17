@@ -60,12 +60,48 @@ html {
 
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 60px;
+  min-height: 100vh;
+  background-color: #FAFAFA;
+  font-family: 'Open Sans', sans-serif;
+  color: #575757;
 }
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: 'Roboto Slab', serif;
+  font-weight: bold;
+  color: #222222;
+}
+
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
+}
+
+/* Homepage
+-------------------------------------------------- */
+.homepage-hero-image {
+  width: 100%;
+  background-image: url("../img/empty_street.svg");
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.homepage-hero-text {
+  font-size: 6rem;
+}
+
+.homepage-hero-subtext {
+  font-size: 2rem;
+}
+
+.homepage-row {
+  min-height: 100vh;
+}
+
+.homepage-row-small {
+  min-height: 75vh;
 }
