@@ -1,8 +1,72 @@
 ﻿@{
-    ViewData["Title"] = "StreetTalk home";
+    ViewData["Title"] = "Home";
 }
 
-<div class="homepage-row-small d-flex align-items-center justify-content-center flex-column homepage-hero-image">
+@section styles {
+    <link href="~/css/homepage.css" rel="stylesheet" />
+}
+
+<div class="row bg-white homepage-row d-flex align-items-center justify-content-center flex-column homepage-hero-image">
     <h1 class="homepage-hero-text">StreetTalk.</h1>
     <p class="homepage-hero-subtext">Voor een veilige buurt</p>
+</div>
+<div class="row homepage-row p-6">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-6 mb-6 p-4">
+                <h1>Over Kraayenstein</h1>
+                <p>
+                    Kraayenstein is een hechte wijk in een oase van natuurlijke rust.
+                    De wijk bevindt zich ten oosten van de Lozerlaan. Kraayenstein bestaat is een rustige woonwijk met veel eengezinswoningen en appartementen.
+                    Aan de westelijke kant vind je vooral nieuwe, grote en luxewoningen die zich in een parkachtige omgeving bevinden.
+                    Kraayenstein ligt ook vlak bij het strand van Kijkduin en dicht bij een groot winkelcentrum, dat maakt van Kraayenstein een populaire en levendige omgeving.
+                </p>
+            </div>
+            <div class="col-12 col-lg-6 mb-6 p-4">
+                <h1>Ons doel</h1>
+                <p>
+                    StreetTalk heeft als doel om de veiligheid en cohesie binnen uw buurt te verbeteren.
+                    Het platform biedt u de mogelijkheid om problemen in uw buurt te bespreken met uw buurtgenoten.
+                    wij bieden u drie mogelijkheden om dit te doen:
+                </p>
+                <ul>
+                    <li>Anoniem melden</li>
+                    <li>Publiekelijk melden</li>
+                    <li>Live chatten met buurgenoten</li>
+                </ul>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-6 mb-6 p-4">
+                <h1>Anonieme meldingen</h1>
+                <p>
+                    Het anonieme gedeelte van StreetTalk stelt u in staat om melding te doen van gevoelig liggende problemen.
+                    Als u twijfelt over uw eigen veiligheid bij het melden, raden wij aan om het anoniem te melden.
+                    Wij garanderen anonimiteit, dus u hoeft u geen zorgen te maken over eventuele gevolgen.
+                    Uw veiligheid is onze prioriteit.
+                </p>
+                <a class="btn btn-primary" href="#">Doe een anonieme melding <span class="material-icons ml-2">email</span></a>
+            </div>
+            <div class="col-12 col-lg-6 mb-6 p-4">
+                <h1>Publieke meldingen</h1>
+                <p>
+                    Naast anonieme meldingen kunt u met StreetTalk ook openbaar problemen in uw buurt aankaarten.
+                    Dit gedeelte van de app is bedoeld om samen met uw buurtgenoten de discussie aan te gaan en samen tot oplossingen te komen of om hulp te vragen.
+                    Alle buurtbewoners zijn welkom om hier een bijdragen aan te leveren.
+                </p>
+                <a class="btn btn-primary" href="#">Doe een publieke melding <span class="material-icons ml-2">mail_outline</span></a>
+            </div>
+        </div>
+        <div class="row mb-6">
+            <div class="col-12 p-4">
+                <h1>Live chat</h1>
+                <p>
+                    StreetTalk biedt ook een live chat voor de hele buurt.
+                    Deze chat kan gebruikt worden om bijvoorbeeld oplossingen voor problemen te kunnen bespreken.
+                    Alle buurtbewoners met een account kunnen deze chat lezen. Als er misbruik van de chat gemaakt wordt, kunt u hierover een melding maken.
+                </p>
+            </div>
+        </div>
+    </div>
 </div>

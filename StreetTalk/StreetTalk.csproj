@@ -18,6 +18,10 @@
 
     <ItemGroup>
       <Content Remove="obj\**" />
+      <Content Update="wwwroot\css\homepage.css">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>

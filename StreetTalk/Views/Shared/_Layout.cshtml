@@ -7,19 +7,19 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="~/css/site.css"/>
+        @RenderSection("styles", false)
     </head>
     <body>
-        <div>
+        <div class="container-fluid">
             <main role="main">
                 @RenderBody()
             </main>
         </div>
 
-        <footer class="border-top footer text-muted">
-            <div class="container">
-                &copy; 2020 - StreetTalk - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-            </div>
+        <footer>
+            
         </footer>
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
