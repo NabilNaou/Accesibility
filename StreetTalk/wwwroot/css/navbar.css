@@ -7,7 +7,7 @@
 }
 
 .st-navbar {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     color: #FFFFFF;
@@ -19,6 +19,7 @@
     overflow: hidden;
     transition: max-width 200ms ease-in-out;
     transition-delay: 1s;
+    z-index: 4;
 }
 
 .st-navbar:hover {
