@@ -5,19 +5,79 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="obj\**" />
+        <Compile Remove="obj\**"/>
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Remove="obj\**" />
+        <EmbeddedResource Remove="obj\**"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="obj\**" />
+        <None Remove="obj\**"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Content Remove="obj\**" />
+        <Content Remove="obj\**"/>
+        <Content Update="wwwroot\css\homepage.css">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\css\navbar.css">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\img\login.svg">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\img\send.svg">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\img\file-outline.svg">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\img\file-lock-outline.svg">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\img\post.svg">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\img\account-circle.svg">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\img\bullhorn-outline.svg">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\img\logout.svg">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\img\email.svg">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\img\chevron_right.svg">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\js\navbar.js">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.10"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="wwwroot\img"/>
     </ItemGroup>
 
 </Project>
