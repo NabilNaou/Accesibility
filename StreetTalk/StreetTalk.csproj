@@ -5,19 +5,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove="obj\**"/>
+        <Compile Remove="obj\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Remove="obj\**"/>
+        <EmbeddedResource Remove="obj\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="obj\**"/>
+        <None Remove="obj\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <Content Remove="obj\**"/>
+        <Content Remove="obj\**" />
         <Content Update="wwwroot\css\homepage.css">
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -70,14 +70,26 @@
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
+        <Content Update="Views\Account\Registreren.cshtml">
+          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+          <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\img\undraw_working_from_anywhere_ub67.svg">
+          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+          <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="Views\Account\VerifieerEmail.cshtml">
+          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+          <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="Views\Account\VerifieerEmailSucess.cshtml">
+          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+          <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.10"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="wwwroot\img"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.10" />
     </ItemGroup>
 
 </Project>
