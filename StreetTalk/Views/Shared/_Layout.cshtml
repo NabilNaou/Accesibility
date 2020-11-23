@@ -12,56 +12,80 @@
         <link rel="stylesheet" href="~/css/navbar.css"/>
         @RenderSection("styles", false)
     </head>
-<body>
-<div class="d-flex st-navbar-container">
-    <nav class="st-navbar d-flex flex-column">
-        <div class="st-nav-item flex-grow-0 d-flex flex-column pb-2">
-            <a class="st-nav-link st-nav-link-no-highlight" asp-area="" asp-controller="Home" asp-action="Index">
-                <img alt="StreetTalk logo" class="rotated-icon" src="~/img/bullhorn-outline.svg"/>
-                <span class="brand-text">StreetTalk.</span>
-            </a>
+    <body>
+        <div class="d-flex st-navbar-container">
+            <nav class="st-navbar d-flex flex-column">
+                <div class="st-nav-item flex-grow-0 d-flex flex-column pb-2">
+                    <a class="st-nav-link st-nav-link-no-highlight" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img alt="StreetTalk logo" class="rotated-icon" src="~/img/bullhorn-outline.svg" />
+                        <span class="brand-text">StreetTalk.</span>
+                    </a>
+                </div>
+                <div class="st-nav-item st-nav-item-bordered flex-grow-1 d-flex flex-column pt-2 pb-2">
+                    <a class="st-nav-link" href="#">
+                        <img alt="Post icoon" src="~/img/post.svg" />
+                        <span>Meldingen bekijken</span>
+                    </a>
+                    <a class="st-nav-link" href="#">
+                        <img alt="Bestand icoon" src="~/img/file-outline.svg" />
+                        <span>Publiekelijk melden</span>
+                    </a>
+                    <a class="st-nav-link" href="#">
+                        <img alt="Bestand icoon" src="~/img/file-lock-outline.svg" />
+                        <span>Anoniem melden</span>
+                    </a>
+                </div>
+                <div class="st-nav-item flex-grow-0 d-flex flex-column pt-2">
+                    <a class="st-nav-link" asp-area="" asp-controller="Account" asp-action="Registreren">
+                        <img alt="Email icoon" src="~/img/email.svg" />
+                        <span>Registreren</span>
+                    </a>
+                    <a class="st-nav-link" href="#">
+                        <img alt="Login icoon" src="~/img/login.svg" />
+                        <span>Inloggen</span>
+                    </a>
+                </div>
+                <div class="st-nav-expand"><img alt="Pijl naar rechts" src="~/img/chevron_right.svg" /></div>
+            </nav>
+            <div class="container-fluid">
+                <main role="main">
+                    @RenderBody()
+                </main>
+            </div>
         </div>
-        <div class="st-nav-item st-nav-item-bordered flex-grow-1 d-flex flex-column pt-2 pb-2">
-            <a class="st-nav-link" href="#">
-                <img alt="Post icoon" src="~/img/post.svg"/>
-                <span>Meldingen bekijken</span>
-            </a>
-            <a class="st-nav-link" href="#">
-                <img alt="Bestand icoon" src="~/img/file-outline.svg"/>
-                <span>Publiekelijk melden</span>
-            </a>
-            <a class="st-nav-link" href="#">
-                <img alt="Bestand icoon" src="~/img/file-lock-outline.svg"/>
-                <span>Anoniem melden</span>
-            </a>
-        </div>
-        <div class="st-nav-item flex-grow-0 d-flex flex-column pt-2">
-            <a class="st-nav-link" asp-area="" asp-controller="Account" asp-action="Registreren">
-                <img alt="Email icoon" src="~/img/email.svg"/>
-                <span>Registreren</span>
-            </a>
-            <a class="st-nav-link" href="#">
-                <img alt="Login icoon" src="~/img/login.svg"/>
-                <span>Inloggen</span>
-            </a>
-        </div>
-        <div class="st-nav-expand"><img alt="Pijl naar rechts" src="~/img/chevron_right.svg"/></div>
-    </nav>
-    <div class="container-fluid">
-        <main role="main">
-            @RenderBody()
-        </main>
-    </div>
-</div>
 
-<footer>
+        <footer id="footer" class="page-footer font-small pt-4">
+            <div class="container-fluid text-center text-md-left">
+                <div class="row">
+                    <div class="col-md-6 mt-md-0 mt-3">
+                        <h5 class="text-uppercase font-weight-bold">Footer text 1</h5>
+                        <p>
+                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita sapiente sint, nulla, nihil
+                            repudiandae commodi voluptatibus corrupti animi sequi aliquid magnam debitis, maxime quam recusandae
+                            harum esse fugiat. Itaque, culpa?
+                        </p>
+                    </div>
+                    <hr class="clearfix w-100 d-md-none pb-3">
+                    <div class="col-md-6 mb-md-0 mb-3">
+                        <h5 class="text-uppercase font-weight-bold">Footer text 2</h5>
+                        <p>
+                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio deserunt fuga perferendis modi earum
+                            commodi aperiam temporibus quod nulla nesciunt aliquid debitis ullam omnis quos ipsam, aspernatur id
+                            excepturi hic.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright text-center py-3">
+                © 2020 Copyright:
+                <a href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+            </div>
+        </footer>
 
-</footer>
-
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-<script src="~/js/navbar.js" asp-append-version="true"></script>
-@RenderSection("Scripts", required: false)
-</body>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/js/navbar.js" asp-append-version="true"></script>
+        @RenderSection("Scripts", required: false)
+    </body>
 </html>
