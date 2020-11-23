@@ -1,0 +1,16 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace StreetTalk.Models
+{
+    public class AnonymousPost : Timestamped
+    {
+        public int id { get; set; }
+        
+        [StringLength(64)]
+        public string title { get; set; }
+        
+        [Column(TypeName = "text")]
+        public string content { get; set; }
+    }
+}
