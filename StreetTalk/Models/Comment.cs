@@ -8,5 +8,8 @@ namespace StreetTalk.Models
         
         [StringLength(600)]
         public string content { get; set; }
+        
+        public int userId { get; set; }
+        public User author { get; set; }
     }
 }
