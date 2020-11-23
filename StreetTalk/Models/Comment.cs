@@ -11,5 +11,8 @@ namespace StreetTalk.Models
         
         public int userId { get; set; }
         public User author { get; set; }
+        
+        public int postId { get; set; }
+        public PublicPost post { get; set; }
     }
 }
