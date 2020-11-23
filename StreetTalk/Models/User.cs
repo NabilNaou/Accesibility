@@ -25,5 +25,7 @@ namespace StreetTalk.Models
         public bool lockoutEnabled { get; set; }
         
         public int accessFailedCount { get; set; }
+        
+        public Profile profile { get; set; }
     }
 }
