@@ -12,5 +12,8 @@ namespace StreetTalk.Models
         
         [Column(TypeName = "text")]
         public string content { get; set; }
+        
+        public int? photoId { get; set; }
+        public Photo photo { get; set; }
     }
 }

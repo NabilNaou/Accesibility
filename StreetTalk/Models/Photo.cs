@@ -7,5 +7,7 @@
         public string filename { get; set; }
         
         public bool sensitive { get; set; }
+        
+        public AnonymousPost post { get; set; }
     }
 }
