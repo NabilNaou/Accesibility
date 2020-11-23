@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StreetTalk.Models
 {
-    public class User
+    public class User : Timestamped
     {
         public int id { get; set; }
         
@@ -19,21 +19,11 @@ namespace StreetTalk.Models
         [NotMapped]
         [Display(Name = "Wachtwoord herhaald")]
         public string confirmPassword { get; set; }
-        
-        public DateTime? createdAt { get; set; }
-        
-        public DateTime? modifiedAt { get; set; }
-        
+
         public DateTime? lockoutEndTime { get; set; }
         
         public bool lockoutEnabled { get; set; }
         
         public int accessFailedCount { get; set; }
-
-        public User()
-        {
-            createdAt = DateTime.UtcNow;
-            modifiedAt = DateTime.UtcNow;
-        }
     }
 }
