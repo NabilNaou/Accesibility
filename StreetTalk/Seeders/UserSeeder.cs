@@ -7,10 +7,10 @@ namespace StreetTalk.Seeders
 {
     public class UserSeeder : Seeder
     {
-        public override void OnSeed()
+        public override bool shouldSeed => !Context.users.Any();
+        
+        public override void DoSeed()
         {
-            if (context.users.Any()) return;
-            
             var rows = new List<User>
             {
                 new User
@@ -60,7 +60,7 @@ namespace StreetTalk.Seeders
                 }
             };
 
-            context.AddRange(rows);
+            Context.AddRange(rows);
         }
     }
 }

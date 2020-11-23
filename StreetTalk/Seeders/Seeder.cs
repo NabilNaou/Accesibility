@@ -2,15 +2,20 @@
 {
     public abstract class Seeder
     {
-        protected StreetTalkContext context;
+        protected StreetTalkContext Context;
         
-        public void seed(StreetTalkContext context)
+
+        public void seed(StreetTalkContext ctx)
         {
-            this.context = context;
-            OnSeed();
-            context.SaveChanges();
+            Context = ctx;
+            
+            if(shouldSeed)
+                DoSeed();
+            
+            Context.SaveChanges();
         }
 
-        public abstract void OnSeed();
+        public abstract void DoSeed();
+        public abstract bool shouldSeed { get; }
     }
 }
