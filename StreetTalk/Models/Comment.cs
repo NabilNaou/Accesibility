@@ -4,15 +4,15 @@ namespace StreetTalk.Models
 {
     public class Comment : Timestamped
     {
-        public int id { get; set; }
+        public virtual int id { get; set; }
         
         [StringLength(600)]
-        public string content { get; set; }
+        public virtual string content { get; set; }
         
-        public int userId { get; set; }
-        public User author { get; set; }
+        public virtual int userId { get; set; }
+        public virtual User author { get; set; }
         
-        public int postId { get; set; }
-        public PublicPost post { get; set; }
+        public virtual int postId { get; set; }
+        public virtual PublicPost post { get; set; }
     }
 }

@@ -5,6 +5,6 @@ namespace StreetTalk.Models
     public class AnonymousPost : Post
     {
         [StringLength(64)]
-        public string pseudonym { get; set; }
+        public virtual string pseudonym { get; set; }
     }
 }

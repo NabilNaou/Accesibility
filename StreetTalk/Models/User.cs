@@ -7,30 +7,30 @@ namespace StreetTalk.Models
 {
     public class User : Timestamped
     {
-        public int id { get; set; }
+        public virtual int id { get; set; }
         
         [Display(Name = "Email adres")]
-        public string email { get; set; }
+        public virtual string email { get; set; }
         
-        public bool emailConfirmed { get; set; }
+        public virtual bool emailConfirmed { get; set; }
         
         [Display(Name = "Wachtwoord")]
-        public string passwordHash { get; set; }
+        public virtual string passwordHash { get; set; }
         
         [NotMapped]
         [Display(Name = "Wachtwoord herhaald")]
-        public string confirmPassword { get; set; }
+        public virtual string confirmPassword { get; set; }
 
-        public DateTime? lockoutEndTime { get; set; }
+        public virtual DateTime? lockoutEndTime { get; set; }
         
-        public bool lockoutEnabled { get; set; }
+        public virtual bool lockoutEnabled { get; set; }
         
-        public int accessFailedCount { get; set; }
+        public virtual int accessFailedCount { get; set; }
         
-        public Profile profile { get; set; }
+        public virtual Profile profile { get; set; }
         
-        public List<Comment> comments { get; } = new List<Comment>();
+        public virtual List<Comment> comments { get; } = new List<Comment>();
         
-        public List<Like> likes { get; } = new List<Like>();
+        public virtual List<Like> likes { get; } = new List<Like>();
     }
 }

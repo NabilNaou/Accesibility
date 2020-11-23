@@ -4,12 +4,12 @@ namespace StreetTalk.Models
 {
     public class PublicPost : Post
     {
-        public bool closed { get; set; }
+        public virtual bool closed { get; set; }
         
-        public int reportCount { get; set; }
+        public virtual int reportCount { get; set; }
         
-        public List<Comment> comments { get; } = new List<Comment>();
+        public virtual List<Comment> comments { get; } = new List<Comment>();
         
-        public List<Like> likes { get; } = new List<Like>();
+        public virtual List<Like> likes { get; } = new List<Like>();
     }
 }

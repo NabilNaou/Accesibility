@@ -2,12 +2,12 @@
 {
     public class Photo
     {
-        public int id { get; set; }
+        public virtual int id { get; set; }
         
-        public string filename { get; set; }
+        public virtual string filename { get; set; }
         
-        public bool sensitive { get; set; }
+        public virtual bool sensitive { get; set; }
         
-        public AnonymousPost post { get; set; }
+        public virtual Post post { get; set; }
     }
 }

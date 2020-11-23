@@ -4,9 +4,9 @@ namespace StreetTalk.Models
 {
     public class Timestamped
     {
-        public DateTime? createdAt { get; }
+        public virtual DateTime? createdAt { get; }
         
-        public DateTime? modifiedAt { get; set; }
+        public virtual DateTime? modifiedAt { get; set; }
         
         public Timestamped()
         {

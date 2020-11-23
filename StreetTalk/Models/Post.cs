@@ -5,15 +5,15 @@ namespace StreetTalk.Models
 {
     public class Post : Timestamped
     {
-        public int id { get; set; }
+        public virtual int id { get; set; }
         
         [StringLength(64)]
-        public string title { get; set; }
+        public virtual string title { get; set; }
         
         [Column(TypeName = "text")]
-        public string content { get; set; }
+        public virtual string content { get; set; }
         
-        public int? photoId { get; set; }
-        public Photo photo { get; set; }
+        public virtual int? photoId { get; set; }
+        public virtual Photo photo { get; set; }
     }
 }

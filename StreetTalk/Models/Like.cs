@@ -2,10 +2,10 @@
 {
     public class Like
     {
-        public int userId { get; set; }
-        public User user { get; set; }
+        public virtual int userId { get; set; }
+        public virtual User user { get; set; }
         
-        public int postId { get; set; }
-        public PublicPost post { get; set; }
+        public virtual int postId { get; set; }
+        public virtual PublicPost post { get; set; }
     }
 }
