@@ -2,7 +2,7 @@
 
 namespace StreetTalk.Models
 {
-    public class PublicPost : AnonymousPost
+    public class PublicPost : Post
     {
         public bool closed { get; set; }
         
