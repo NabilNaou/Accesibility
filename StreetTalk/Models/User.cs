@@ -30,5 +30,7 @@ namespace StreetTalk.Models
         public Profile profile { get; set; }
         
         public List<Comment> comments { get; } = new List<Comment>();
+        
+        public List<Like> likes { get; } = new List<Like>();
     }
 }

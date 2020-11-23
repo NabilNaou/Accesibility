@@ -9,5 +9,7 @@ namespace StreetTalk.Models
         public int reportCount { get; set; }
         
         public List<Comment> comments { get; } = new List<Comment>();
+        
+        public List<Like> likes { get; } = new List<Like>();
     }
 }
