@@ -1,0 +1,33 @@
+﻿<nav class="st-navbar d-flex flex-column">
+    <div class="st-nav-item flex-grow-0 d-flex flex-column pb-2">
+        <a class="st-nav-link st-nav-link-no-highlight" asp-area="" asp-controller="Home" asp-action="Index">
+            <img alt="StreetTalk logo" class="rotated-icon" src="~/img/bullhorn-outline.svg"/>
+            <span class="brand-text">StreetTalk.</span>
+        </a>
+    </div>
+    <div class="st-nav-item st-nav-item-bordered flex-grow-1 d-flex flex-column pt-2 pb-2">
+        <a class="st-nav-link" asp-area="" asp-controller="PublicPost" asp-action="Index">
+            <img alt="Post icoon" src="~/img/post.svg"/>
+            <span>Meldingen bekijken</span>
+        </a>
+        <a class="st-nav-link" href="#">
+            <img alt="Bestand icoon" src="~/img/file-outline.svg"/>
+            <span>Publiekelijk melden</span>
+        </a>
+        <a class="st-nav-link" href="#">
+            <img alt="Bestand icoon" src="~/img/file-lock-outline.svg"/>
+            <span>Anoniem melden</span>
+        </a>
+    </div>
+    <div class="st-nav-item flex-grow-0 d-flex flex-column pt-2">
+        <a class="st-nav-link" asp-area="" asp-controller="Account" asp-action="Registreren">
+            <img alt="Email icoon" src="~/img/email.svg"/>
+            <span>Registreren</span>
+        </a>
+        <a class="st-nav-link" href="#">
+            <img alt="Login icoon" src="~/img/login.svg"/>
+            <span>Inloggen</span>
+        </a>
+    </div>
+    <div class="st-nav-expand"><img alt="Pijl naar rechts" src="~/img/chevron_right.svg"/></div>
+</nav>
