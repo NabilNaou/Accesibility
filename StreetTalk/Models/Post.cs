@@ -13,8 +13,7 @@ namespace StreetTalk.Models
         [Column(TypeName = "text")]
         public virtual string Content { get; set; }
         
-        public virtual int? PhotoId { get; set; }
-        public virtual Photo Photo { get; set; }
+        public virtual PostPhoto Photo { get; set; }
         
         public virtual int? UserId { get; set; }
         public virtual User User { get; set; }

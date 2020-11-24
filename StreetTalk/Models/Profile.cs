@@ -31,5 +31,7 @@ namespace StreetTalk.Models
         
         public virtual int UserId { get; set; }
         public virtual User User { get; set; }
+        
+        public virtual ProfilePhoto Photo { get; set; }
     }
 }
