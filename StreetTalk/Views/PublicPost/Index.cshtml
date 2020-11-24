@@ -1,0 +1,19 @@
+﻿@model List<PublicPost>
+
+@{
+    ViewData["Title"] = "Publieke meldingen";
+}
+
+@section styles {
+     <link href="~/css/postlist.css" rel="stylesheet" />
+}
+
+<div class="posts-container">
+    <h1 class="mb-3">Publieke meldingen</h1>
+    <div id="meldingen" class="d-flex flex-column">
+        @foreach (var post in Model)
+        {
+            <partial name="_PostRow" for="@post"/>
+        }
+    </div>
+</div>

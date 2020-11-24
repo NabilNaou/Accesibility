@@ -1,0 +1,57 @@
+﻿.post-row {
+    border-radius: 4px;
+    box-shadow: 0px 3px 6px 1px rgba(0, 0, 0, 0.05);
+}
+
+.post-row .profile-image {
+    width: 64px;
+    height: 64px;
+}
+
+.post-row .status-indicator {
+    min-width: 4px;
+    background-color: #cccccc;
+}
+
+.status-indicator.open {
+    background-color: #1BA345;
+}
+
+.status-indicator.closed {
+    background-color: #DE3E44;
+}
+
+.post-title {
+    margin: 0;
+    font-size: 1.6rem;
+}
+
+.post-content {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.post-row .post-action-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.post-row .post-action-icon:hover {
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.post-row .post-date {
+    font-weight: 300;
+    width: 100px;
+}
+
+.post-row .post-author {
+    width: 150px;
+}
+
+.posts-container {
+    padding: 64px;
+}
