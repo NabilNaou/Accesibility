@@ -7,14 +7,17 @@ namespace StreetTalk.Models
     {
         public int? id { get; set; }
         
-        [Display(Name = "Email adres")]
+        [EmailAddress(ErrorMessage="Email bestaat niet")]
+        [Required(ErrorMessage="Email moet worden ingevuld")]
+        [Display(Name = "email")]
         public string email { get; set; }
         
-        [Display(Name = "Wachtwoord")]
+        [Required(ErrorMessage="Wachtwoord is verplicht")]
+        [Display(Name = "password")]
         public string password { get; set; }
         
-        [NotMapped]
-        [Display(Name = "Wachtwoord herhaald")]
+        [Compare("password", ErrorMessage="Wachtwoord komt niet overeen")]
+        [Display(Name = "confirmPassword")]
         public string confirmPassword { get; set; }
     }
 }
