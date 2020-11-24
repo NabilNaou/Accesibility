@@ -8,7 +8,8 @@ namespace StreetTalk.Seeders
         {
             new UserSeeder(),
             new PostSeeder(),
-            new LikeSeeder()
+            new LikeSeeder(),
+            new CommentSeeder()
         };
         
         public static void seedAll(StreetTalkContext context)
