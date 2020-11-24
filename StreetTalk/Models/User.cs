@@ -14,8 +14,11 @@ namespace StreetTalk.Models
         
         public virtual bool emailConfirmed { get; set; }
         
-        [Display(Name = "Wachtwoord")]
         public virtual string passwordHash { get; set; }
+        
+        [NotMapped]
+        [Display(Name = "Wachtwoord")]
+        public virtual string password { get; set; }
         
         [NotMapped]
         [Display(Name = "Wachtwoord herhaald")]
