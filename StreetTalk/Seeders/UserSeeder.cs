@@ -27,7 +27,7 @@ namespace StreetTalk.Seeders
                         {
                             Photo = new Photo
                             {
-                                Filename = "https://cdn.discordapp.com/emojis/749350114589671544.png?v=1"
+                                Filename = "https://picsum.photos/seed/1/256/256"
                             }
                         }
                     }
@@ -45,7 +45,7 @@ namespace StreetTalk.Seeders
                         {
                             Photo = new Photo
                             {
-                                Filename = "https://cdn.discordapp.com/emojis/749350114589671544.png?v=1"
+                                Filename = "https://picsum.photos/seed/2/256/256"
                             }
                         }
                     }
@@ -63,7 +63,7 @@ namespace StreetTalk.Seeders
                         {
                             Photo = new Photo
                             {
-                                Filename = "https://cdn.discordapp.com/emojis/749350114589671544.png?v=1"
+                                Filename = "https://picsum.photos/seed/3/256/256"
                             }
                         }
                     }
@@ -81,7 +81,7 @@ namespace StreetTalk.Seeders
                         {
                             Photo = new Photo
                             {
-                                Filename = "https://cdn.discordapp.com/emojis/749350114589671544.png?v=1"
+                                Filename = "https://picsum.photos/seed/4/256/256"
                             }
                         }
                     }

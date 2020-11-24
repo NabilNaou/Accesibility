@@ -27,24 +27,20 @@ namespace StreetTalk.Seeders
                     },
                     User = Context.User.Single(u => u.Id == 1)
                 },
-                new PublicPost
-                {
-                    Id = 2,
-                    Title = "Afval op straat",
-                    Content = "lorem ipsum dolor sit amet",
-                    Photo = new PostPhoto
-                    {
-                        Sensitive = true,
-                        Photo = new Photo
-                        {
-                            Filename = "https://upload.wikimedia.org/wikipedia/commons/1/14/Klein_gevaarlijk_afval_A.jpg",
-                        }
-                    },
-                    User = Context.User.Single(u => u.Id == 2)
-                },
+                createGarbagePost(2, 1),
+                createGarbagePost(3, 2),
+                createGarbagePost(4, 4),
+                createGarbagePost(5, 3),
+                createGarbagePost(6, 1),
+                createGarbagePost(7, 4),
+                createGarbagePost(8, 2),
+                createGarbagePost(9, 3),
+                createGarbagePost(10, 1),
+                createGarbagePost(11, 4),
+                createGarbagePost(12, 2),
                 new AnonymousPost
                 {
-                    Id = 3,
+                    Id = 13,
                     Title = "Wiet kwekerij bij de buren",
                     Content = "lorem ipsum dolor sit amet",
                     Photo = new PostPhoto
@@ -60,6 +56,26 @@ namespace StreetTalk.Seeders
             };
 
             Context.Post.AddRange(rows);
+        }
+
+        private PublicPost createGarbagePost(int id, int userId)
+        {
+            return new PublicPost
+            {
+                Id = id,
+                Title = "Afval op straat",
+                Content = "lorem ipsum dolor sit amet",
+                Closed = true,
+                Photo = new PostPhoto
+                {
+                    Sensitive = true,
+                    Photo = new Photo
+                    {
+                        Filename = "https://upload.wikimedia.org/wikipedia/commons/1/14/Klein_gevaarlijk_afval_A.jpg",
+                    }
+                },
+                User = Context.User.Single(u => u.Id == userId)
+            };
         }
     }
 }
