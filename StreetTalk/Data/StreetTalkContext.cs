@@ -8,6 +8,11 @@ namespace StreetTalk
         
         public StreetTalkContext(DbContextOptions options) : base(options) {}
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Like>().HasKey(like => new { like.UserId, like.PostId });
