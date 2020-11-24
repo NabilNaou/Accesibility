@@ -35,5 +35,7 @@ namespace StreetTalk.Models
         public virtual List<Comment> comments { get; } = new List<Comment>();
         
         public virtual List<Like> likes { get; } = new List<Like>();
+        
+        public virtual List<Post> posts { get; } = new List<Post>();
     }
 }
