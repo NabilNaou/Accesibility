@@ -22,7 +22,14 @@ namespace StreetTalk.Seeders
                     {
                         FirstName = "Timon",
                         LastName = "Landmeter",
-                        DateOfBirth = new DateTime(1999, 10, 7)
+                        DateOfBirth = new DateTime(1999, 10, 7),
+                        Photo = new ProfilePhoto
+                        {
+                            Photo = new Photo
+                            {
+                                Filename = "https://cdn.discordapp.com/emojis/749350114589671544.png?v=1"
+                            }
+                        }
                     }
                 },
                 new User
@@ -34,6 +41,13 @@ namespace StreetTalk.Seeders
                     {
                         FirstName = "Jelle",
                         LastName = "Krupe",
+                        Photo = new ProfilePhoto
+                        {
+                            Photo = new Photo
+                            {
+                                Filename = "https://cdn.discordapp.com/emojis/749350114589671544.png?v=1"
+                            }
+                        }
                     }
                 },
                 new User
@@ -45,6 +59,13 @@ namespace StreetTalk.Seeders
                     {
                         FirstName = "Rik",
                         LastName = "Helder",
+                        Photo = new ProfilePhoto
+                        {
+                            Photo = new Photo
+                            {
+                                Filename = "https://cdn.discordapp.com/emojis/749350114589671544.png?v=1"
+                            }
+                        }
                     }
                 },
                 new User
@@ -56,6 +77,13 @@ namespace StreetTalk.Seeders
                     {
                         FirstName = "Nabil",
                         LastName = "Naou",
+                        Photo = new ProfilePhoto
+                        {
+                            Photo = new Photo
+                            {
+                                Filename = "https://cdn.discordapp.com/emojis/749350114589671544.png?v=1"
+                            }
+                        }
                     }
                 }
             };
