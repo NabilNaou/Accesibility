@@ -99,7 +99,15 @@ namespace StreetTalk.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("userId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("id");
+
+                    b.HasIndex("photoId")
+                        .IsUnique();
+
+                    b.HasIndex("userId");
 
                     b.ToTable("posts");
 
@@ -184,20 +192,6 @@ namespace StreetTalk.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("StreetTalk.Models.AnonymousPost", b =>
-                {
-                    b.HasBaseType("StreetTalk.Models.Post");
-
-                    b.Property<string>("pseudonym")
-                        .HasMaxLength(64)
-                        .HasColumnType("TEXT");
-
-                    b.HasIndex("photoId")
-                        .IsUnique();
-
-                    b.HasDiscriminator().HasValue("AnonymousPost");
-                });
-
             modelBuilder.Entity("StreetTalk.Models.PublicPost", b =>
                 {
                     b.HasBaseType("StreetTalk.Models.Post");
@@ -207,9 +201,6 @@ namespace StreetTalk.Migrations
 
                     b.Property<int>("reportCount")
                         .HasColumnType("INTEGER");
-
-                    b.HasIndex("photoId")
-                        .HasDatabaseName("IX_posts_photoId1");
 
                     b.HasDiscriminator().HasValue("PublicPost");
                 });
@@ -252,6 +243,23 @@ namespace StreetTalk.Migrations
                     b.Navigation("user");
                 });
 
+            modelBuilder.Entity("StreetTalk.Models.Post", b =>
+                {
+                    b.HasOne("StreetTalk.Models.Photo", "photo")
+                        .WithOne("post")
+                        .HasForeignKey("StreetTalk.Models.Post", "photoId");
+
+                    b.HasOne("StreetTalk.Models.User", "user")
+                        .WithMany("posts")
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("photo");
+
+                    b.Navigation("user");
+                });
+
             modelBuilder.Entity("StreetTalk.Models.Profile", b =>
                 {
                     b.HasOne("StreetTalk.Models.User", "user")
@@ -261,25 +269,6 @@ namespace StreetTalk.Migrations
                         .IsRequired();
 
                     b.Navigation("user");
-                });
-
-            modelBuilder.Entity("StreetTalk.Models.AnonymousPost", b =>
-                {
-                    b.HasOne("StreetTalk.Models.Photo", "photo")
-                        .WithOne("post")
-                        .HasForeignKey("StreetTalk.Models.AnonymousPost", "photoId");
-
-                    b.Navigation("photo");
-                });
-
-            modelBuilder.Entity("StreetTalk.Models.PublicPost", b =>
-                {
-                    b.HasOne("StreetTalk.Models.Photo", "photo")
-                        .WithMany()
-                        .HasForeignKey("photoId")
-                        .HasConstraintName("FK_posts_Photo_photoId1");
-
-                    b.Navigation("photo");
                 });
 
             modelBuilder.Entity("StreetTalk.Models.Photo", b =>
@@ -292,6 +281,8 @@ namespace StreetTalk.Migrations
                     b.Navigation("comments");
 
                     b.Navigation("likes");
+
+                    b.Navigation("posts");
 
                     b.Navigation("profile");
                 });

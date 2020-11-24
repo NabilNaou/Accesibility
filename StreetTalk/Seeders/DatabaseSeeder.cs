@@ -6,7 +6,8 @@ namespace StreetTalk.Seeders
     {
         private static readonly List<Seeder> Seeders = new List<Seeder>
         {
-            new UserSeeder()
+            new UserSeeder(),
+            new PostSeeder()
         };
         
         public static void seedAll(StreetTalkContext context)

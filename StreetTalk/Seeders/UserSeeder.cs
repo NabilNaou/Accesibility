@@ -60,7 +60,7 @@ namespace StreetTalk.Seeders
                 }
             };
 
-            Context.AddRange(rows);
+            Context.users.AddRange(rows);
         }
     }
 }
