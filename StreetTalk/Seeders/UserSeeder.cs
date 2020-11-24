@@ -7,7 +7,7 @@ namespace StreetTalk.Seeders
 {
     public class UserSeeder : Seeder
     {
-        public override bool shouldSeed => !Context.users.Any();
+        public override bool shouldSeed => !Context.User.Any();
         
         public override void DoSeed()
         {
@@ -15,52 +15,52 @@ namespace StreetTalk.Seeders
             {
                 new User
                 {
-                    id = 1,
-                    email = "19097530@student.hhs.nl",
-                    passwordHash = "2dcf1b5dbc35a2d58504cc6c4c7caa589a7c32497f70facaa56c51605f6e45b5",
-                    profile = new Profile
+                    Id = 1,
+                    Email = "19097530@student.hhs.nl",
+                    PasswordHash = "2dcf1b5dbc35a2d58504cc6c4c7caa589a7c32497f70facaa56c51605f6e45b5",
+                    Profile = new Profile
                     {
-                        firstName = "Timon",
-                        lastName = "Landmeter",
-                        dateOfBirth = new DateTime(1999, 10, 7)
+                        FirstName = "Timon",
+                        LastName = "Landmeter",
+                        DateOfBirth = new DateTime(1999, 10, 7)
                     }
                 },
                 new User
                 {
-                    id = 2,
-                    email = "19083181@student.hhs.nl",
-                    passwordHash = "2dcf1b5dbc35a2d58504cc6c4c7caa589a7c32497f70facaa56c51605f6e45b5",
-                    profile = new Profile
+                    Id = 2,
+                    Email = "19083181@student.hhs.nl",
+                    PasswordHash = "2dcf1b5dbc35a2d58504cc6c4c7caa589a7c32497f70facaa56c51605f6e45b5",
+                    Profile = new Profile
                     {
-                        firstName = "Jelle",
-                        lastName = "Krupe",
+                        FirstName = "Jelle",
+                        LastName = "Krupe",
                     }
                 },
                 new User
                 {
-                    id = 3,
-                    email = "19050380@student.hhs.nl",
-                    passwordHash = "2dcf1b5dbc35a2d58504cc6c4c7caa589a7c32497f70facaa56c51605f6e45b5",
-                    profile = new Profile
+                    Id = 3,
+                    Email = "19050380@student.hhs.nl",
+                    PasswordHash = "2dcf1b5dbc35a2d58504cc6c4c7caa589a7c32497f70facaa56c51605f6e45b5",
+                    Profile = new Profile
                     {
-                        firstName = "Rik",
-                        lastName = "Helder",
+                        FirstName = "Rik",
+                        LastName = "Helder",
                     }
                 },
                 new User
                 {
-                    id = 4,
-                    email = "19037570@student.hhs.nl",
-                    passwordHash = "2dcf1b5dbc35a2d58504cc6c4c7caa589a7c32497f70facaa56c51605f6e45b5",
-                    profile = new Profile
+                    Id = 4,
+                    Email = "19037570@student.hhs.nl",
+                    PasswordHash = "2dcf1b5dbc35a2d58504cc6c4c7caa589a7c32497f70facaa56c51605f6e45b5",
+                    Profile = new Profile
                     {
-                        firstName = "Nabil",
-                        lastName = "Naou",
+                        FirstName = "Nabil",
+                        LastName = "Naou",
                     }
                 }
             };
 
-            Context.users.AddRange(rows);
+            Context.User.AddRange(rows);
         }
     }
 }

@@ -10,11 +10,11 @@ namespace StreetTalk
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Like>().HasKey(like => new { like.userId, like.postId });
+            modelBuilder.Entity<Like>().HasKey(like => new { like.UserId, like.PostId });
         }
 
-        public DbSet<User> users { get; set; }
+        public DbSet<User> User { get; set; }
 
-        public DbSet<Post> posts { get; set; }
+        public DbSet<Post> Post { get; set; }
     }
 }

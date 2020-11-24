@@ -6,30 +6,30 @@ namespace StreetTalk.Models
 {
     public class Profile : Timestamped
     {
-        public virtual int id { get; set; }
+        public virtual int Id { get; set; }
         
         [StringLength(45)]
-        public virtual string? firstName { get; set; }
+        public virtual string? FirstName { get; set; }
         
         [StringLength(45)]
-        public virtual string? lastName { get; set; }
+        public virtual string? LastName { get; set; }
         
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
-        public virtual DateTime? dateOfBirth { get; set; }
+        public virtual DateTime? DateOfBirth { get; set; }
         
         [StringLength(64)]
-        public virtual string? city { get; set; }
+        public virtual string? City { get; set; }
         
         [StringLength(64)]
-        public virtual string? street { get; set; }
+        public virtual string? Street { get; set; }
         
-        public virtual int? houseNumber { get; set; }
+        public virtual int? HouseNumber { get; set; }
         
         [StringLength(5)]
-        public virtual string? houseNumberAddition { get; set; }
+        public virtual string? HouseNumberAddition { get; set; }
         
-        public virtual int userId { get; set; }
-        public virtual User user { get; set; }
+        public virtual int UserId { get; set; }
+        public virtual User User { get; set; }
     }
 }

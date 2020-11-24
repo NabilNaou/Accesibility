@@ -18,143 +18,152 @@ namespace StreetTalk.Migrations
 
             modelBuilder.Entity("StreetTalk.Models.Comment", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("content")
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
                         .HasMaxLength(600)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("modifiedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("postId")
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PostId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("userId")
-                        .HasColumnType("INTEGER");
+                    b.HasKey("Id");
 
-                    b.HasKey("id");
+                    b.HasIndex("AuthorId");
 
-                    b.HasIndex("postId");
-
-                    b.HasIndex("userId");
+                    b.HasIndex("PostId");
 
                     b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("StreetTalk.Models.Like", b =>
                 {
-                    b.Property<int>("userId")
+                    b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("postId")
+                    b.Property<int>("PostId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("userId", "postId");
+                    b.HasKey("UserId", "PostId");
 
-                    b.HasIndex("postId");
+                    b.HasIndex("PostId");
 
                     b.ToTable("Like");
                 });
 
             modelBuilder.Entity("StreetTalk.Models.Photo", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("filename")
+                    b.Property<string>("Filename")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("sensitive")
+                    b.Property<bool>("Sensitive")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Photo");
                 });
 
             modelBuilder.Entity("StreetTalk.Models.Post", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("content")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("modifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("photoId")
+                    b.Property<int?>("PhotoId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("title")
+                    b.Property<string>("Title")
                         .HasMaxLength(64)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("userId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.HasIndex("photoId")
+                    b.HasIndex("PhotoId")
                         .IsUnique();
 
-                    b.HasIndex("userId");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("posts");
+                    b.ToTable("Post");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Post");
                 });
 
             modelBuilder.Entity("StreetTalk.Models.Profile", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("city")
+                    b.Property<string>("City")
                         .HasMaxLength(64)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("dateOfBirth")
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("Date");
 
-                    b.Property<string>("firstName")
+                    b.Property<string>("FirstName")
                         .HasMaxLength(45)
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("houseNumber")
+                    b.Property<int?>("HouseNumber")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("houseNumberAddition")
+                    b.Property<string>("HouseNumberAddition")
                         .HasMaxLength(5)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("lastName")
+                    b.Property<string>("LastName")
                         .HasMaxLength(45)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("modifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("street")
+                    b.Property<string>("Street")
                         .HasMaxLength(64)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("userId")
+                    b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.HasIndex("userId")
+                    b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Profile");
@@ -162,44 +171,47 @@ namespace StreetTalk.Migrations
 
             modelBuilder.Entity("StreetTalk.Models.User", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("accessFailedCount")
+                    b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("email")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("emailConfirmed")
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("lockoutEnabled")
+                    b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("lockoutEndTime")
+                    b.Property<DateTime?>("LockoutEndTime")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("modifiedAt")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("passwordHash")
+                    b.Property<string>("PasswordHash")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.ToTable("users");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("StreetTalk.Models.PublicPost", b =>
                 {
                     b.HasBaseType("StreetTalk.Models.Post");
 
-                    b.Property<bool>("closed")
+                    b.Property<bool>("Closed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("reportCount")
+                    b.Property<int>("ReportCount")
                         .HasColumnType("INTEGER");
 
                     b.HasDiscriminator().HasValue("PublicPost");
@@ -207,91 +219,89 @@ namespace StreetTalk.Migrations
 
             modelBuilder.Entity("StreetTalk.Models.Comment", b =>
                 {
-                    b.HasOne("StreetTalk.Models.PublicPost", "post")
-                        .WithMany("comments")
-                        .HasForeignKey("postId")
+                    b.HasOne("StreetTalk.Models.User", "Author")
+                        .WithMany("Comments")
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("StreetTalk.Models.User", "author")
-                        .WithMany("comments")
-                        .HasForeignKey("userId")
+                    b.HasOne("StreetTalk.Models.PublicPost", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("author");
+                    b.Navigation("Author");
 
-                    b.Navigation("post");
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("StreetTalk.Models.Like", b =>
                 {
-                    b.HasOne("StreetTalk.Models.PublicPost", "post")
-                        .WithMany("likes")
-                        .HasForeignKey("postId")
+                    b.HasOne("StreetTalk.Models.PublicPost", "Post")
+                        .WithMany("Likes")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("StreetTalk.Models.User", "user")
-                        .WithMany("likes")
-                        .HasForeignKey("userId")
+                    b.HasOne("StreetTalk.Models.User", "User")
+                        .WithMany("Likes")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("post");
+                    b.Navigation("Post");
 
-                    b.Navigation("user");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("StreetTalk.Models.Post", b =>
                 {
-                    b.HasOne("StreetTalk.Models.Photo", "photo")
-                        .WithOne("post")
-                        .HasForeignKey("StreetTalk.Models.Post", "photoId");
+                    b.HasOne("StreetTalk.Models.Photo", "Photo")
+                        .WithOne("Post")
+                        .HasForeignKey("StreetTalk.Models.Post", "PhotoId");
 
-                    b.HasOne("StreetTalk.Models.User", "user")
-                        .WithMany("posts")
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("StreetTalk.Models.User", "User")
+                        .WithMany("Posts")
+                        .HasForeignKey("UserId");
 
-                    b.Navigation("photo");
+                    b.Navigation("Photo");
 
-                    b.Navigation("user");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("StreetTalk.Models.Profile", b =>
                 {
-                    b.HasOne("StreetTalk.Models.User", "user")
-                        .WithOne("profile")
-                        .HasForeignKey("StreetTalk.Models.Profile", "userId")
+                    b.HasOne("StreetTalk.Models.User", "User")
+                        .WithOne("Profile")
+                        .HasForeignKey("StreetTalk.Models.Profile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("user");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("StreetTalk.Models.Photo", b =>
                 {
-                    b.Navigation("post");
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("StreetTalk.Models.User", b =>
                 {
-                    b.Navigation("comments");
+                    b.Navigation("Comments");
 
-                    b.Navigation("likes");
+                    b.Navigation("Likes");
 
-                    b.Navigation("posts");
+                    b.Navigation("Posts");
 
-                    b.Navigation("profile");
+                    b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("StreetTalk.Models.PublicPost", b =>
                 {
-                    b.Navigation("comments");
+                    b.Navigation("Comments");
 
-                    b.Navigation("likes");
+                    b.Navigation("Likes");
                 });
 #pragma warning restore 612, 618
         }

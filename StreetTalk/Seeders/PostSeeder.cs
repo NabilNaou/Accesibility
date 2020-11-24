@@ -6,37 +6,48 @@ namespace StreetTalk.Seeders
 {
     public class PostSeeder : Seeder
     {
-        public override bool shouldSeed => !Context.posts.Any();
+        public override bool shouldSeed => !Context.Post.Any();
         
         public override void DoSeed()
         {
             var rows = new List<Post>
             {
-                new Post
+                new PublicPost
                 {
-                    title = "Overlast touristen",
-                    content = "lorem ipsum dolor sit amet",
-                    photo = new Photo
+                    Title = "Overlast touristen",
+                    Content = "lorem ipsum dolor sit amet",
+                    Photo = new Photo
                     {
-                        filename = "https://assets.nos.nl/data/image/2017/11/23/433105/xxl.jpg",
-                        sensitive = false
+                        Filename = "https://assets.nos.nl/data/image/2017/11/23/433105/xxl.jpg",
+                        Sensitive = false
                     },
-                    user = Context.users.First()
+                    User = Context.User.First()
                 },
-                new Post
+                new PublicPost
                 {
-                    title = "Afval op straat",
-                    content = "lorem ipsum dolor sit amet",
-                    photo = new Photo
+                    Title = "Afval op straat",
+                    Content = "lorem ipsum dolor sit amet",
+                    Photo = new Photo
                     {
-                        filename = "https://upload.wikimedia.org/wikipedia/commons/1/14/Klein_gevaarlijk_afval_A.jpg",
-                        sensitive = false
+                        Filename = "https://upload.wikimedia.org/wikipedia/commons/1/14/Klein_gevaarlijk_afval_A.jpg",
+                        Sensitive = false
                     },
-                    user = Context.users.Skip(1).First()
+                    User = Context.User.Skip(1).First()
+                },
+                new AnonymousPost
+                {
+                    Title = "Wiet kwekerij bij de buren",
+                    Content = "lorem ipsum dolor sit amet",
+                    Photo = new Photo
+                    {
+                        Filename = "https://www.nydailynews.com/resizer/Syhve42srvQoXzEPE6ToPsIXBec=/800x1066/top/arc-anglerfish-arc2-prod-tronc.s3.amazonaws.com/public/3XUJPSVHKIUBKZJCFU2WQFA7WY.jpg",
+                        Sensitive = false
+                    },
+                    Pseudonym = "AyZgjE"
                 }
             };
 
-            Context.posts.AddRange(rows);
+            Context.Post.AddRange(rows);
         }
     }
 }
