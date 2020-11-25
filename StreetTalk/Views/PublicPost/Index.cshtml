@@ -10,10 +10,12 @@
 
 <div class="posts-container">
     <h1 class="mb-3">Publieke meldingen</h1>
-    <div id="meldingen" class="d-flex flex-column">
+    <ul id="meldingen" class="d-flex flex-column">
         @foreach (var post in Model)
         {
-            <partial name="_PostRow" for="@post"/>
+            <li aria-label="Melding: @post.Title">
+                <partial name="_PostRow" for="@post"/>
+            </li>
         }
-    </div>
+    </ul>
 </div>

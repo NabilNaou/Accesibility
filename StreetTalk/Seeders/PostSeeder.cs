@@ -16,7 +16,7 @@ namespace StreetTalk.Seeders
                 {
                     Id = 1,
                     Title = "Overlast touristen",
-                    Content = "lorem ipsum dolor sit amet",
+                    Content = SeederUtils.LoremIpsum,
                     Photo = new PostPhoto
                     {
                         Sensitive = false,
@@ -42,7 +42,7 @@ namespace StreetTalk.Seeders
                 {
                     Id = 13,
                     Title = "Wiet kwekerij bij de buren",
-                    Content = "lorem ipsum dolor sit amet",
+                    Content = SeederUtils.LoremIpsum,
                     Photo = new PostPhoto
                     {
                         Sensitive = false,
@@ -64,7 +64,7 @@ namespace StreetTalk.Seeders
             {
                 Id = id,
                 Title = "Afval op straat",
-                Content = "lorem ipsum dolor sit amet",
+                Content = SeederUtils.LoremIpsum,
                 Closed = true,
                 Photo = new PostPhoto
                 {
