@@ -6,6 +6,7 @@
 
 a {
   color: #0366d6;
+  text-decoration: none!important;
 }
 
 .btn-primary {
@@ -50,4 +51,13 @@ h1, h2, h3, h4, h5, h6 {
   background-repeat: no-repeat;
   background-position: center center;
   z-index: -1;
+}
+
+.sr-only {
+  position:absolute;
+  left:-10000px;
+  top:auto;
+  width:1px;
+  height:1px;
+  overflow:hidden;
 }

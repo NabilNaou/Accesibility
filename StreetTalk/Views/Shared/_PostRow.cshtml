@@ -1,0 +1,33 @@
+﻿@model PublicPost
+
+<div class="post-row card mb-4 w-100 d-flex flex-row">
+    <div aria-label="Melding status" class="status-indicator @(Model.Closed ? "closed" : "open")">
+        <span>@(Model.Closed ? "gesloten" : "open")</span>
+    </div>
+    <div class="row-content w-100">
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <img src="@Model.User.Profile.Photo?.Photo?.Filename" class="rounded-circle profile-image" alt="Profiel foto"/>
+        </div>
+        <a href="#" aria-label="Bekijk post" class="post-info d-flex flex-grow-1 flex-column justify-content-between">
+            <h2 class="post-title">@Model.Title</h2>
+            <p class="post-content">@Model.Content</p>
+        </a>
+        <div aria-label="Meld datum" class="post-date d-flex flex-column justify-content-center mr-2">
+            <span class="d-block">@Model.CreatedAt?.ToString("dd-MM-yyyy")</span>
+        </div>
+        <div aria-label="Auteur" class="post-author d-flex flex-column justify-content-center text-center">
+            <span class="d-block">@Model.User.Profile.FirstName @Model.User.Profile.LastName</span>
+        </div>
+        <div class="post-actions d-flex flex-row justify-content-center align-items-center">
+            <a href="#" class="mr-3">
+                <img alt="Rapporteer deze post" class="post-action-icon" src="~/img/report.svg"/>
+            </a>
+            <a href="#">
+                <img alt="Like deze post" class="post-action-icon" src="~/img/favorite.svg"/>
+            </a>
+        </div>
+    </div>
+    <div aria-label="Aantal likes" class="likes-container">
+        <span>+@Model.Likes.Count</span>
+    </div>
+</div>
