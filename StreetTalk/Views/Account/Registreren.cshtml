@@ -10,19 +10,19 @@
         @using (Html.BeginForm("Registreren", "Account", FormMethod.Post))
         {
             <div class="form-group">
-                @Html.LabelFor(m => m.email)
-                @Html.TextBoxFor(m => m.email, new { @class = "form-control" })
-                <span class="text-danger">@Html.ValidationMessageFor(m => m.email)</span>
+                @Html.LabelFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                <span class="text-danger">@Html.ValidationMessageFor(m => m.Email)</span>
             </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.password)
-                @Html.PasswordFor(m => m.password, new { @class = "form-control" })
-                <span class="text-danger">@Html.ValidationMessageFor(m => m.password)</span>
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                <span class="text-danger">@Html.ValidationMessageFor(m => m.Password)</span>
             </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.confirmPassword)
-                @Html.PasswordFor(m => m.confirmPassword, new { @class = "form-control" })
-                <span class="text-danger">@Html.ValidationMessageFor(m => m.confirmPassword)</span>
+                @Html.LabelFor(m => m.ConfirmPassword)
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                <span class="text-danger">@Html.ValidationMessageFor(m => m.ConfirmPassword)</span>
             </div>
             //TODO: stop captcha hier
             <input class="btn btn-primary w-100 mt-4" type="submit" value="Registreer"/>
