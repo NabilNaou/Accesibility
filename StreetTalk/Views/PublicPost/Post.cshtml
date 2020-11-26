@@ -17,7 +17,7 @@
                     <h1 class="mb-0 mt-4">@Model.Title</h1>
                     <span class="d-flex align-items-end">Gemeld op @Model.CreatedAt?.ToString("dd-MM-yyyy") door @Model.User.Profile.FullName</span>
                 </div>
-                <hr/>
+                <hr class="my-4"/>
             </div>
         </div>
         @if (Model.Photo != null)
@@ -38,15 +38,17 @@
         <div class="row justify-content-center">
             <div class="col-12">
                 <h1 class="mb-0 mt-4">Commentaar</h1>
-                <hr/>
+                <hr class="my-4"/>
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-xs-12 col-lg-9">
+                <ul class="undecorated-list d-flex flex-column">
                 @foreach (var comment in Model.Comments.OrderBy(c => c.CreatedAt))
                 {
-                    <partial name="_Comment" for="@comment"/>
+                    <li><partial name="_Comment" for="@comment"/></li>
                 }
+                </ul>
             </div>
         </div>
     </div>
