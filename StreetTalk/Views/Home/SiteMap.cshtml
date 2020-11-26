@@ -2,10 +2,43 @@
     ViewData["Title"] = "Site Map";
 }
 
-<h1>Sitemap</h1>
-
-<ul>
-    <li>a</li>
-    <li>b</li>
-    <li>c</li>
-</ul>
+@section styles {
+    <link href="~/css/sitemap.css" rel="stylesheet" />
+}
+<div class="hoofdtekst_sitemap">
+    <h1>Sitemap</h1>
+</div>
+<hr>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-4 align-content-start">
+                <h3 class="koptekst_sitemap">Profiel</h3>
+                <ul>
+                    <li>Profiel</li>
+                    <li>Account verwijderen</li>
+                    <li>Gegevens opvragen</li>
+                    <li>Profiel bewaren</li>
+                    <li>Mijn meldingen</li>
+                </ul>
+            </div>
+            <div class="col-4 align-content-center">
+                <h3 class="koptekst_sitemap">Meldingen</h3>
+                <ul>
+                    <li>Meldingen lijst</li>
+                    <li>Anonieme melding doen</li>
+                    <li>Publieke melding doen</li>
+                </ul>
+            </div>
+            <div class="col-4 align-content-end">
+                <h3 class="koptekst_sitemap">Overig</h3>
+                <ul>
+                    <li>Home</li>
+                    <li>Privacy</li>
+                    <li>Voorwaarden</li>
+                    <li>Contact opnemen</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
