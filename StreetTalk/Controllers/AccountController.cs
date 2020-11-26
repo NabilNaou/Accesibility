@@ -3,8 +3,10 @@ using StreetTalk.Models;
 
 namespace StreetTalk.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
+        public AccountController(StreetTalkContext context) : base(context) {}
+        
         public IActionResult Index()
         {
             return RedirectToAction("Registreren");
@@ -20,8 +22,11 @@ namespace StreetTalk.Controllers
         {
             if(!ModelState.IsValid)
                 return View(user);
+
+            user.Profile = new Profile();
             
-            //TODO: Add user to database
+            Db.User.Add(user);
+            Db.SaveChanges();
             
             return RedirectToAction("VerifieerEmail");
         }

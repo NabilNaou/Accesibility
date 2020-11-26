@@ -1,23 +1,41 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StreetTalk.Models
 {
-    public class User
+    public class User : Timestamped
     {
-        public int? id { get; set; }
+        public virtual int Id { get; set; }
         
-        [EmailAddress(ErrorMessage="Email bestaat niet")]
-        [Required(ErrorMessage="Email moet worden ingevuld")]
-        [Display(Name = "email")]
-        public string email { get; set; }
+        [Display(Name = "Email adres")]
+        public virtual string Email { get; set; }
         
-        [Required(ErrorMessage="Wachtwoord is verplicht")]
-        [Display(Name = "password")]
-        public string password { get; set; }
+        public virtual bool EmailConfirmed { get; set; }
         
-        [Compare("password", ErrorMessage="Wachtwoord komt niet overeen")]
-        [Display(Name = "confirmPassword")]
-        public string confirmPassword { get; set; }
+        public virtual string PasswordHash { get; set; }
+        
+        [NotMapped]
+        [Display(Name = "Wachtwoord")]
+        public virtual string Password { get; set; }
+        
+        [NotMapped]
+        [Display(Name = "Wachtwoord herhaald")]
+        public virtual string ConfirmPassword { get; set; }
+
+        public virtual DateTime? LockoutEndTime { get; set; }
+        
+        public virtual bool LockoutEnabled { get; set; }
+        
+        public virtual int AccessFailedCount { get; set; }
+        
+        public virtual Profile Profile { get; set; }
+        
+        public virtual List<Comment> Comments { get; } = new List<Comment>();
+        
+        public virtual List<Like> Likes { get; } = new List<Like>();
+        
+        public virtual List<Post> Posts { get; } = new List<Post>();
     }
 }
