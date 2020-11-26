@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using StreetTalk.Models;
 
 namespace StreetTalk
@@ -23,5 +25,8 @@ namespace StreetTalk
         public DbSet<User> User { get; set; }
 
         public DbSet<Post> Post { get; set; }
+
+        public IEnumerable<PublicPost> PublicPost => Post.OfType<PublicPost>();
+        public IEnumerable<AnonymousPost> AnonymousPost => Post.OfType<AnonymousPost>();
     }
 }

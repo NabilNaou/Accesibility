@@ -8,7 +8,7 @@
         <div class="d-flex flex-column justify-content-center align-items-center">
             <img src="@Model.User.Profile.Photo?.Photo?.Filename" class="rounded-circle profile-image" alt="Profiel foto"/>
         </div>
-        <a href="#" aria-label="Bekijk post" class="post-info d-flex flex-grow-1 flex-column justify-content-between">
+        <a asp-area="" asp-controller="PublicPost" asp-action="Post" asp-route-id="@Model.Id" aria-label="Bekijk post" class="post-info d-flex flex-grow-1 flex-column justify-content-between">
             <h2 class="post-title">@Model.Title</h2>
             <p class="post-content">@Model.Content</p>
         </a>
@@ -16,7 +16,7 @@
             <span class="d-block">@Model.CreatedAt?.ToString("dd-MM-yyyy")</span>
         </div>
         <div aria-label="Auteur" class="post-author d-flex flex-column justify-content-center text-center">
-            <span class="d-block">@Model.User.Profile.FirstName @Model.User.Profile.LastName</span>
+            <span class="d-block">@Model.User.Profile.FullName</span>
         </div>
         <div class="post-actions d-flex flex-row justify-content-center align-items-center">
             <a href="#" class="mr-3">
