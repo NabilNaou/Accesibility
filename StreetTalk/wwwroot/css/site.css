@@ -12,8 +12,7 @@ a {
 hr {
   display: block;
   width: 100%;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin: 0;
   border: none;
   height: 1px;
   background-color: #CCCCCC;
@@ -70,4 +69,15 @@ h1, h2, h3, h4, h5, h6 {
   width:1px;
   height:1px;
   overflow:hidden;
+}
+
+.undecorated-list {
+  display: block;
+  padding: 0;
+  margin-bottom: 0!important;
+}
+
+.undecorated-list li {
+  display: block;
+  list-style: none;
 }

@@ -57,7 +57,8 @@ namespace StreetTalk.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            ViewData["ErrorMessage"] = "Er is iets fout gegaan";
+            ViewData["ErrorMessage"] = "Ongeldige login gegevens";
+            
             return View();
         }
     }

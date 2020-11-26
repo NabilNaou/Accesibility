@@ -1,17 +1,9 @@
 ﻿footer {
+    height: 150px;
     background-color: #FFFFFF;
 }
 
-.footerimage {
+.footer-image {
     opacity: 0.2;
     max-height: 150px;
-}
-
-.undecorated-list {
-    padding: 0;
-    margin-bottom: 0!important;
-}
-
-.undecorated-list li {
-    list-style: none;
 }
