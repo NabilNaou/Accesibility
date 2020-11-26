@@ -13,6 +13,9 @@ namespace StreetTalk.Models
         
         [StringLength(45)]
         public virtual string? LastName { get; set; }
+
+        [NotMapped]
+        public virtual string FullName => $"{FirstName} {LastName}";
         
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
