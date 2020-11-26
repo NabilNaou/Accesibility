@@ -1,0 +1,53 @@
+﻿@using StreetTalk.Utils
+@model PublicPost
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+@section styles {
+    <link href="~/css/post.css" rel="stylesheet"/>
+}
+
+<div class="d-flex flex-column align-items-center pb-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="d-flex w-100 justify-content-between flex-column flex-md-row">
+                    <h1 class="mb-0 mt-4">@Model.Title</h1>
+                    <span class="d-flex align-items-end">Gemeld op @Model.CreatedAt?.ToString("dd-MM-yyyy") door @Model.User.Profile.FullName</span>
+                </div>
+                <hr/>
+            </div>
+        </div>
+        @if (Model.Photo != null)
+        {
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <div class="post-image-wrapper mt-3 mb-5">
+                        <img class="img-fluid shadow post-image" alt="Afbeelding over @Model.Title" src="@Model.Photo.Photo.Filename"/>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="row justify-content-center">
+            <div class="col-xs-12 col-lg-9">
+                @Markdown.ParseHtmlString(Model.Content)
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <h1 class="mb-0 mt-4">Commentaar</h1>
+                <hr/>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-xs-12 col-lg-9">
+                @foreach (var comment in Model.Comments.OrderBy(c => c.CreatedAt))
+                {
+                    <partial name="_Comment" for="@comment"/>
+                }
+            </div>
+        </div>
+    </div>
+</div>

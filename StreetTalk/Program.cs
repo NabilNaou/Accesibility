@@ -13,7 +13,7 @@ namespace StreetTalk
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().SeedData().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
