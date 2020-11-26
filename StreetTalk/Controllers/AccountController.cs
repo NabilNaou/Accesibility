@@ -52,22 +52,13 @@ namespace StreetTalk.Controllers
         [HttpPost]
         public IActionResult Login(User user)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(user);
-            }
-            
-            return RedirectToAction("Registreren");
-        }
-
-        public IActionResult TryLogin(User user)
-        {
-            if (user.email.ToLower() == "streettalk@gmail.com" && user.password == "12345" /*Check whether Username and Password are correct, use Db in future*/)
+            if (user.Email.ToLower() == "streettalk@gmail.com" && user.Password == "12345" /*Check whether Username and Password are correct, use Db in future*/)
             {
                 return RedirectToAction("Index", "Home");
             }
 
-            return RedirectToAction("Login");
+            ViewData["ErrorMessage"] = "Er is iets fout gegaan";
+            return View();
         }
     }
 }
