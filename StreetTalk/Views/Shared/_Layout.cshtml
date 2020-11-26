@@ -10,26 +10,24 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="~/css/site.css"/>
         <link rel="stylesheet" href="~/css/navbar.css"/>
+        <link rel="stylesheet" href="~/css/footer.css" />
         @RenderSection("styles", false)
     </head>
-<body>
-<div class="d-flex st-navbar-container">
-    <partial name="_Navbar"/>
-    <div class="container-fluid">
-        <main role="main">
-            @RenderBody()
-        </main>
+    <body>
+    <div class="d-flex st-navbar-container flex-column">
+        <partial name="_Navbar"/>
+        <div class="container-fluid">
+            <main role="main">
+                @RenderBody()
+            </main>
+        </div>
+        <partial name="_Footer" />
     </div>
-</div>
 
-<footer>
-
-</footer>
-
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-<script src="~/js/navbar.js" asp-append-version="true"></script>
-@RenderSection("Scripts", required: false)
-</body>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/navbar.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+    </body>
 </html>
