@@ -1,15 +1,17 @@
-﻿@media only screen and (max-width: 930px){
-    #footer{
-        display: none;
-    }
+﻿footer {
+    background-color: #FFFFFF;
 }
 
 .footerimage {
     opacity: 0.2;
-    max-height: 100px;
-    margin-left: 43px; /*58px breedte navbar - 15px standaard padding bootstrap*/
+    max-height: 150px;
 }
 
-.pt-4, .py-4{
-    padding-top: 5px!important;
+.undecorated-list {
+    padding: 0;
+    margin-bottom: 0!important;
+}
+
+.undecorated-list li {
+    list-style: none;
 }

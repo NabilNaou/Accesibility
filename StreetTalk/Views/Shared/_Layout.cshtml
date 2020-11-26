@@ -14,7 +14,7 @@
     @RenderSection("styles", false)
 </head>
     <body>
-        <div class="d-flex st-navbar-container">
+        <div class="d-flex flex-column st-navbar-container">
             <nav class="st-navbar d-flex flex-column">
                 <div class="st-nav-item flex-grow-0 d-flex flex-column pb-2">
                     <a class="st-nav-link st-nav-link-no-highlight" asp-area="" asp-controller="Home" asp-action="Index">
@@ -53,45 +53,9 @@
                     @RenderBody()
                 </main>
             </div>
+            <partial name="_Footer" />
         </div>
-
-        <footer id="footer" class="page-footer font-small pt-4">
-            <div class="container-fluid">
-                <div class="row">
-
-                    <div class="col-md-4 mt-md-0 mt-3 py-3">
-                        <img src="~/img/footer_picture_home.svg" class="footerimage img-fluid float-left">
-                    </div>
-
-                    <hr class="clearfix w-100 d-md-none pb-3">
-
-                    <div class="alignfooter footer-copyright col-md-4 mb-md-0 mb-3 text-center py-5">
-                        <p>
-                            © 2020, StreetTalk.
-                        </p>
-                    </div>
-
-                    <div class="col-md-2 mb-md-0 mb-3 py-3">
-                        <ul class="">
-                            <li><a href="#">Privacy1</a></li>
-                            <li><a href="#">Voorwaarden2</a></li>
-                            <li><a href="#">Contact opnemen3</a></li>
-                            <li><a href="#">Sitemap4</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-2 mb-md-0 mb-3 py-3">
-                        <ul class="">
-                            <li><a href="#">Privacy5</a></li>
-                            <li><a href="#">Voorwaarden6</a></li>
-                            <li><a href="#">Contact opnemen7</a></li>
-                            <li><a href="#">Sitemap8</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-        </footer>
-
+    
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
