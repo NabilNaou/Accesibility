@@ -1,0 +1,17 @@
+﻿namespace StreetTalk.Seeders
+{
+    public static class SeederUtils
+    {
+        public static string LoremIpsum = @"## Lorem ipsum
+Dolor sit amet, consectetur adipiscing elit. Nam porta tellus nulla, ac ultrices erat faucibus non. Quisque eget nibh non ante lacinia eleifend. Nullam quam mauris, euismod eget sapien et, convallis aliquet elit. Aenean convallis pharetra nibh, quis pretium ante tincidunt nec. Curabitur commodo nulla eu pulvinar condimentum. Maecenas non nisl dui. Aliquam aliquam molestie dui. Duis id orci arcu.
+
+Nullam mattis interdum eros sit amet ultrices. Etiam in eros vulputate, eleifend mauris non, tempus odio. Suspendisse mollis ornare eros, sit amet finibus neque auctor sed. Nullam laoreet augue nisi, id hendrerit lorem sagittis vel. Morbi a tortor nisi. Ut dapibus consectetur varius. Etiam sit amet mi et urna rhoncus faucibus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce non dolor porttitor, ornare nunc et, egestas nibh. Sed sodales diam dictum est mollis, quis hendrerit est placerat. Nullam elementum est sed lectus dictum, ut laoreet justo finibus. Ut dignissim vulputate pharetra. In hac habitasse platea dictumst. Mauris rutrum justo accumsan elit porttitor blandit. Aliquam ut sagittis sem, non vulputate mauris. Nam vel enim at augue commodo blandit vel in elit. 
+
+## Praesent ut elementum
+Massa, non ornare elit. Integer elementum aliquam felis in gravida. In in venenatis ipsum. Donec in nunc suscipit, venenatis neque a, commodo urna. Morbi volutpat nibh neque, quis convallis lacus tempus non. Quisque mattis ut magna in maximus. Nulla varius magna sit amet lorem rhoncus, eu ullamcorper nisl pulvinar. Sed lobortis finibus dolor maximus tincidunt. Suspendisse potenti. Nulla quis euismod est, eu molestie tortor. Maecenas nec mollis tellus. Integer enim orci, iaculis et fermentum euismod, mattis scelerisque diam. Etiam tincidunt nulla sagittis, tristique leo sed, ornare nulla.
+
+Pellentesque a ex scelerisque, fermentum urna ac, elementum metus. Morbi sodales, arcu non tempor pretium, ipsum ex aliquet turpis, non efficitur libero libero vitae tellus. Maecenas vel sapien congue, venenatis sapien quis, euismod tellus. Morbi pulvinar sagittis felis, ac elementum neque faucibus in. Nullam auctor lorem diam, at ultricies lorem dapibus quis. Nunc nulla metus, facilisis tempor laoreet nec, laoreet id massa. Proin condimentum eu leo eu auctor. Nulla in est diam. Sed nibh leo, bibendum non odio venenatis, lacinia bibendum eros. Phasellus efficitur metus in fermentum condimentum. Integer a ultricies metus. Praesent lacus odio, faucibus nec eros a, varius finibus turpis. Curabitur dictum nunc odio, a consectetur tortor luctus at. Proin interdum mauris et pharetra hendrerit.
+
+Nunc interdum neque quis nunc rutrum, sit amet suscipit lectus ultricies. Pellentesque ornare ac libero ac ultricies. Morbi pretium fringilla quam id iaculis. Sed placerat cursus magna in mollis. Aliquam erat volutpat. Nam sagittis enim vitae dui egestas maximus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cras id cursus ligula, at dapibus leo. Etiam sodales elementum mollis. Ut eget nisi id risus mollis tristique id quis tortor. Nullam bibendum malesuada aliquet. Morbi et risus auctor ante rutrum accumsan. Suspendisse sit amet sagittis quam. Suspendisse vel lacinia nibh, ac dictum ipsum. ";
+    }
+}

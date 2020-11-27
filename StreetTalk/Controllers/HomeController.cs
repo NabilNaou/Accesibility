@@ -9,21 +9,21 @@ using StreetTalk.Models;
 
 namespace StreetTalk.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
+        public HomeController(StreetTalkContext context) : base(context) {}
+        
         public IActionResult Index()
         {
             return View();
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult SiteMap()
         {
             return View();
         }

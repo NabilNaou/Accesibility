@@ -1,0 +1,14 @@
+﻿.post-image-wrapper {
+    max-height: 450px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.post-image {
+    max-width: 100%;
+}
+
+.profile-image {
+    width: 64px;
+    height: 64px;
+}

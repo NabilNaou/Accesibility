@@ -10,58 +10,24 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="~/css/site.css"/>
         <link rel="stylesheet" href="~/css/navbar.css"/>
+        <link rel="stylesheet" href="~/css/footer.css" />
         @RenderSection("styles", false)
     </head>
-<body>
-<div class="d-flex st-navbar-container">
-    <nav class="st-navbar d-flex flex-column">
-        <div class="st-nav-item flex-grow-0 d-flex flex-column pb-2">
-            <a class="st-nav-link st-nav-link-no-highlight" asp-area="" asp-controller="Home" asp-action="Index">
-                <img alt="StreetTalk logo" class="rotated-icon" src="~/img/bullhorn-outline.svg"/>
-                <span class="brand-text">StreetTalk.</span>
-            </a>
+    <body>
+    <div class="d-flex st-navbar-container flex-column">
+        <partial name="_Navbar"/>
+        <div class="container-fluid">
+            <main role="main">
+                @RenderBody()
+            </main>
         </div>
-        <div class="st-nav-item st-nav-item-bordered flex-grow-1 d-flex flex-column pt-2 pb-2">
-            <a class="st-nav-link" href="#">
-                <img alt="Post icoon" src="~/img/post.svg"/>
-                <span>Meldingen bekijken</span>
-            </a>
-            <a class="st-nav-link" href="#">
-                <img alt="Bestand icoon" src="~/img/file-outline.svg"/>
-                <span>Publiekelijk melden</span>
-            </a>
-            <a class="st-nav-link" href="#">
-                <img alt="Bestand icoon" src="~/img/file-lock-outline.svg"/>
-                <span>Anoniem melden</span>
-            </a>
-        </div>
-        <div class="st-nav-item flex-grow-0 d-flex flex-column pt-2">
-            <a class="st-nav-link" asp-area="" asp-controller="Account" asp-action="Registreren">
-                <img alt="Email icoon" src="~/img/email.svg"/>
-                <span>Registreren</span>
-            </a>
-            <a class="st-nav-link" href="#">
-                <img alt="Login icoon" src="~/img/login.svg"/>
-                <span>Inloggen</span>
-            </a>
-        </div>
-        <div class="st-nav-expand"><img alt="Pijl naar rechts" src="~/img/chevron_right.svg"/></div>
-    </nav>
-    <div class="container-fluid">
-        <main role="main">
-            @RenderBody()
-        </main>
+        <partial name="_Footer" />
     </div>
-</div>
 
-<footer>
-
-</footer>
-
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-<script src="~/js/navbar.js" asp-append-version="true"></script>
-@RenderSection("Scripts", required: false)
-</body>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/navbar.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+    </body>
 </html>
