@@ -10,7 +10,8 @@
 
 <div class="posts-container">
     <h1 class="mb-3">Publieke meldingen</h1>
-    <ul id="meldingen" class="d-flex flex-column">
+    <hr class="my-4"/>
+    <ul id="meldingen" class="undecorated-list d-flex flex-column">
         @foreach (var post in Model)
         {
             <li aria-label="Melding: @post.Title">

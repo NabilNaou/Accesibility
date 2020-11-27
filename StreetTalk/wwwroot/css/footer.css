@@ -1,0 +1,9 @@
+﻿footer {
+    height: 150px;
+    background-color: #FFFFFF;
+}
+
+.footer-image {
+    opacity: 0.2;
+    max-height: 150px;
+}
