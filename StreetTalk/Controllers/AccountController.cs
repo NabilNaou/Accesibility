@@ -42,5 +42,25 @@ namespace StreetTalk.Controllers
             
             return View("VerifieerEmailSucess");;
         }
+        
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(User user)
+        {
+            if(user == null) return View();
+            
+            if (user.Email?.ToLower() == "streettalk@gmail.com" && user.Password == "12345")
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            ViewData["ErrorMessage"] = "Ongeldige login gegevens";
+            
+            return View();
+        }
     }
 }
