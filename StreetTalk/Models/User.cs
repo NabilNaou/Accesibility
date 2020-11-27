@@ -9,6 +9,8 @@ namespace StreetTalk.Models
     {
         public virtual int Id { get; set; }
         
+        [EmailAddress(ErrorMessage="Ongeldig email adres")]
+        [Required(ErrorMessage="Email moet worden ingevuld")]
         [Display(Name = "Email adres")]
         public virtual string Email { get; set; }
         
@@ -17,10 +19,12 @@ namespace StreetTalk.Models
         public virtual string PasswordHash { get; set; }
         
         [NotMapped]
+        [Required(ErrorMessage="Wachtwoord is verplicht")]
         [Display(Name = "Wachtwoord")]
         public virtual string Password { get; set; }
         
         [NotMapped]
+        [Compare("Password", ErrorMessage="Wachtwoord komt niet overeen")]
         [Display(Name = "Wachtwoord herhaald")]
         public virtual string ConfirmPassword { get; set; }
 

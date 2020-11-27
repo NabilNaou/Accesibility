@@ -16,8 +16,7 @@ namespace StreetTalk.Controllers
         {
             return View();
         }
-
-
+        
         [HttpPost]
         public IActionResult Registreren(User user)
         {
@@ -43,7 +42,7 @@ namespace StreetTalk.Controllers
             
             return View("VerifieerEmailSucess");;
         }
-
+        
         public IActionResult Login()
         {
             return View();
@@ -52,7 +51,9 @@ namespace StreetTalk.Controllers
         [HttpPost]
         public IActionResult Login(User user)
         {
-            if (user.Email.ToLower() == "streettalk@gmail.com" && user.Password == "12345" /*Check whether Username and Password are correct, use Db in future*/)
+            if(user == null) return View();
+            
+            if (user.Email?.ToLower() == "streettalk@gmail.com" && user.Password == "12345")
             {
                 return RedirectToAction("Index", "Home");
             }
