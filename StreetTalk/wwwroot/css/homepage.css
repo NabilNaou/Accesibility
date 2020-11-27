@@ -15,8 +15,11 @@
 }
 
 .homepage-row {
-    border-bottom: 1px solid #ccc;
     padding: 8px;
+}
+
+.homepage-row:first-of-type {
+    border-bottom: 1px solid #ccc;
 }
 
 .p-6 {

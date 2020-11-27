@@ -1,12 +1,13 @@
 ﻿@model User
 
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Inloggen";
 }
 
 <div class="min-vh-100 w-100 d-flex justify-content-center align-items-center">
     <div class="card p-4">
-        <h1 class="mb-4 mr-5">Aanmelden</h1>
+        <h1 class="mb-4 mr-5">Inloggen</h1>
+        <p class="text-danger">@ViewData["ErrorMessage"]</p>
         @using (Html.BeginForm("Login", "Account", FormMethod.Post))
         {
             <div class="form-group">
@@ -19,7 +20,7 @@
                 @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                 <span class="text-danger">@Html.ValidationMessageFor(m => m.Password)</span>
             </div>
-            <input class="btn btn-primary w-100 mt-4" type="submit" value="Aanmelden" />
+            <input class="btn btn-primary w-100 mt-4" type="submit" value="Inloggen" />
         }
     </div>
     <div class="w-100 position-fixed min-vh-100 st-working-from-anywhere"></div>

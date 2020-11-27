@@ -136,15 +136,8 @@
     align-items: center;
 }
 
-#meldingen {
-    display: block;
-    width: 100%;
-    padding: 0;
-}
 
 #meldingen > li {
-    list-style: none;
-    display: block;
     width: 100%;
 }
 

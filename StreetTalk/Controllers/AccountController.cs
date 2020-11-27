@@ -12,11 +12,6 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Registreren");
         }
         
-        public IActionResult Login()
-        {
-            return View();
-        }
-        
         public IActionResult Registreren()
         {
             return View();
