@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using StreetTalk.Models;
 
 namespace StreetTalk.Controllers
 {
@@ -23,6 +24,35 @@ namespace StreetTalk.Controllers
             
             return View(post);
         }
-        
+
+        [HttpPost]
+        public IActionResult PostLike(int id)
+        {
+            var post = Db.PublicPost.SingleOrDefault(p => p.Id == id);
+
+            if(post == null)
+            {
+                return Json(new { succes = false });
+            }
+
+            var like = new Like { 
+                Post = post,
+                User = Db.User.Single(u => u.Id == 2)
+            };
+
+            post.Likes.Add(like);
+
+            try
+            {
+                Db.SaveChanges();
+            }
+            catch
+            {
+                return Json(new { succes = false });
+            }
+
+            return Json(new { succes = true });
+        }
+
     }
 }
