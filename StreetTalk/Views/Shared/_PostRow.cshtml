@@ -22,12 +22,12 @@
             <a href="#" class="mr-3">
                 <img alt="Rapporteer deze post" class="post-action-icon" src="~/img/report.svg"/>
             </a>
-            <a href="#">
-                <img alt="Like deze post" class="post-action-icon" src="~/img/favorite.svg"/>
+            <a onclick="likepost(@Model.Id)">
+                <img alt="Like deze post" class="post-action-icon" src="~/img/favorite.svg" />
             </a>
         </div>
     </div>
     <div aria-label="Aantal likes" class="likes-container">
-        <span>+@Model.Likes.Count</span>
+        <span id="likecounter-@Model.Id">+@Model.Likes.Count</span>
     </div>
 </div>

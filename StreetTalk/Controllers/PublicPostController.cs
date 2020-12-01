@@ -5,6 +5,13 @@ using StreetTalk.Models;
 
 namespace StreetTalk.Controllers
 {
+    [Serializable()]
+    public class PostLikeResult
+    {
+        public bool Succes { get; set; }
+        public string Error { get; set; } = "";
+        public int NewLikes { get; set; }
+    }
     public class PublicPostController : BaseController
     {
         public PublicPostController(StreetTalkContext context) : base(context) {}
@@ -32,7 +39,7 @@ namespace StreetTalk.Controllers
 
             if(post == null)
             {
-                return Json(new { succes = false });
+                return Json(new PostLikeResult { Succes = false, Error = "Deze post bestaat niet."});
             }
 
             var like = new Like { 
@@ -48,10 +55,10 @@ namespace StreetTalk.Controllers
             }
             catch
             {
-                return Json(new { succes = false });
+                return Json(new PostLikeResult { Succes = false, Error = "Deze post heb je al geliket." });
             }
 
-            return Json(new { succes = true });
+            return Json(new PostLikeResult { Succes = true, NewLikes = post.Likes.Count()});
         }
 
     }

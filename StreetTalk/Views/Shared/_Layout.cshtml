@@ -23,11 +23,17 @@
         </div>
         <partial name="_Footer" />
     </div>
+        
+    <partial name="_ErrorPopup">
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/navbar.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
-    </body>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/js/navbar.js" asp-append-version="true"></script>
+        <script src="~/js/errorpopup.js" asp-append-version="true"></script>
+
+        <script src="~/js/like.js" asp-append-version="true"></script>
+
+        @RenderSection("Scripts", required: false)
+</body>
 </html>
