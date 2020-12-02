@@ -11,6 +11,9 @@
 }
 
 .homepage-hero-subtext {
+    font-family: 'Open Sans', sans-serif;
+    color: #575757;
+    font-weight: normal;
     font-size: 2rem;
 }
 

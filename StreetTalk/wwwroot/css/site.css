@@ -53,6 +53,12 @@ h1, h2, h3, h4, h5, h6 {
   color: #222222;
 }
 
+main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .st-working-from-anywhere {
   opacity: 0.5;
   background-image: url("../img/undraw_working_from_anywhere_ub67.svg");
