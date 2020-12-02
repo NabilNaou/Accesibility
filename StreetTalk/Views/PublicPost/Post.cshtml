@@ -23,25 +23,23 @@
         @if (Model.Photo != null)
         {
             <div class="row">
-                <div class="col-12 d-flex justify-content-center">
+                <div class="col-12 d-flex justify-content-center" aria-label="Afbeelding van melding">
                     <div class="post-image-wrapper mt-3 mb-5">
                         <img class="img-fluid shadow post-image" alt="Afbeelding over @Model.Title" src="@Model.Photo.Photo.Filename"/>
                     </div>
                 </div>
             </div>
         }
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" aria-label="Melding omschrijving">
             <div class="col-xs-12 col-lg-9">
                 @Markdown.ParseHtmlString(Model.Content)
             </div>
         </div>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" aria-label="Commentaar">
             <div class="col-12">
                 <h1 class="mb-0 mt-4">Commentaar</h1>
                 <hr class="my-4"/>
             </div>
-        </div>
-        <div class="row justify-content-center">
             <div class="col-xs-12 col-lg-9">
                 <ul class="undecorated-list d-flex flex-column">
                 @foreach (var comment in Model.Comments.OrderBy(c => c.CreatedAt))

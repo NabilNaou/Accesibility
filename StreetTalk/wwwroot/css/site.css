@@ -30,6 +30,11 @@ hr {
   border-color: #1861ac;
 }
 
+*:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(21, 156, 228, 0.6);
+}
+
 html {
   font-size: 14px;
 }
@@ -45,6 +50,7 @@ body {
   background-color: #FAFAFA;
   font-family: 'Open Sans', sans-serif;
   color: #575757;
+  font-size: 1.1rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
