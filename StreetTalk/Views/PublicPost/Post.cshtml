@@ -44,7 +44,7 @@
                 <ul class="undecorated-list d-flex flex-column">
                 @foreach (var comment in Model.Comments.OrderBy(c => c.CreatedAt))
                 {
-                    <li><partial name="_Comment" for="@comment"/></li>
+                    <li aria-label="Reactie van @comment.Author.Profile.FullName"><partial name="_Comment" for="@comment"/></li>
                 }
                 </ul>
             </div>
