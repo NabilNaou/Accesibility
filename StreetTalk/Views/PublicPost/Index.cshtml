@@ -5,13 +5,29 @@
 }
 
 @section styles {
-     <link href="~/css/postlist.css" rel="stylesheet" />
+    <link href="~/css/postlist.css" rel="stylesheet"/>
 }
 
 <div class="posts-container">
     <h1 class="mb-3">Publieke meldingen</h1>
     <hr class="my-4"/>
-    <ul id="meldingen" class="undecorated-list d-flex flex-column">
+    <div class="w-100 d-flex flex-row justify-content-between mb-4">
+        <div class="d-flex flex-row align-items-center">
+            <img src="~/img/filter_list.svg" alt="Filter icoon"/>
+            <span class="d-inline-block ml-2">Filteren</span>
+        </div>
+        <form>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Zoeken" aria-label="Zoeken">
+                <div class="input-group-append">
+                    <button class="btn btn-secondary d-flex justify-content-center align-items-center" type="button">
+                        <img class="search-input-icon" src="~/img/search.svg" alt="Vergrootglas icoon"/>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <ul id="meldingen" class="flex-grow-1 undecorated-list d-flex flex-column">
         @foreach (var post in Model)
         {
             <li aria-label="Melding: @post.Title">
