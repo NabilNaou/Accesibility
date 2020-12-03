@@ -12,6 +12,13 @@ namespace StreetTalk.Controllers
         public string Error { get; set; } = "";
         public int NewLikes { get; set; }
     }
+
+    public class PublicPostViewModel
+    {
+        public PublicPost Post { get; set; }
+        public bool Liked { get; set; }
+    }
+
     public class PublicPostController : BaseController
     {
         public PublicPostController(StreetTalkContext context) : base(context) {}
@@ -20,7 +27,15 @@ namespace StreetTalk.Controllers
         {
             var perPage = 10;
             var skip = Math.Max(page - 1, 0) * perPage;
-            var posts = Db.PublicPost.OrderBy(p => p.CreatedAt).Skip(skip).Take(perPage).ToList();
+            var posts = Db.PublicPost
+                .OrderBy(p => p.CreatedAt)
+                .Skip(skip)
+                .Take(perPage)
+                .Select(a => new PublicPostViewModel {
+                    Post = a, 
+                    Liked = a.Likes.Any(b => b.UserId == 2)
+                })
+                .ToList();
             
             return View(posts);
         }
@@ -42,12 +57,20 @@ namespace StreetTalk.Controllers
                 return Json(new PostLikeResult { Succes = false, Error = "Deze post bestaat niet."});
             }
 
-            var like = new Like { 
-                Post = post,
-                User = Db.User.Single(u => u.Id == 2)
-            };
+            if (post.Likes.Any(b => b.UserId == 2))
+            {
+                post.Likes.RemoveAll(b => b.UserId == 2);
+            }
+            else
+            {
+                var like = new Like
+                {
+                    Post = post,
+                    User = Db.User.Single(u => u.Id == 2)
+                };
 
-            post.Likes.Add(like);
+                post.Likes.Add(like);
+            }
 
             try
             {

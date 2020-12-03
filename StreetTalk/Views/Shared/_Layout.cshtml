@@ -1,18 +1,19 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>@ViewData["Title"] - StreetTalk</title>
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="~/css/site.css"/>
-        <link rel="stylesheet" href="~/css/navbar.css"/>
-        <link rel="stylesheet" href="~/css/footer.css" />
-        @RenderSection("styles", false)
-    </head>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - StreetTalk</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/likebutton.css" asp-append-version="true"/>
+    @RenderSection("styles", false)
+</head>
     <body>
     <div class="d-flex st-navbar-container flex-column">
         <partial name="_Navbar"/>
