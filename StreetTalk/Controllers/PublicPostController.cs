@@ -23,7 +23,7 @@ namespace StreetTalk.Controllers
     {
         public PublicPostController(StreetTalkContext context) : base(context) {}
         
-        public IActionResult Index(int page = 1)
+        public IActionResult Index(int page = 1) //TODO: Replace hardcoded user id with currently logged in user id
         {
             var perPage = 10;
             var skip = Math.Max(page - 1, 0) * perPage;
@@ -48,7 +48,7 @@ namespace StreetTalk.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostLike(int id)
+        public IActionResult PostLike(int id) //TODO: Replace hardcoded user id with currently logged in user id
         {
             var post = Db.PublicPost.SingleOrDefault(p => p.Id == id);
 
@@ -78,7 +78,7 @@ namespace StreetTalk.Controllers
             }
             catch
             {
-                return Json(new PostLikeResult { Succes = false, Error = "Deze post heb je al geliket." });
+                return Json(new PostLikeResult { Succes = false, Error = "Wijziging kon niet worden opgeslagen" });
             }
 
             return Json(new PostLikeResult { Succes = true, NewLikes = post.Likes.Count()});

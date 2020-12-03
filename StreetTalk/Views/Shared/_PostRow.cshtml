@@ -22,9 +22,9 @@
             <a aria-label="Rapporteer melding" href="#" class="mr-3">
                 <img alt="Rapporteer deze post" class="post-action-icon" src="~/img/report.svg"/>
             </a>
-            <a aria-label="Like melding" id="likebutton-@Model.Post.Id" onclick="likepost(@Model.Post.Id)">
-                <partial name="_LikeButton" model="@Model.Liked">
-            </a>
+            <button aria-label="Like melding" id="likebutton-@Model.Post.Id" onclick="likepost(@Model.Post.Id)" tabindex="0">
+                <partial name="_LikeButton" model="@Model.Liked" />
+            </button>
         </div>
     </div>
     <div aria-label="Aantal likes" class="likes-container">
