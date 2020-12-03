@@ -3,19 +3,19 @@
     public abstract class Seeder
     {
         protected StreetTalkContext Context;
-        
 
-        public void seed(StreetTalkContext ctx)
+        public void Seed(StreetTalkContext ctx)
         {
             Context = ctx;
-            
-            if(shouldSeed)
+
+            if (ShouldSeed)
+            {
                 DoSeed();
-            
-            Context.SaveChanges();
+                Context.SaveChanges();
+            }
         }
 
         public abstract void DoSeed();
-        public abstract bool shouldSeed { get; }
+        public abstract bool ShouldSeed { get; }
     }
 }

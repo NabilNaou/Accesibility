@@ -6,7 +6,7 @@ namespace StreetTalk.Seeders
 {
     public class LikeSeeder : Seeder
     {
-        public override bool shouldSeed => !Context.Post.OfType<PublicPost>().Single(p => p.Id == 1).Likes.Any();
+        public override bool ShouldSeed => !Context.Post.OfType<PublicPost>().Single(p => p.Id == 1).Likes.Any();
 
         public override void DoSeed()
         {
