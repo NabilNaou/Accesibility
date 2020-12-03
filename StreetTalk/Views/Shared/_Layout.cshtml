@@ -3,16 +3,9 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Buurtapp StreetTalk, voor de haagse buurt Kraayenstein. Bespreek problemen samen met uw buurtgenotenm meld anoniem aan de gemeente en chat live met uw buren."/>
         <title>@ViewData["Title"] - StreetTalk</title>
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-        <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true"/>
-        <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true"/>
-        <link rel="stylesheet" href="~/css/likebutton.css" asp-append-version="true"/>
-        <link rel="stylesheet" href="~/css/container.css"/>
+        <partial name="_GlobalStyles" />
         @RenderSection("styles", false)
     </head>
     <body>
@@ -28,13 +21,13 @@
             
         <partial name="_ErrorPopup" />
 
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="~/js/navbar.js" asp-append-version="true"></script>
-        <script src="~/js/errorpopup.js" asp-append-version="true"></script>
+        <script defer src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script defer src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script defer src="~/js/site.js" asp-append-version="true"></script>
+        <script defer src="~/js/navbar.js" asp-append-version="true"></script>
+        <script defer src="~/js/errorpopup.js" asp-append-version="true"></script>
 
-        <script src="~/js/like.js" asp-append-version="true"></script>
+        <script defer src="~/js/like.js" asp-append-version="true"></script>
 
         @RenderSection("Scripts", required: false)
     </body>
