@@ -1,0 +1,8 @@
+﻿.likebutton{
+    fill: black;
+    transition: fill 200ms ease-in-out;
+}
+
+.likebuttonpressed {
+    fill: #dc3545;
+}
