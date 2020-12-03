@@ -112,10 +112,6 @@
     grid-area: post-author;
 }
 
-.posts-container {
-    padding: 64px;
-}
-
 .likes-container {
     font-family: 'Roboto Slab', serif;
     font-weight: bold;
@@ -142,10 +138,6 @@
 }
 
 @media(max-width: 1000px) {
-    .posts-container {
-        padding: 32px;
-    }
-    
     .row-content {
         grid-template-areas: 
             'post-info post-info post-profile-photo'
@@ -184,8 +176,3 @@
     }
 }
 
-@media(max-width: 600px) {
-    .posts-container {
-        padding: 16px;
-    }
-}
