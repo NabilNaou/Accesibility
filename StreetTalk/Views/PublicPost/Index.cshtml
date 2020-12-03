@@ -11,21 +11,31 @@
 <div class="st-container">
     <h1 class="mb-3">Publieke meldingen</h1>
     <hr class="my-4"/>
-    <div class="w-100 d-flex flex-row justify-content-between mb-4" aria-label="Filters">
-        <div class="d-flex flex-row align-items-center">
-            <img src="~/img/filter_list.svg" alt="Filter icoon"/>
-            <span class="d-inline-block ml-2">Filteren</span>
-        </div>
-        <form>
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Zoeken" aria-label="Zoeken">
-                <div class="input-group-append">
-                    <button class="btn btn-secondary d-flex justify-content-center align-items-center" type="button">
-                        <img class="search-input-icon" src="~/img/search.svg" alt="Vergrootglas icoon"/>
-                    </button>
-                </div>
+    <div class="w-100 d-flex flex-column mb-4" aria-label="Filters">
+        <div class="d-flex flex-row align-items-center justify-content-between">
+            <div>
+                <img src="~/img/filter_list.svg" alt="Filter icoon"/>
+                <span class="d-inline-block ml-2">Filteren</span>
             </div>
-        </form>
+            <form>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Zoeken" aria-label="Zoeken">
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary d-flex justify-content-center align-items-center" type="button">
+                            <img class="search-input-icon" src="~/img/search.svg" alt="Vergrootglas icoon"/>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="d-flex flex-row align-items-center">
+            @using (Html.BeginForm("Index", "PublicPost", FormMethod.Get))
+            {
+                <label for="showClosedPosts">Laat gesloten meldingen zien</label>
+                <input id="showClosedPosts" type="checkbox" value="true" name="showClosedPosts"/>
+                <input type="submit" value="Toepassen"/>
+            }
+        </div>
     </div>
     <ul id="meldingen" class="flex-grow-1 undecorated-list d-flex flex-column" aria-label="Meldingen lijst">
         @foreach (var post in Model)
