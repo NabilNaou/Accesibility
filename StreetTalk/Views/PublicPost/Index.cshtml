@@ -1,4 +1,4 @@
-﻿@model List<PublicPost>
+﻿@model List<StreetTalk.Controllers.PublicPostViewModel>
 
 @{
     ViewData["Title"] = "Publieke meldingen";
@@ -30,7 +30,7 @@
     <ul id="meldingen" class="flex-grow-1 undecorated-list d-flex flex-column" aria-label="Meldingen lijst">
         @foreach (var post in Model)
         {
-            <li aria-label="Melding: @post.Title">
+            <li aria-label="Melding: @post.Post.Title">
                 <partial name="_PostRow" for="@post"/>
             </li>
         }

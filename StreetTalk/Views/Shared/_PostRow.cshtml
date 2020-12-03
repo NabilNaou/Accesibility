@@ -1,33 +1,33 @@
-﻿@model PublicPost
+﻿@model StreetTalk.Controllers.PublicPostViewModel
 
-<div class="post-row card mb-4 w-100 d-flex flex-row">
-    <div aria-label="Melding status" class="status-indicator @(Model.Closed ? "closed" : "open")">
-        <span>@(Model.Closed ? "gesloten" : "open")</span>
+<div class="unselectable post-row card mb-4 w-100 d-flex flex-row">
+    <div aria-label="Melding status" class="status-indicator @(Model.Post.Closed ? "closed" : "open")">
+        <span>@(Model.Post.Closed ? "gesloten" : "open")</span>
     </div>
     <div class="row-content w-100">
         <div class="d-flex flex-column justify-content-center align-items-center">
-            <img src="@Model.User.Profile.Photo?.Photo?.Filename" class="rounded-circle profile-image" alt="Profiel foto"/>
+            <img src="@Model.Post.User.Profile.Photo?.Photo?.Filename" class="rounded-circle profile-image" alt="Profiel foto"/>
         </div>
-        <a asp-area="" asp-controller="PublicPost" asp-action="Post" asp-route-id="@Model.Id" aria-label="Bekijk post" class="post-info d-flex flex-grow-1 flex-column justify-content-between">
-            <h2 class="post-title">@Model.Title</h2>
-            <p class="post-content">@Model.Content</p>
+        <a asp-area="" asp-controller="PublicPost" asp-action="Post" asp-route-id="@Model.Post.Id" aria-label="Bekijk post" class="post-info d-flex flex-grow-1 flex-column justify-content-between">
+            <h2 class="post-title">@Model.Post.Title</h2>
+            <p class="post-content">@Model.Post.Content</p>
         </a>
         <div class="post-date d-flex flex-column justify-content-center mr-2">
-            <span class="d-block">@Model.CreatedAt?.ToString("dd-MM-yyyy")</span>
+            <span class="d-block">@Model.Post.CreatedAt?.ToString("dd-MM-yyyy")</span>
         </div>
         <div class="post-author d-flex flex-column justify-content-center text-center">
-            <span class="d-block">@Model.User.Profile.FullName</span>
+            <span class="d-block">@Model.Post.User.Profile.FullName</span>
         </div>
         <div class="post-actions d-flex flex-row justify-content-center align-items-center">
             <a aria-label="Rapporteer melding" href="#" class="mr-3">
                 <img alt="Rapporteer deze post" class="post-action-icon" src="~/img/report.svg"/>
             </a>
-            <a href="#" aria-label="Like melding">
-                <img alt="Like deze melding" class="post-action-icon" src="~/img/favorite.svg"/>
+            <a aria-label="Like melding" id="likebutton-@Model.Post.Id" onclick="likepost(@Model.Post.Id)">
+                <partial name="_LikeButton" model="@Model.Liked">
             </a>
         </div>
     </div>
     <div aria-label="Aantal likes" class="likes-container">
-        <span>+@Model.Likes.Count</span>
+        <span id="likecounter-@Model.Post.Id">+@Model.Post.Likes.Count</span>
     </div>
 </div>
