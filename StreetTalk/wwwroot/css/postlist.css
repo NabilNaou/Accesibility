@@ -136,6 +136,22 @@
     width: 100%;
 }
 
+#filter-button:hover {
+    cursor: pointer;
+}
+
+#filters {
+    max-width: 400px;
+    height: auto;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 150ms ease-in-out;
+}
+
+#filters.show {
+    max-height: 300px;
+}
+
 @media(max-width: 1000px) {
     .row-content {
         grid-template-areas: 

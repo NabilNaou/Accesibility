@@ -1,4 +1,4 @@
-﻿@model List<StreetTalk.Controllers.PublicPostViewModel>
+﻿@model StreetTalk.Controllers.PublicPostViewModel
 
 @{
     ViewData["Title"] = "Publieke meldingen";
@@ -13,7 +13,7 @@
     <hr class="my-4"/>
     <div class="w-100 d-flex flex-column mb-4" aria-label="Filters">
         <div class="d-flex flex-row align-items-center justify-content-between">
-            <div>
+            <div id="filter-button" role="button">
                 <img src="~/img/filter_list.svg" alt="Filter icoon"/>
                 <span class="d-inline-block ml-2">Filteren</span>
             </div>
@@ -28,17 +28,19 @@
                 </div>
             </form>
         </div>
-        <div class="d-flex flex-row align-items-center">
-            @using (Html.BeginForm("Index", "PublicPost", FormMethod.Get))
+        <div id="filters">
+            @using (Html.BeginForm("Index", "PublicPost", FormMethod.Get, new { @class = "m-3 p-3 card" }))
             {
-                <label for="showClosedPosts">Laat gesloten meldingen zien</label>
-                <input id="showClosedPosts" type="checkbox" value="true" name="showClosedPosts"/>
-                <input type="submit" value="Toepassen"/>
+                <div class="form-check">
+                    <input asp-for="@Model.Filters.ShowClosedPosts" class="form-check-input"/>
+                    <label asp-for="@Model.Filters.ShowClosedPosts" class="form-check-label">Laat gesloten meldingen zien</label>
+                </div>
+                <input type="submit" value="Toepassen" class="btn btn-primary form-control mt-3"/>
             }
         </div>
     </div>
     <ul id="meldingen" class="flex-grow-1 undecorated-list d-flex flex-column" aria-label="Meldingen lijst">
-        @foreach (var post in Model)
+        @foreach (var post in Model.Posts)
         {
             <li aria-label="Melding: @post.Post.Title">
                 <partial name="_PostRow" for="@post"/>
