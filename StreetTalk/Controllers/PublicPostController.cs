@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using StreetTalk.Models;
@@ -13,48 +14,75 @@ namespace StreetTalk.Controllers
         public int NewLikes { get; set; }
     }
 
-    public class PublicPostViewModel
+    public class PublicPostWithLike
     {
         public PublicPost Post { get; set; }
         public bool Liked { get; set; }
+
+    }
+
+    public class PublicPostViewModel
+    {
+        public List<PublicPostWithLike> Posts { get; set; }
+        public PublicPostListFilters Filters { get; set; }
+    }
+
+    public class PublicPostListFilters
+    {
+        public bool ShowClosedPosts { get; set; } = false;
     }
 
     public class PublicPostController : BaseController
     {
-        public PublicPostController(StreetTalkContext context) : base(context) {}
-        
-        public IActionResult Index(int page = 1)
+        public PublicPostController(StreetTalkContext context) : base(context)
         {
+        }
+
+        public IActionResult Index(PublicPostListFilters filters, int page = 1) //TODO: Replace hardcoded user id with currently logged in user id
+        {
+            //TODO: Refactor this
             var perPage = 10;
             var skip = Math.Max(page - 1, 0) * perPage;
+
             var posts = Db.PublicPost
                 .OrderBy(p => p.CreatedAt)
+                .Where(p => !p.Closed || filters.ShowClosedPosts)
                 .Skip(skip)
-                .Take(perPage)
-                .Select(a => new PublicPostViewModel {
-                    Post = a, 
+                .Take(perPage);
+
+            var publicPostsWithLikes = posts.Select(a =>
+                new PublicPostWithLike
+                {
+                    Post = a,
                     Liked = a.Likes.Any(b => b.UserId == 2)
-                })
-                .ToList();
-            
-            return View(posts);
+                }
+            ).ToList();
+
+            var viewModelData = new PublicPostViewModel
+            {
+                Posts = publicPostsWithLikes,
+                Filters = filters
+            };
+
+            return View(viewModelData);
         }
 
         public IActionResult Post(int id)
         {
             var post = Db.PublicPost.SingleOrDefault(p => p.Id == id);
-            
+
             return View(post);
         }
 
         [HttpPost]
-        public IActionResult PostLike(int id)
+        public IActionResult PostLike(int id) //TODO: Replace hardcoded user id with currently logged in user id
         {
+            //TODO: Refactor this
             var post = Db.PublicPost.SingleOrDefault(p => p.Id == id);
 
-            if(post == null)
+            if (post == null)
             {
-                return Json(new PostLikeResult { Succes = false, Error = "Deze post bestaat niet."});
+                return Json(new PostLikeResult {Succes = false, Error = "Deze post bestaat niet."});
             }
 
             if (post.Likes.Any(b => b.UserId == 2))
@@ -78,11 +106,10 @@ namespace StreetTalk.Controllers
             }
             catch
             {
-                return Json(new PostLikeResult { Succes = false, Error = "Deze post heb je al geliket." });
+                return Json(new PostLikeResult {Succes = false, Error = "Wijziging kon niet worden opgeslagen"});
             }
 
-            return Json(new PostLikeResult { Succes = true, NewLikes = post.Likes.Count()});
+            return Json(new PostLikeResult {Succes = true, NewLikes = post.Likes.Count()});
         }
-
     }
 }

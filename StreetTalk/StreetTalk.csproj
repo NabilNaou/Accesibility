@@ -118,6 +118,26 @@
           <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
           <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
+        <Content Update="wwwroot\img\search.svg">
+          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+          <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\img\filter_list.svg">
+          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+          <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\css\container.css">
+          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+          <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="Views\Shared\_GlobalStyles.cshtml">
+          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+          <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\js\filterbutton.js">
+          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+          <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
@@ -130,6 +150,7 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
+        <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.2" />
     </ItemGroup>
 
     <ItemGroup>

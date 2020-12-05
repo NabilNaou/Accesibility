@@ -1,0 +1,15 @@
+﻿.st-container {
+    padding: 64px;
+}
+
+@media(max-width: 1000px) {
+    .st-container {
+        padding: 32px;
+    }
+}
+
+@media(max-width: 600px) {
+    .st-container {
+        padding: 16px;
+    }
+}
