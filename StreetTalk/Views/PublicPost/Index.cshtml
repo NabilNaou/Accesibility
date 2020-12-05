@@ -1,18 +1,46 @@
-﻿@model List<StreetTalk.Controllers.PublicPostViewModel>
+﻿@model StreetTalk.Controllers.PublicPostViewModel
 
 @{
     ViewData["Title"] = "Publieke meldingen";
 }
 
 @section styles {
-     <link href="~/css/postlist.css" rel="stylesheet" />
+    <link href="~/css/postlist.css" rel="stylesheet"/>
 }
 
-<div class="posts-container">
+<div class="st-container">
     <h1 class="mb-3">Publieke meldingen</h1>
     <hr class="my-4"/>
-    <ul id="meldingen" class="undecorated-list d-flex flex-column">
-        @foreach (var post in Model)
+    <div class="w-100 d-flex flex-column mb-4" aria-label="Filters">
+        <div class="d-flex flex-row align-items-center justify-content-between">
+            <div id="filter-button" role="button">
+                <img src="~/img/filter_list.svg" alt="Filter icoon"/>
+                <span class="d-inline-block ml-2">Filteren</span>
+            </div>
+            <form>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Zoeken" aria-label="Zoeken">
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary d-flex justify-content-center align-items-center" type="button">
+                            <img class="search-input-icon" src="~/img/search.svg" alt="Vergrootglas icoon"/>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="filters">
+            @using (Html.BeginForm("Index", "PublicPost", FormMethod.Get, new { @class = "m-3 p-3 card" }))
+            {
+                <div class="form-check">
+                    <input asp-for="@Model.Filters.ShowClosedPosts" class="form-check-input"/>
+                    <label asp-for="@Model.Filters.ShowClosedPosts" class="form-check-label">Laat gesloten meldingen zien</label>
+                </div>
+                <input type="submit" value="Toepassen" class="btn btn-primary form-control mt-3"/>
+            }
+        </div>
+    </div>
+    <ul id="meldingen" class="flex-grow-1 undecorated-list d-flex flex-column" aria-label="Meldingen lijst">
+        @foreach (var post in Model.Posts)
         {
             <li aria-label="Melding: @post.Post.Title">
                 <partial name="_PostRow" for="@post"/>

@@ -30,8 +30,21 @@ hr {
   border-color: #1861ac;
 }
 
+*:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(21, 156, 228, 0.6);
+}
+
 html {
+  scroll-behavior: smooth;
   font-size: 14px;
+}
+
+button {
+  background: none;
+  outline: none;
+  border: none;
+  padding: 0;
 }
 
 @media (min-width: 768px) {
@@ -45,12 +58,19 @@ body {
   background-color: #FAFAFA;
   font-family: 'Open Sans', sans-serif;
   color: #575757;
+  font-size: 1.1rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Roboto Slab', serif;
   font-weight: bold;
   color: #222222;
+}
+
+main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .st-working-from-anywhere {
