@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StreetTalk.Data;
+using StreetTalk.Services;
 
 namespace StreetTalk
 {
@@ -37,6 +38,7 @@ namespace StreetTalk
             });
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddResponseCompression();
+            services.AddTransient<PostService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
