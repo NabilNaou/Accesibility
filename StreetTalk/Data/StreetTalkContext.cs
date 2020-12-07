@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using StreetTalk.Models;
 
-namespace StreetTalk
+namespace StreetTalk.Data
 {
     public class StreetTalkContext : DbContext
     {

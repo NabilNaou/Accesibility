@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using StreetTalk.Data;
 using StreetTalk.Models;
 
 namespace StreetTalk.Controllers
