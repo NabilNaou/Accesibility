@@ -1,4 +1,6 @@
-﻿namespace StreetTalk.Seeders
+﻿using StreetTalk.Data;
+
+namespace StreetTalk.Seeders
 {
     public abstract class Seeder
     {

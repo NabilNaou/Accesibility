@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StreetTalk.Data;
 
 namespace StreetTalk.Migrations
 {
     [DbContext(typeof(StreetTalkContext))]
-    partial class StreetTalkContextModelSnapshot : ModelSnapshot
+    [Migration("20201207114224_AddedReportModel")]
+    partial class AddedReportModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

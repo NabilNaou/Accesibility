@@ -1,4 +1,4 @@
-﻿@model StreetTalk.Controllers.PublicPostWithLike
+﻿@model StreetTalk.Controllers.PublicPostWithExtraData
 
 <div class="unselectable post-row card mb-4 w-100 d-flex flex-row">
     <div aria-label="Melding status" class="status-indicator @(Model.Post.Closed ? "closed" : "open")">
@@ -6,7 +6,7 @@
     </div>
     <div class="row-content w-100">
         <div class="d-flex flex-column justify-content-center align-items-center">
-            <img src="@Model.Post.User.Profile.Photo?.Photo?.Filename" class="rounded-circle profile-image" alt="Profiel foto"/>
+            <img src="@Model.Post.User.Profile.Photo?.Photo?.Filename" class="rounded-circle profile-image" alt="Profiel foto van @Model.Post.User.Profile.FullName"/>
         </div>
         <a asp-area="" asp-controller="PublicPost" asp-action="Post" asp-route-id="@Model.Post.Id" aria-label="Bekijk post" class="post-info d-flex flex-grow-1 flex-column justify-content-between">
             <h2 class="post-title">@Model.Post.Title</h2>
@@ -19,10 +19,10 @@
             <span class="d-block">@Model.Post.User.Profile.FullName</span>
         </div>
         <div class="post-actions d-flex flex-row justify-content-center align-items-center">
-            <a aria-label="Rapporteer melding" href="#" class="mr-3">
+            <button aria-label="Rapporteer melding" id="reportbutton-@Model.Post.Id" onclick="reportPost(@Model.Post.Id)" tabindex="0" class="mr-3" disabled="@Model.Reported">
                 <img alt="Rapporteer deze post" class="post-action-icon" src="~/img/report.svg"/>
-            </a>
-            <button aria-label="Like melding" id="likebutton-@Model.Post.Id" onclick="likepost(@Model.Post.Id)" tabindex="0">
+            </button>
+            <button aria-label="Like melding" id="likebutton-@Model.Post.Id" onclick="likePost(@Model.Post.Id)" tabindex="0">
                 <partial name="_LikeButton" model="@Model.Liked" />
             </button>
         </div>

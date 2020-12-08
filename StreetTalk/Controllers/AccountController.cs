@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StreetTalk.Data;
 using StreetTalk.Models;
 
 namespace StreetTalk.Controllers
