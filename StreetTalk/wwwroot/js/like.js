@@ -1,21 +1,14 @@
 ﻿
-function likepost(postid) {
-    fetch("/PublicPost/PostLike/" + postid,
-    {
-        method: "POST"
-    })
-        .then(response => response.json())
-        .then(data => handleresponse(data, postid));
-}
+async function likePost(postId) {
+    let data = await apiService.likePost(postId)
 
-function handleresponse(data, postid) {
     if (data.succes) {
-        let likes = data.newLikes
-        let likecounter = document.getElementById("likecounter-" + postid)
-        let likebutton = document.getElementById("likebutton-" + postid).firstElementChild
+        let likes = data.newLikes || "?"
+        let likeCounter = document.getElementById(`likecounter-${postId}`)
+        let likeButton = document.getElementById(`likebutton-${postId}`).firstElementChild
 
-        likecounter.textContent = "+" + likes
-        likebutton.classList.toggle("likebuttonpressed")
+        likeCounter.textContent = "+" + likes
+        likeButton.classList.toggle("likebuttonpressed")
     }
     else {
         showerrorpopup("Foutmelding", data.error)
