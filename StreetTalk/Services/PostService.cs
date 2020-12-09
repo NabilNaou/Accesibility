@@ -19,19 +19,19 @@ namespace StreetTalk.Services
             return Db.PublicPost.Single(p => p.Id == id);
         }
 
-        public bool UserLikedPost(PublicPost post, int userId)
+        public bool UserLikedPost(PublicPost post, string userId)
         {
             return post.Likes.Any(b => b.UserId == userId);
         }
 
-        public void RemoveLikeFromPost(PublicPost post, int userId)
+        public void RemoveLikeFromPost(PublicPost post, string userId)
         {
             post.Likes.RemoveAll(b => b.UserId == userId);
 
             Db.SaveChanges();
         }
 
-        public void AddLikeForPost(PublicPost post, int userId)
+        public void AddLikeForPost(PublicPost post, string userId)
         {
             var like = new Like
             {
@@ -44,7 +44,7 @@ namespace StreetTalk.Services
             Db.SaveChanges();
         }
 
-        public void ToggleLikeForPost(PublicPost post, int userId)
+        public void ToggleLikeForPost(PublicPost post, string userId)
         {
             if (UserLikedPost(post, userId))
                 RemoveLikeFromPost(post, userId);
@@ -52,12 +52,12 @@ namespace StreetTalk.Services
                 AddLikeForPost(post, userId);
         }
         
-        public bool UserReportedPost(PublicPost post, int userId)
+        public bool UserReportedPost(PublicPost post, string userId)
         {
             return post.Reports.Any(b => b.UserId == userId);
         }
         
-        public void AddReportForPost(PublicPost post, int userId)
+        public void AddReportForPost(PublicPost post, string userId)
         {
             var report = new Report
             {

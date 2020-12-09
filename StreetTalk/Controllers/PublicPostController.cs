@@ -60,8 +60,8 @@ namespace StreetTalk.Controllers
                 new PublicPostWithExtraData
                 {
                     Post = a,
-                    Liked = a.Likes.Any(b => b.UserId == 2),
-                    Reported = a.Reports.Any(b => b.UserId == 2)
+                    Liked = a.Likes.Any(b => b.UserId == "2"),
+                    Reported = a.Reports.Any(b => b.UserId == "2")
                 }
             ).ToList();
 
@@ -92,7 +92,7 @@ namespace StreetTalk.Controllers
             try
             {
                 var post = postService.GetPublicPostById(id);
-                postService.ToggleLikeForPost(post, 2);
+                postService.ToggleLikeForPost(post, "2");
                 
                 return Json(new PostJsonResult {Succes = true, NewLikes = post.Likes.Count()});
             }
@@ -109,10 +109,10 @@ namespace StreetTalk.Controllers
             {
                 var post = postService.GetPublicPostById(id);
                 
-                if (postService.UserReportedPost(post, 2))
+                if (postService.UserReportedPost(post, "2"))
                     return Json(new PostJsonResult {Succes = false, Error = "Je hebt deze post al gerapporteerd"});
 
-                postService.AddReportForPost(post, 2);
+                postService.AddReportForPost(post, "2");
                 return Json(new PostJsonResult {Succes = true});
             }
             catch
