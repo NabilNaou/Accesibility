@@ -75,25 +75,24 @@ namespace StreetTalk.Controllers
             return View(viewModelData);
         }
 
-        public IActionResult CreatePublicPost()
+        public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult CreatePublicPost(PublicPost post)
+        public IActionResult Create(PublicPost post)
         {
-            if (ModelState.IsValid)
-            {
-                //TODO Maak ingelogde gebruiker
-                User user = Db.User.First();
-                post.UserId = user.Id;
-                user.Posts.Add(post);
+            if (!ModelState.IsValid) return View(post);
+            
+            //TODO Maak ingelogde gebruiker
+            User user = Db.User.First();
+            post.UserId = user.Id;
+            user.Posts.Add(post);
                 
-                Db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(post);
+            Db.SaveChanges();
+            
+            return RedirectToAction("Index");
         }
 
         public IActionResult Post(int id)
