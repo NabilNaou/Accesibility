@@ -54,8 +54,8 @@ namespace StreetTalk.Controllers
             var skip = Math.Max(page - 1, 0) * perPage;
 
             var posts = Db.PublicPost
-                .OrderBy(p => p.CreatedAt)
                 .Where(p => !p.Closed || filters.ShowClosedPosts)
+                .OrderBy(p => p.CreatedAt)
                 .Skip(skip)
                 .Take(perPage);
 
