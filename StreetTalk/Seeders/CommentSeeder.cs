@@ -18,7 +18,7 @@ namespace StreetTalk.Seeders
             firstPost.Comments.Add(
                 new Comment
                 {
-                    AuthorId = "2",
+                    Author = Context.User.Skip(1).First(),
                     PostId = 1,
                     Content = "Echt ziek kerel"
                 }
@@ -29,7 +29,7 @@ namespace StreetTalk.Seeders
             firstPost.Comments.Add(
                 new Comment
                 {
-                    AuthorId = "3",
+                    Author = Context.User.Skip(2).First(),
                     PostId = 1,
                     Content = "Kan echt niet"
                 }
@@ -40,7 +40,7 @@ namespace StreetTalk.Seeders
             secondPost.Comments.Add(
                 new Comment
                 {
-                    AuthorId = "1",
+                    Author = Context.User.Skip(1).First(),
                     PostId = 2,
                     Content = "Wejooowww"
                 }

@@ -9,10 +9,10 @@ namespace StreetTalk.Seeders
         private static readonly List<Seeder> Seeders = new List<Seeder>
         {
             new RoleSeeder(),
-/*            new UserSeeder(),
+            new UserSeeder(),
             new PostSeeder(),
             new LikeSeeder(),
-            new CommentSeeder()*/
+            new CommentSeeder()
         };
         
         public static void SeedAll(StreetTalkContext context, IServiceProvider services)

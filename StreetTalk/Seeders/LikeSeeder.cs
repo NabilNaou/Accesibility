@@ -19,12 +19,12 @@ namespace StreetTalk.Seeders
                     new Like
                     {
                         Post = firstPost,
-                        User = Context.User.Single(u => u.Id == "2")
+                        User = Context.User.Skip(1).First()
                     },
                     new Like
                     {
                         Post = firstPost,
-                        User = Context.User.Single(u => u.Id == "3")
+                        User = Context.User.Skip(2).First()
                     }
                 }
             );
@@ -36,7 +36,7 @@ namespace StreetTalk.Seeders
                     new Like
                     {
                         Post = secondPost,
-                        User = Context.User.Single(u => u.Id == "1")
+                        User = Context.User.Skip(0).First()
                     },
                 }
             );

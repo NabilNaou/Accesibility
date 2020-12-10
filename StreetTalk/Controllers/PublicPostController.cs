@@ -38,10 +38,12 @@ namespace StreetTalk.Controllers
     public class PublicPostController : BaseController
     {
         private readonly PostService postService;
+        private readonly UserService userService;
 
-        public PublicPostController(StreetTalkContext context, PostService postService) : base(context)
+        public PublicPostController(StreetTalkContext context, PostService postService, UserService userService) : base(context)
         {
             this.postService = postService;
+            this.userService = userService;
         }
 
         public IActionResult Index(PublicPostListFilters filters, int page = 1) //TODO: Replace hardcoded user id with currently logged in user id
@@ -60,8 +62,8 @@ namespace StreetTalk.Controllers
                 new PublicPostWithExtraData
                 {
                     Post = a,
-                    Liked = a.Likes.Any(b => b.UserId == "2"),
-                    Reported = a.Reports.Any(b => b.UserId == "2")
+                    Liked = a.Likes.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser()?.Id),
+                    Reported = a.Reports.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser()?.Id)
                 }
             ).ToList();
 
@@ -89,10 +91,13 @@ namespace StreetTalk.Controllers
         [HttpPost]
         public IActionResult PostLike(int id) //TODO: Replace hardcoded user id with currently logged in user id
         {
+            if(userService.GetCurrentlyLoggedInUser() == null)
+                return Json(new PostJsonResult {Succes = false, Error = "U moet eerst inloggen"});
+                
             try
             {
                 var post = postService.GetPublicPostById(id);
-                postService.ToggleLikeForPost(post, "2");
+                postService.ToggleLikeForPost(post, userService.GetCurrentlyLoggedInUser()?.Id);
                 
                 return Json(new PostJsonResult {Succes = true, NewLikes = post.Likes.Count()});
             }
@@ -105,14 +110,17 @@ namespace StreetTalk.Controllers
         [HttpPost]
         public IActionResult PostReport(int id) //TODO: Replace hardcoded user id with currently logged in user id
         {
+            if(userService.GetCurrentlyLoggedInUser() == null)
+                return Json(new PostJsonResult {Succes = false, Error = "U moet eerst inloggen"});
+            
             try
             {
                 var post = postService.GetPublicPostById(id);
                 
-                if (postService.UserReportedPost(post, "2"))
+                if (postService.UserReportedPost(post, userService.GetCurrentlyLoggedInUser()?.Id))
                     return Json(new PostJsonResult {Succes = false, Error = "Je hebt deze post al gerapporteerd"});
 
-                postService.AddReportForPost(post, "2");
+                postService.AddReportForPost(post, userService.GetCurrentlyLoggedInUser()?.Id);
                 return Json(new PostJsonResult {Succes = true});
             }
             catch

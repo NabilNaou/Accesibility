@@ -28,7 +28,7 @@ namespace StreetTalk.Seeders
                             Filename = "https://assets.nos.nl/data/image/2017/11/23/433105/xxl.jpg",
                         }
                     },
-                    User = Context.User.Single(u => u.Id == "1")
+                    User = Context.User.Skip(0).First()
                 },
                 CreateGarbagePost(2, 1),
                 CreateGarbagePost(3, 2),
@@ -79,7 +79,7 @@ namespace StreetTalk.Seeders
                         Filename = "https://upload.wikimedia.org/wikipedia/commons/1/14/Klein_gevaarlijk_afval_A.jpg",
                     }
                 },
-                User = Context.User.Single(u => u.Id == userId.ToString())
+                User = Context.User.Skip(userId - 1).First()
             };
         }
     }
