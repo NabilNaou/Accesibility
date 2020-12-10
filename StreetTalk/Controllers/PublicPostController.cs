@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using StreetTalk.Models;
 
 namespace StreetTalk.Controllers
 {
@@ -15,6 +16,27 @@ namespace StreetTalk.Controllers
             var posts = Db.PublicPost.OrderBy(p => p.CreatedAt).Skip(skip).Take(perPage).ToList();
             
             return View(posts);
+        }
+
+        public IActionResult CreatePublicPost()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreatePublicPost(PublicPost post)
+        {
+            if (ModelState.IsValid)
+            {
+                //TODO Maak ingelogde gebruiker
+                User user = Db.User.First();
+                post.User = user;
+                user.Posts.Add(post);
+                //Db.Post.Add(post);
+                Db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(post);
         }
 
         public IActionResult Post(int id)
