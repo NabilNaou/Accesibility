@@ -163,6 +163,7 @@
 
     <ItemGroup>
       <Folder Include="Migrations" />
+      <Folder Include="wwwroot\UserUploads\" />
     </ItemGroup>
 
 </Project>

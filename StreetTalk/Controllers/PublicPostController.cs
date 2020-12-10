@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using StreetTalk.Models;
 using StreetTalk.Data;
 using StreetTalk.Models;
 using StreetTalk.Services;
@@ -72,6 +73,26 @@ namespace StreetTalk.Controllers
             };
 
             return View(viewModelData);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(PublicPost post)
+        {
+            if (!ModelState.IsValid) return View(post);
+            
+            //TODO Maak ingelogde gebruiker
+            User user = Db.User.First();
+            post.UserId = user.Id;
+            user.Posts.Add(post);
+                
+            Db.SaveChanges();
+            
+            return RedirectToAction("Index");
         }
 
         public IActionResult Post(int id)

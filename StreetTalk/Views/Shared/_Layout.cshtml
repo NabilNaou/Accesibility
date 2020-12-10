@@ -10,7 +10,7 @@
     </head>
     <body>
         <div class="d-flex st-navbar-container flex-column min-vh-100">
-            <partial name="_Navbar"/>
+            <partial name="_Navbar" />
             <div class="container-fluid d-flex flex-grow-1">
                 <main>
                     @RenderBody()
@@ -18,7 +18,7 @@
             </div>
             <partial name="_Footer" />
         </div>
-            
+
         <partial name="_ErrorPopup" />
 
         <script defer src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -30,7 +30,8 @@
         <script defer src="~/js/filterbutton.js" asp-append-version="true"></script>
         <script defer src="~/js/like.js" asp-append-version="true"></script>
         <script defer src="~/js/report.js" asp-append-version="true"></script>
-
+        <script defer src="~/js/markdown.js" asp-append-version="true"></script>
+        <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
         @RenderSection("Scripts", required: false)
     </body>
 </html>
