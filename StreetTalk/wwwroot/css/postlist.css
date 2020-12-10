@@ -99,6 +99,7 @@ button[disabled] .post-action-icon {
     opacity: 0.6;
 }
 
+a .post-action-icon:hover,
 button:not([disabled]) .post-action-icon:hover {
     cursor: pointer;
     opacity: 0.6;

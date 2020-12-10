@@ -5,7 +5,7 @@
 }
 
 <div class="min-vh-100 w-100 d-flex justify-content-center align-items-center">
-    <div class="card p-4">
+    <div class="card p-4 w-75">
         <h1 class="mb-4 mr-5">Maak publieke melding</h1>
         @using (Html.BeginForm("Create", "PublicPost", FormMethod.Post))
         {
@@ -19,7 +19,7 @@
                 @Html.TextAreaFor(m => m.Content, new { @class = "form-control", id = "postContent"}) 
                 <span class="text-danger">@Html.ValidationMessageFor(m => m.Content)</span>
             </div>
-            <input class="btn btn-primary w-100 mt-4" type="submit" value="Maak publieke melding" />
+            <input class="btn btn-primary float-right mt-4" type="submit" value="Maak publieke melding" />
         }
     </div>
     <div class="w-100 position-fixed min-vh-100 st-working-from-anywhere"></div>

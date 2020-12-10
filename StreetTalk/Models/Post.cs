@@ -15,7 +15,7 @@ namespace StreetTalk.Models
         
         public virtual PostPhoto Photo { get; set; }
         
-        public virtual int? UserId { get; set; }
-        public virtual User User { get; set; }
+        public virtual string UserId { get; set; }
+        public virtual StreetTalkUser User { get; set; }
     }
 }

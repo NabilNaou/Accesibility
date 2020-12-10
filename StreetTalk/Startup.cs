@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StreetTalk.Data;
+using StreetTalk.Models;
 using StreetTalk.Services;
 
 namespace StreetTalk
@@ -36,9 +39,28 @@ namespace StreetTalk
                     options.UseMySql(Configuration.GetValue<string>("ConnectionStrings:db"), ServerVersion.FromString("8.0.22-mysql"));
                 }
             });
+
+            services.AddTransient<IEmailSender, EmailSender>();
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddResponseCompression();
+            services.AddHttpContextAccessor();
             services.AddTransient<PostService>();
+            services.AddTransient<UserService>();
+            services.AddRazorPages();
+            services.AddIdentity<StreetTalkUser, IdentityRole>
+                    (options =>
+                        options.SignIn.RequireConfirmedAccount = true)
+                    .AddEntityFrameworkStores<StreetTalkContext>()
+                    .AddRoles<IdentityRole>()
+                    .AddRoleManager<RoleManager<IdentityRole>>()
+                    .AddDefaultTokenProviders();
+            
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.LoginPath = "/Identity/Account/Login";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +82,8 @@ namespace StreetTalk
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -67,6 +91,7 @@ namespace StreetTalk
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }

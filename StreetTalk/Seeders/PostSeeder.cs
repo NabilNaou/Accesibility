@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using StreetTalk.Data;
 using StreetTalk.Models;
 
 namespace StreetTalk.Seeders
@@ -8,7 +10,7 @@ namespace StreetTalk.Seeders
     {
         public override bool ShouldSeed => !Context.Post.Any();
         
-        public override void DoSeed()
+        public override void DoSeed(StreetTalkContext context, IServiceProvider services)
         {
             var rows = new List<Post>
             {
@@ -26,7 +28,7 @@ namespace StreetTalk.Seeders
                             Filename = "https://assets.nos.nl/data/image/2017/11/23/433105/xxl.jpg",
                         }
                     },
-                    User = Context.User.Single(u => u.Id == 1)
+                    User = Context.User.Skip(0).First()
                 },
                 CreateGarbagePost(2, 1),
                 CreateGarbagePost(3, 2),
@@ -77,7 +79,7 @@ namespace StreetTalk.Seeders
                         Filename = "https://upload.wikimedia.org/wikipedia/commons/1/14/Klein_gevaarlijk_afval_A.jpg",
                     }
                 },
-                User = Context.User.Single(u => u.Id == userId)
+                User = Context.User.Skip(userId - 1).First()
             };
         }
     }
