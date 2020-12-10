@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using StreetTalk.Models;
@@ -86,9 +87,9 @@ namespace StreetTalk.Controllers
             {
                 //TODO Maak ingelogde gebruiker
                 User user = Db.User.First();
-                post.User = user;
+                post.UserId = user.Id;
                 user.Posts.Add(post);
-                //Db.Post.Add(post);
+                
                 Db.SaveChanges();
                 return RedirectToAction("Index");
             }
