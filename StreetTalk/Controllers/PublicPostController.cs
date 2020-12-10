@@ -47,7 +47,7 @@ namespace StreetTalk.Controllers
             this.userService = userService;
         }
 
-        public IActionResult Index(PublicPostListFilters filters, int page = 1) //TODO: Replace hardcoded user id with currently logged in user id
+        public IActionResult Index(PublicPostListFilters filters, int page = 1)
         {
             //TODO: Refactor this
             var perPage = 10;
@@ -86,11 +86,10 @@ namespace StreetTalk.Controllers
         public IActionResult Create(PublicPost post)
         {
             if (!ModelState.IsValid) return View(post);
-            
-            //TODO Maak ingelogde gebruiker
-            User user = Db.User.First();
-            post.UserId = user.Id;
-            user.Posts.Add(post);
+
+            var user = userService.GetCurrentlyLoggedInUser();
+            post.UserId = user?.Id;
+            user?.Posts.Add(post);
                 
             Db.SaveChanges();
             
@@ -110,7 +109,7 @@ namespace StreetTalk.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostLike(int id) //TODO: Replace hardcoded user id with currently logged in user id
+        public IActionResult PostLike(int id)
         {
             if(userService.GetCurrentlyLoggedInUser() == null)
                 return Json(new PostJsonResult {Succes = false, Error = "U moet eerst inloggen"});
@@ -129,7 +128,7 @@ namespace StreetTalk.Controllers
         }
         
         [HttpPost]
-        public IActionResult PostReport(int id) //TODO: Replace hardcoded user id with currently logged in user id
+        public IActionResult PostReport(int id)
         {
             if(userService.GetCurrentlyLoggedInUser() == null)
                 return Json(new PostJsonResult {Succes = false, Error = "U moet eerst inloggen"});
@@ -151,18 +150,17 @@ namespace StreetTalk.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostComment(int id, string CommentContent)
+        public IActionResult PostComment(int id, string commentContent)
         {
-            if (CommentContent == null || CommentContent == "") return RedirectToAction("Post", new { id });
+            if (commentContent == null || commentContent == "") return RedirectToAction("Post", new { id });
 
-            Comment PostedComment = new Comment
+            Comment postedComment = new Comment
             {
-                Content = CommentContent,
-                AuthorId = 2 //TODO: Replace hardcoded user id with currently logged in user id
-                ,
+                Content = commentContent,
+                AuthorId = userService.GetCurrentlyLoggedInUser()?.Id,
                 PostId = id
             };
-            postService.GetPublicPostById(id).Comments.Add(PostedComment);
+            postService.GetPublicPostById(id).Comments.Add(postedComment);
             Db.SaveChanges();
 
 
