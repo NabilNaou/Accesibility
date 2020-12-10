@@ -1,31 +1,44 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StreetTalk.Data;
+using StreetTalk.Services;
 
 namespace StreetTalk
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
             Configuration = configuration;
+            Environment = env;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<StreetTalkContext>(options => options.UseSqlite(Configuration.GetValue<string>("ConnectionStrings:Local")));
+            services.AddDbContext<StreetTalkContext>(options =>
+            {
+                if (Environment.IsDevelopment())
+                {
+                    options.UseMySql(Configuration.GetValue<string>("ConnectionStrings:db"), ServerVersion.FromString("8.0.22-mysql"));
+                    options.EnableSensitiveDataLogging();
+                    options.EnableDetailedErrors();
+                }
+                else
+                {
+                    options.UseMySql(Configuration.GetValue<string>("ConnectionStrings:db"), ServerVersion.FromString("8.0.22-mysql"));
+                }
+            });
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddResponseCompression();
+            services.AddTransient<PostService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

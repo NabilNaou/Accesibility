@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using StreetTalk.Data;
 
 namespace StreetTalk.Seeders
 {
@@ -12,10 +14,14 @@ namespace StreetTalk.Seeders
             new CommentSeeder()
         };
         
-        public static void seedAll(StreetTalkContext context)
+        public static void SeedAll(StreetTalkContext context)
         {
             context.Database.EnsureCreated();
-            Seeders.ForEach(seeder => seeder.seed(context));
+            Seeders.ForEach(seeder =>
+            {
+                Console.WriteLine("Seeding: {0}", seeder);
+                seeder.Seed(context);
+            });
         }
     }
 }

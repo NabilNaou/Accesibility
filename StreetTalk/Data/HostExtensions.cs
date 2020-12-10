@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StreetTalk.Seeders;
 
-namespace StreetTalk
+namespace StreetTalk.Data
 {
     public static class HostExtensions
     {
@@ -13,7 +13,7 @@ namespace StreetTalk
             var services = scope.ServiceProvider;
             var ctx = services.GetService<StreetTalkContext>();
             ctx.Database.Migrate();
-            DatabaseSeeder.seedAll(ctx);
+            DatabaseSeeder.SeedAll(ctx);
 
             return host;
         }

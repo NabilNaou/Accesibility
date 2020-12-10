@@ -6,7 +6,7 @@
     </div>
     <div class="row-content w-100">
         <div class="d-flex flex-column justify-content-center align-items-center">
-            <img src="@Model.User.Profile?.Photo?.Photo?.Filename" class="rounded-circle profile-image" alt="Profiel foto"/>
+            <img src="@Model.Post.User.Profile.Photo?.Photo?.Filename" class="rounded-circle profile-image" alt="Profiel foto van @Model.Post.User.Profile.FullName"/>
         </div>
         <a asp-area="" asp-controller="PublicPost" asp-action="Post" asp-route-id="@Model.Id" aria-label="Bekijk post" class="post-info d-flex flex-grow-1 flex-column justify-content-between">
             <h2 class="post-title">@Model.Title</h2>

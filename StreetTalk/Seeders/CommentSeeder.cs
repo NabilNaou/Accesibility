@@ -6,37 +6,45 @@ namespace StreetTalk.Seeders
 {
     public class CommentSeeder : Seeder
     {
-        public override bool shouldSeed => !Context.Post.OfType<PublicPost>().Single(p => p.Id == 1).Comments.Any();
+        public override bool ShouldSeed => !Context.Post.OfType<PublicPost>().Single(p => p.Id == 1).Comments.Any();
 
         public override void DoSeed()
         {
             var firstPost = Context.Post.OfType<PublicPost>().Single(p => p.Id == 1);
-            firstPost.Comments.AddRange(new List<Comment>
-            {
+            var secondPost = Context.Post.OfType<PublicPost>().Single(p => p.Id == 2);
+            
+            firstPost.Comments.Add(
                 new Comment
                 {
-                    Author = Context.User.Single(u => u.Id == 2),
-                    Post = firstPost,
+                    AuthorId = 2,
+                    PostId = 1,
                     Content = "Echt ziek kerel"
-                },
+                }
+            );
+
+            Context.SaveChanges();
+
+            firstPost.Comments.Add(
                 new Comment
                 {
-                    Author = Context.User.Single(u => u.Id == 3),
-                    Post = firstPost,
+                    AuthorId = 3,
+                    PostId = 1,
                     Content = "Kan echt niet"
                 }
-            });
+            );
             
-            var secondPost = Context.Post.OfType<PublicPost>().Single(p => p.Id == 2);
-            secondPost.Comments.AddRange(new List<Comment>
-            {
+            Context.SaveChanges();
+            
+            secondPost.Comments.Add(
                 new Comment
                 {
-                    Author = Context.User.Single(u => u.Id == 1),
-                    Post = secondPost,
+                    AuthorId = 1,
+                    PostId = 2,
                     Content = "Wejooowww"
                 }
-            });
+            );
+                
+            Context.SaveChanges();
         }
     }
 }

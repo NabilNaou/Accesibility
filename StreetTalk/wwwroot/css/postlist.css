@@ -22,7 +22,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: transparent;
+    color: rgba(255,255,255,0);
     font-size: 14px;
     text-transform: uppercase;
     border-radius: 4px 0px 0px 4px;
@@ -95,7 +95,11 @@
     height: 40px;
 }
 
-.post-row .post-action-icon:hover {
+button[disabled] .post-action-icon {
+    opacity: 0.6;
+}
+
+button:not([disabled]) .post-action-icon:hover {
     cursor: pointer;
     opacity: 0.6;
 }
@@ -110,10 +114,6 @@
 .post-row .post-author {
     width: 100%;
     grid-area: post-author;
-}
-
-.posts-container {
-    padding: 64px;
 }
 
 .likes-container {
@@ -136,16 +136,27 @@
     align-items: center;
 }
 
-
 #meldingen > li {
     width: 100%;
 }
 
+#filter-button:hover {
+    cursor: pointer;
+}
+
+#filters {
+    max-width: 400px;
+    height: auto;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 150ms ease-in-out;
+}
+
+#filters.show {
+    max-height: 300px;
+}
+
 @media(max-width: 1000px) {
-    .posts-container {
-        padding: 32px;
-    }
-    
     .row-content {
         grid-template-areas: 
             'post-info post-info post-profile-photo'
@@ -184,8 +195,3 @@
     }
 }
 
-@media(max-width: 600px) {
-    .posts-container {
-        padding: 16px;
-    }
-}
