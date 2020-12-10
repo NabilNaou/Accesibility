@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StreetTalk.Models;
 using StreetTalk.Data;
@@ -36,6 +37,7 @@ namespace StreetTalk.Controllers
         public bool ShowClosedPosts { get; set; } = false;
     }
 
+    [Authorize]
     public class PublicPostController : BaseController
     {
         private readonly PostService postService;

@@ -55,8 +55,12 @@ namespace StreetTalk
                     .AddRoles<IdentityRole>()
                     .AddRoleManager<RoleManager<IdentityRole>>()
                     .AddDefaultTokenProviders();
-
-
+            
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.LoginPath = "/Identity/Account/Login";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
