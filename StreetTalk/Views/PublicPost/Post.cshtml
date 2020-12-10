@@ -51,5 +51,14 @@
                 </ul>
             </div>
         </div>
+        <div>
+            <h1>Plaats commentaar</h1>
+
+            @using (Html.BeginForm("PostComment", "PublicPost", new { id = Model.Id }, FormMethod.Post))
+            {
+                <textarea name="CommentContent"></textarea>
+                <input type="submit" value="Post Comment" />
+            }
+        </div>
     </div>
 </div>

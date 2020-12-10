@@ -161,4 +161,9 @@
         <PackageReference Include="SendGrid" Version="9.21.2" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Folder Include="Migrations" />
+        <Folder Include="wwwroot\UserUploads\" />
+    </ItemGroup>
+
 </Project>
