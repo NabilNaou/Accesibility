@@ -141,5 +141,25 @@ namespace StreetTalk.Controllers
                 return Json(new PostJsonResult {Succes = false, Error = "Wijziging kon niet worden opgeslagen"});
             }
         }
+
+        [HttpPost]
+        public IActionResult PostComment(int id, string CommentContent)
+        {
+            if (CommentContent == null || CommentContent == "") return RedirectToAction("Post", new { id });
+
+            Comment PostedComment = new Comment
+            {
+                Content = CommentContent,
+                AuthorId = 2 //TODO: Replace hardcoded user id with currently logged in user id
+                ,
+                PostId = id
+            };
+            postService.GetPublicPostById(id).Comments.Add(PostedComment);
+            Db.SaveChanges();
+
+
+            return RedirectToAction("Post", new { id });
+        }
+
     }
 }
