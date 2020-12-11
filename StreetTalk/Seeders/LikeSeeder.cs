@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using StreetTalk.Data;
 using StreetTalk.Models;
 
 namespace StreetTalk.Seeders
@@ -8,7 +10,7 @@ namespace StreetTalk.Seeders
     {
         public override bool ShouldSeed => !Context.Post.OfType<PublicPost>().Single(p => p.Id == 1).Likes.Any();
 
-        public override void DoSeed()
+        public override void DoSeed(StreetTalkContext context, IServiceProvider services)
         {
             var firstPost = Context.Post.OfType<PublicPost>().Single(p => p.Id == 1);
             //The second and the third user like the first post
@@ -17,12 +19,12 @@ namespace StreetTalk.Seeders
                     new Like
                     {
                         Post = firstPost,
-                        User = Context.User.Single(u => u.Id == 2)
+                        User = Context.User.Skip(1).First()
                     },
                     new Like
                     {
                         Post = firstPost,
-                        User = Context.User.Single(u => u.Id == 3)
+                        User = Context.User.Skip(2).First()
                     }
                 }
             );
@@ -34,7 +36,7 @@ namespace StreetTalk.Seeders
                     new Like
                     {
                         Post = secondPost,
-                        User = Context.User.Single(u => u.Id == 1)
+                        User = Context.User.Skip(0).First()
                     },
                 }
             );

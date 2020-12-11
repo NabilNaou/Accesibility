@@ -32,8 +32,8 @@ namespace StreetTalk.Models
         [StringLength(5)]
         public virtual string? HouseNumberAddition { get; set; }
         
-        public virtual int UserId { get; set; }
-        public virtual User User { get; set; }
+        public virtual string UserId { get; set; }
+        public virtual StreetTalkUser User { get; set; }
         
         public virtual ProfilePhoto Photo { get; set; }
     }

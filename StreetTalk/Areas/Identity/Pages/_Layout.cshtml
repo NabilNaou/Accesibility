@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<div class="flex-grow-1 w-100 d-flex justify-content-center align-items-center">
+    <div class="card p-4">
+        @RenderBody()
+    </div>
+    <div class="w-100 position-fixed min-vh-100 st-working-from-anywhere"></div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", false)
+}

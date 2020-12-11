@@ -1,6 +1,6 @@
 ﻿@model StreetTalk.Controllers.PublicPostWithExtraData
 
-<div class="unselectable post-row card mb-4 w-100 d-flex flex-row">
+<div class="post-row card mb-4 w-100 d-flex flex-row">
     <div aria-label="Melding status" class="status-indicator @(Model.Post.Closed ? "closed" : "open")">
         <span>@(Model.Post.Closed ? "gesloten" : "open")</span>
     </div>
@@ -12,19 +12,19 @@
             <h2 class="post-title">@Model.Post.Title</h2>
             <p class="post-content">@Model.Post.Content</p>
         </a>
-        <div class="post-date d-flex flex-column justify-content-center mr-2">
+        <div aria-label="Meld datum" class="post-date d-flex flex-column justify-content-center mr-2">
             <span class="d-block">@Model.Post.CreatedAt?.ToString("dd-MM-yyyy")</span>
         </div>
-        <div class="post-author d-flex flex-column justify-content-center text-center">
+        <div aria-label="Auteur" class="post-author d-flex flex-column justify-content-center text-center">
             <span class="d-block">@Model.Post.User.Profile.FullName</span>
         </div>
         <div class="post-actions d-flex flex-row justify-content-center align-items-center">
             <button aria-label="Rapporteer melding" id="reportbutton-@Model.Post.Id" onclick="reportPost(@Model.Post.Id)" tabindex="0" class="mr-3" disabled="@Model.Reported">
                 <img alt="Rapporteer deze post" class="post-action-icon" src="~/img/report.svg"/>
             </button>
-            <button aria-label="Like melding" id="likebutton-@Model.Post.Id" onclick="likePost(@Model.Post.Id)" tabindex="0">
+            <a id="likebutton-@Model.Post.Id" onclick="likePost(@Model.Post.Id)">
                 <partial name="_LikeButton" model="@Model.Liked" />
-            </button>
+            </a>
         </div>
     </div>
     <div aria-label="Aantal likes" class="likes-container">

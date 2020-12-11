@@ -30,7 +30,7 @@
                 </div>
             </div>
         }
-        <div class="row justify-content-center" aria-label="Melding omschrijving">
+        <div class="row justify-content-center min-vh-100" aria-label="Melding omschrijving">
             <div class="col-xs-12 col-lg-9">
                 @Markdown.ParseHtmlString(Model.Content)
             </div>
@@ -50,6 +50,21 @@
                     }
                 </ul>
             </div>
+        </div>
+        <div class="row justify-content-center" aria-labelledby="commentaar">
+            <div class="col-12">
+                <h1 id="commentaar" class="mb-0 mt-4">Deel uw reactie</h1>
+                <hr class="my-4" />
+            </div>
+        </div>
+        <div>
+            @using (Html.BeginForm("PostComment", "PublicPost", new { id = Model.Id }, FormMethod.Post))
+            {
+                <div class="form-group w-100">
+                    <textarea class="form-control w-100" name="commentContent"></textarea>
+                </div>
+                <input class="btn btn-primary float-right" type="submit" value="Post Comment" />
+            }
         </div>
     </div>
 </div>

@@ -9,8 +9,8 @@ namespace StreetTalk.Models
         [StringLength(600)]
         public virtual string Content { get; set; }
         
-        public virtual int AuthorId { get; set; }
-        public virtual User Author { get; set; }
+        public virtual string AuthorId { get; set; }
+        public virtual StreetTalkUser Author { get; set; }
         
         public virtual int PostId { get; set; }
         public virtual PublicPost Post { get; set; }

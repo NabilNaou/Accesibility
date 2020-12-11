@@ -1,4 +1,5 @@
 ﻿using StreetTalk.Data;
+using System;
 
 namespace StreetTalk.Seeders
 {
@@ -6,18 +7,18 @@ namespace StreetTalk.Seeders
     {
         protected StreetTalkContext Context;
 
-        public void Seed(StreetTalkContext ctx)
+        public void Seed(StreetTalkContext ctx, IServiceProvider services)
         {
             Context = ctx;
 
             if (ShouldSeed)
             {
-                DoSeed();
+                DoSeed(Context, services);
                 Context.SaveChanges();
             }
         }
 
-        public abstract void DoSeed();
+        public abstract void DoSeed(StreetTalkContext context, IServiceProvider services);
         public abstract bool ShouldSeed { get; }
     }
 }

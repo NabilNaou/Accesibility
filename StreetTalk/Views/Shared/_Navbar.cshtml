@@ -1,4 +1,9 @@
-﻿<nav class="st-navbar d-flex flex-column" aria-label="Hoofd navigatie menu">
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<StreetTalkUser> SignInManager
+@inject UserManager<StreetTalkUser> UserManager
+
+<nav class="st-navbar d-flex flex-column" aria-label="Hoofd navigatie menu">
     <div class="st-nav-item flex-grow-0 d-flex flex-column pb-2">
         <a aria-label="Home pagina" class="st-nav-link st-nav-link-no-highlight" asp-area="" asp-controller="Home" asp-action="Index">
             <img alt="StreetTalk logo" class="rotated-icon" src="~/img/bullhorn-outline.svg"/>
@@ -10,7 +15,7 @@
             <img alt="Post icoon" src="~/img/post.svg"/>
             <span>Meldingen bekijken</span>
         </a>
-        <a aria-label="Publieke melding maken" class="st-nav-link" href="#">
+        <a aria-label="Publieke melding maken" class="st-nav-link" asp-area="" asp-controller="PublicPost" asp-action="Create">
             <img alt="Bestand icoon" src="~/img/file-outline.svg"/>
             <span>Publiekelijk melden</span>
         </a>
@@ -20,14 +25,26 @@
         </a>
     </div>
     <div class="st-nav-item flex-grow-0 d-flex flex-column pt-2">
-        <a aria-label="Registreren" class="st-nav-link" asp-area="" asp-controller="Account" asp-action="Registreren">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button id="logout" type="submit" class="st-nav-link">
+                <img alt="Uitloggen icoon" src="~/img/logout.svg"/>
+                <span>Uitloggen</span>
+            </button>
+        </form>
+    }
+    else
+    {
+        <a aria-label="Registreren" class="st-nav-link" asp-area="Identity" asp-page="/Account/Register">
             <img alt="Email icoon" src="~/img/email.svg"/>
             <span>Registreren</span>
         </a>
-        <a aria-label="Inloggen" class="st-nav-link" asp-area="" asp-controller="Account" asp-action="Login">
+        <a aria-label="Inloggen" class="st-nav-link" asp-area="Identity" asp-page="/Account/Login">
             <img alt="Login icoon" src="~/img/login.svg"/>
             <span>Inloggen</span>
         </a>
+    }
     </div>
     <div class="st-nav-expand"><img alt="Pijl naar rechts" src="~/img/chevron_right.svg"/></div>
 </nav>

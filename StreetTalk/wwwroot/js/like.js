@@ -3,7 +3,7 @@ async function likePost(postId) {
     let data = await apiService.likePost(postId)
 
     if (data.succes) {
-        let likes = data.newLikes || "?"
+        let likes = data.newLikes !== undefined ? data.newLikes : "?"
         let likeCounter = document.getElementById(`likecounter-${postId}`)
         let likeButton = document.getElementById(`likebutton-${postId}`).firstElementChild
 

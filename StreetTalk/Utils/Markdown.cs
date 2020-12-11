@@ -1,17 +1,19 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using Markdig;
+using Microsoft.AspNetCore.Html;
 
 namespace StreetTalk.Utils
 {
     public static class Markdown
     {
-        public static string Parse(string markdown, bool usePragmaLines = false, bool forceReload = false)
+        private static string Parse(string markdown)
         {
-            return string.IsNullOrEmpty(markdown) ? "" : Markdig.Markdown.ToHtml(markdown);
+            var pipeline = new MarkdownPipelineBuilder().DisableHtml().Build();
+            return string.IsNullOrEmpty(markdown) ? "" : Markdig.Markdown.ToHtml(markdown, pipeline);
         }
         
-        public static HtmlString ParseHtmlString(string markdown, bool usePragmaLines = false, bool forceReload = false)
+        public static HtmlString ParseHtmlString(string markdown)
         {
-            return new HtmlString(Parse(markdown, usePragmaLines, forceReload));
+            return new HtmlString(Parse(markdown));
         }
     }
 }

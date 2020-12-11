@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StreetTalk.Models;
 using StreetTalk.Data;
 using StreetTalk.Models;
 using StreetTalk.Services;
@@ -35,24 +37,27 @@ namespace StreetTalk.Controllers
         public bool ShowClosedPosts { get; set; } = false;
     }
 
+    [Authorize]
     public class PublicPostController : BaseController
     {
         private readonly PostService postService;
+        private readonly UserService userService;
 
-        public PublicPostController(StreetTalkContext context, PostService postService) : base(context)
+        public PublicPostController(StreetTalkContext context, PostService postService, UserService userService) : base(context)
         {
             this.postService = postService;
+            this.userService = userService;
         }
 
-        public IActionResult Index(PublicPostListFilters filters, int page = 1) //TODO: Replace hardcoded user id with currently logged in user id
+        public IActionResult Index(PublicPostListFilters filters, int page = 1)
         {
             //TODO: Refactor this
             var perPage = 10;
             var skip = Math.Max(page - 1, 0) * perPage;
 
             var posts = Db.PublicPost
-                .OrderBy(p => p.CreatedAt)
                 .Where(p => !p.Closed || filters.ShowClosedPosts)
+                .OrderBy(p => p.CreatedAt)
                 .Skip(skip)
                 .Take(perPage);
 
@@ -60,8 +65,8 @@ namespace StreetTalk.Controllers
                 new PublicPostWithExtraData
                 {
                     Post = a,
-                    Liked = a.Likes.Any(b => b.UserId == 2),
-                    Reported = a.Reports.Any(b => b.UserId == 2)
+                    Liked = a.Likes.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser()?.Id),
+                    Reported = a.Reports.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser()?.Id)
                 }
             ).ToList();
 
@@ -72,6 +77,25 @@ namespace StreetTalk.Controllers
             };
 
             return View(viewModelData);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(PublicPost post)
+        {
+            if (!ModelState.IsValid) return View(post);
+
+            var user = userService.GetCurrentlyLoggedInUser();
+            post.UserId = user?.Id;
+            user?.Posts.Add(post);
+                
+            Db.SaveChanges();
+            
+            return RedirectToAction("Index");
         }
 
         public IActionResult Post(int id)
@@ -87,12 +111,15 @@ namespace StreetTalk.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostLike(int id) //TODO: Replace hardcoded user id with currently logged in user id
+        public IActionResult PostLike(int id)
         {
+            if(userService.GetCurrentlyLoggedInUser() == null)
+                return Json(new PostJsonResult {Succes = false, Error = "U moet eerst inloggen"});
+                
             try
             {
                 var post = postService.GetPublicPostById(id);
-                postService.ToggleLikeForPost(post, 2);
+                postService.ToggleLikeForPost(post, userService.GetCurrentlyLoggedInUser()?.Id);
                 
                 return Json(new PostJsonResult {Succes = true, NewLikes = post.Likes.Count()});
             }
@@ -103,16 +130,19 @@ namespace StreetTalk.Controllers
         }
         
         [HttpPost]
-        public IActionResult PostReport(int id) //TODO: Replace hardcoded user id with currently logged in user id
+        public IActionResult PostReport(int id)
         {
+            if(userService.GetCurrentlyLoggedInUser() == null)
+                return Json(new PostJsonResult {Succes = false, Error = "U moet eerst inloggen"});
+            
             try
             {
                 var post = postService.GetPublicPostById(id);
                 
-                if (postService.UserReportedPost(post, 2))
+                if (postService.UserReportedPost(post, userService.GetCurrentlyLoggedInUser()?.Id))
                     return Json(new PostJsonResult {Succes = false, Error = "Je hebt deze post al gerapporteerd"});
 
-                postService.AddReportForPost(post, 2);
+                postService.AddReportForPost(post, userService.GetCurrentlyLoggedInUser()?.Id);
                 return Json(new PostJsonResult {Succes = true});
             }
             catch
@@ -120,5 +150,24 @@ namespace StreetTalk.Controllers
                 return Json(new PostJsonResult {Succes = false, Error = "Wijziging kon niet worden opgeslagen"});
             }
         }
+
+        [HttpPost]
+        public IActionResult PostComment(int id, string commentContent)
+        {
+            if (commentContent == null || commentContent == "") return RedirectToAction("Post", new { id });
+
+            Comment postedComment = new Comment
+            {
+                Content = commentContent,
+                AuthorId = userService.GetCurrentlyLoggedInUser()?.Id,
+                PostId = id
+            };
+            postService.GetPublicPostById(id).Comments.Add(postedComment);
+            Db.SaveChanges();
+
+
+            return RedirectToAction("Post", new { id });
+        }
+
     }
 }
