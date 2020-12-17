@@ -52,7 +52,7 @@
                             {
                                 if (comment.Id == (int)ViewData["EditCommentId"])
                                 {
-                                    
+
                                 }
                                 else
                                 {
@@ -61,20 +61,31 @@
                             }
 
                         }
-                        if (comment.AuthorId == /*Current Logged in user*/ (string)ViewData["CurrentUserId"])
+                        if (comment.AuthorId == (string)ViewData["CurrentUserId"])
                         {
-                            using (Html.BeginForm("EditComment", "PublicPost", new { id = Model.Id, commentId = comment.Id }))
+
+                            @using (Html.BeginForm("EditComment", "PublicPost", new { id = Model.Id, commentId = comment.Id }))
                             {
-                                //@Html.TextAreaFor(p => p.Comments.Single(c => c.Id == comment.Id).Content, new { Name = "NewContent"})
                                 <a>Bewerk uw reactie:</a>
                                 <textarea class="form-control w-100" name="NewContent"></textarea>
                                 <input class="btn btn-primary float-right" type="submit" value="Bewerk" />
                             }
 
-                            //<input type="button" class="btn btn-primary" value="Bewerk" onclick="location.href='@Url.Action("EditComment", "PublicPost")?commentId='@comment.Id"/>
+
+
                         }
 
-                        <li aria-label="Reactie van @comment.Author.Profile.FullName"><partial name="_Comment" for="@comment" /></li>
+                        <li aria-label="Reactie van @comment.Author.Profile.FullName">
+                            <partial name="_Comment" for="@comment" />
+
+                        </li>
+                        @if (comment.AuthorId == (string)ViewData["CurrentUserId"])
+                        {
+                            using (Html.BeginForm("DeleteComment", "PublicPost", new { id = Model.Id, commentId = comment.Id }))
+                            {
+                                <input class="btn btn-primary float-right" type="submit" value="Verwijder" />
+                            }
+                        }
 
                     }
                 </ul>

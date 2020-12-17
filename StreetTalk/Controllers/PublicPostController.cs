@@ -183,5 +183,14 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Post", new { id, commentId });
         }
 
+        public IActionResult DeleteComment(int id, int commentId)
+        {
+            postService.GetPublicPostById(id).Comments.RemoveAll(c => c.Id == commentId);
+            Db.SaveChanges();
+
+
+            return RedirectToAction("Post", new { id });
+        }
+
     }
 }
