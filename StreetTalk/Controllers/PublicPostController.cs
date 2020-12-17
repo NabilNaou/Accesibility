@@ -75,7 +75,7 @@ namespace StreetTalk.Controllers
                 Posts = publicPostsWithLikes,
                 Filters = filters
             };
-
+            
             return View(viewModelData);
         }
 
@@ -98,10 +98,13 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Post(int id)
+        public IActionResult Post(int id, int editComment)
         {
             try
             {
+                ViewData["EditCommentId"] = editComment;
+                
+                ViewData["CurrentUserId"] = userService.GetCurrentlyLoggedInUser().Id;
                 return View(postService.GetPublicPostById(id));
             }
             catch
@@ -167,6 +170,17 @@ namespace StreetTalk.Controllers
 
 
             return RedirectToAction("Post", new { id });
+        }
+
+
+        public IActionResult EditComment(int id, int commentId, string NewContent)
+        {
+            if (NewContent != postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId).Content)
+            {
+                postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId).Content = NewContent;
+                Db.SaveChanges();
+            }
+            return RedirectToAction("Post", new { id, commentId });
         }
 
     }
