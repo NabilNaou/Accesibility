@@ -46,21 +46,7 @@
                 <ul class="undecorated-list d-flex flex-column">
                     @foreach (var comment in Model.Comments.OrderBy(c => c.CreatedAt))
                     {
-                        if (ViewData["EditCommentId"] != null)
-                        {
-                            if ((int)ViewData["EditCommentId"] != 0)
-                            {
-                                if (comment.Id == (int)ViewData["EditCommentId"])
-                                {
-
-                                }
-                                else
-                                {
-                                    <li>Test321</li>
-                                }
-                            }
-
-                        }
+                        
                         if (comment.AuthorId == (string)ViewData["CurrentUserId"])
                         {
 
@@ -70,9 +56,6 @@
                                 <textarea class="form-control w-100" name="NewContent"></textarea>
                                 <input class="btn btn-primary float-right" type="submit" value="Bewerk" />
                             }
-
-
-
                         }
 
                         <li aria-label="Reactie van @comment.Author.Profile.FullName">

@@ -98,12 +98,10 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Post(int id, int editComment)
+        public IActionResult Post(int id)
         {
             try
-            {
-                ViewData["EditCommentId"] = editComment;
-                
+            {               
                 ViewData["CurrentUserId"] = userService.GetCurrentlyLoggedInUser().Id;
                 return View(postService.GetPublicPostById(id));
             }
@@ -180,7 +178,7 @@ namespace StreetTalk.Controllers
                 postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId).Content = NewContent;
                 Db.SaveChanges();
             }
-            return RedirectToAction("Post", new { id, commentId });
+            return RedirectToAction("Post", new { id });
         }
 
         public IActionResult DeleteComment(int id, int commentId)
