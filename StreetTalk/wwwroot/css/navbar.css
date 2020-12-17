@@ -21,7 +21,6 @@
     padding: 4px;
     overflow: hidden;
     transition: max-width 200ms ease-in-out, height 200ms ease-in-out;
-    transition-delay: 1s;
     z-index: 4;
 }
 
@@ -33,7 +32,6 @@
 
 .st-navbar:hover {
     max-width: 350px;
-    transition-delay: 0s;
 }
 
 .st-nav-item {
