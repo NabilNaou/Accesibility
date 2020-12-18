@@ -15,13 +15,13 @@ namespace StreetTalk.Seeders
             new CommentSeeder()
         };
         
-        public static void SeedAll(StreetTalkContext context, IServiceProvider services)
+        public static void SeedAll(StreetTalkContext context)
         {
             context.Database.EnsureCreated();
             Seeders.ForEach(seeder =>
             {
                 Console.WriteLine("Seeding: {0}", seeder);
-                seeder.Seed(context, services);
+                seeder.Seed(context);
             });
         }
     }

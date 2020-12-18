@@ -75,7 +75,17 @@ namespace StreetTalk.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new StreetTalkUser { UserName = Input.Email, Email = Input.Email };
+                var user = new StreetTalkUser { UserName = Input.Email, Email = Input.Email, Profile = new Profile
+                {
+                    Photo = new ProfilePhoto
+                    {
+                        Photo = new Photo
+                        {
+                            Filename = $"https://picsum.photos/seed/{Input.Email.GetHashCode()}/256/256"
+                        }
+                    }
+                } };
+                
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

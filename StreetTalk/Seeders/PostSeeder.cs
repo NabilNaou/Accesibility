@@ -10,7 +10,7 @@ namespace StreetTalk.Seeders
     {
         public override bool ShouldSeed => !Context.Post.Any();
         
-        public override void DoSeed(StreetTalkContext context, IServiceProvider services)
+        public override void DoSeed(StreetTalkContext context)
         {
             var rows = new List<Post>
             {

@@ -1,6 +1,8 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Castle.Core.Internal;
 
 namespace StreetTalk.Models
 {
@@ -15,8 +17,20 @@ namespace StreetTalk.Models
         public virtual string? LastName { get; set; }
 
         [NotMapped]
-        public virtual string FullName => $"{FirstName} {LastName}";
-        
+        public virtual string FullName
+        {
+            get
+            {
+                //TODO: Find an alternative for this, privacy concern.
+                var name = User.Email;
+                
+                if (!FirstName.IsNullOrEmpty() && !LastName.IsNullOrEmpty())
+                    name = $"{FirstName} {LastName}";
+
+                return name;
+            }
+        }
+
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
         public virtual DateTime? DateOfBirth { get; set; }
