@@ -7,18 +7,17 @@ namespace StreetTalk.Seeders
     {
         protected StreetTalkContext Context;
 
-        public void Seed(StreetTalkContext ctx, IServiceProvider services)
+        public void Seed(StreetTalkContext ctx)
         {
             Context = ctx;
 
-            if (ShouldSeed)
-            {
-                DoSeed(Context, services);
-                Context.SaveChanges();
-            }
+            if (!ShouldSeed) return;
+            
+            DoSeed(Context);
+            Context.SaveChanges();
         }
 
-        public abstract void DoSeed(StreetTalkContext context, IServiceProvider services);
+        public abstract void DoSeed(StreetTalkContext context);
         public abstract bool ShouldSeed { get; }
     }
 }

@@ -10,7 +10,7 @@ namespace StreetTalk.Seeders
     {
         public override bool ShouldSeed => !Context.Post.OfType<PublicPost>().Single(p => p.Id == 1).Likes.Any();
 
-        public override void DoSeed(StreetTalkContext context, IServiceProvider services)
+        public override void DoSeed(StreetTalkContext context)
         {
             var firstPost = Context.Post.OfType<PublicPost>().Single(p => p.Id == 1);
             //The second and the third user like the first post

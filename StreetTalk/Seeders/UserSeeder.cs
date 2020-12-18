@@ -15,7 +15,7 @@ namespace StreetTalk.Seeders
         
         public override bool ShouldSeed => !Context.User.Any();
         
-        public override void DoSeed(StreetTalkContext context, IServiceProvider services)
+        public override void DoSeed(StreetTalkContext context)
         {
             userStore = new UserStore<StreetTalkUser>(context);
             CreateUser("Timon", "Landmeter", "19097530@student.hhs.nl", "Qwerty123!", "Buurtbewoner");

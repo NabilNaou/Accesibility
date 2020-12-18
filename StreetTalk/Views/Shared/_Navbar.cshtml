@@ -9,6 +9,9 @@
             <img alt="StreetTalk logo" class="rotated-icon" src="~/img/bullhorn-outline.svg"/>
             <span class="brand-text">StreetTalk.</span>
         </a>
+        <div class="hamburger">
+            <img alt="hamburger menu icoon" src="~/img/menu.svg"/>
+        </div>
     </div>
     <div class="st-nav-item st-nav-item-bordered flex-grow-1 d-flex flex-column pt-2 pb-2">
         <a aria-label="Meldingen bekijken" class="st-nav-link" asp-area="" asp-controller="PublicPost" asp-action="Index">
@@ -25,26 +28,25 @@
         </a>
     </div>
     <div class="st-nav-item flex-grow-0 d-flex flex-column pt-2">
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="st-nav-link">
-                <img alt="Uitloggen icoon" src="~/img/logout.svg"/>
-                <span>Uitloggen</span>
-            </button>
-        </form>
-    }
-    else
-    {
-        <a aria-label="Registreren" class="st-nav-link" asp-area="Identity" asp-page="/Account/Register">
-            <img alt="Email icoon" src="~/img/email.svg"/>
-            <span>Registreren</span>
-        </a>
-        <a aria-label="Inloggen" class="st-nav-link" asp-area="Identity" asp-page="/Account/Login">
-            <img alt="Login icoon" src="~/img/login.svg"/>
-            <span>Inloggen</span>
-        </a>
-    }
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout" type="submit" class="st-nav-link">
+                    <img alt="Uitloggen icoon" src="~/img/logout.svg"/>
+                    <span>Uitloggen</span>
+                </button>
+            </form>
+        }
+        else
+        {
+            <a aria-label="Registreren" class="st-nav-link" asp-area="Identity" asp-page="/Account/Register">
+                <img alt="Email icoon" src="~/img/email.svg"/>
+                <span>Registreren</span>
+            </a>
+            <a aria-label="Inloggen" class="st-nav-link" asp-area="Identity" asp-page="/Account/Login">
+                <img alt="Login icoon" src="~/img/login.svg"/>
+                <span>Inloggen</span>
+            </a>
+        }
     </div>
-    <div class="st-nav-expand"><img alt="Pijl naar rechts" src="~/img/chevron_right.svg"/></div>
 </nav>

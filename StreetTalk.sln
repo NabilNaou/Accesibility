@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreetTalk", "StreetTalk\StreetTalk.csproj", "{F9A98754-F023-4137-AB30-8F5FB7C69E29}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreetTalkTests", "StreetTalkTests\StreetTalkTests.csproj", "{79D67295-E017-4A72-A267-C9F1BEB084EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{F9A98754-F023-4137-AB30-8F5FB7C69E29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9A98754-F023-4137-AB30-8F5FB7C69E29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9A98754-F023-4137-AB30-8F5FB7C69E29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79D67295-E017-4A72-A267-C9F1BEB084EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79D67295-E017-4A72-A267-C9F1BEB084EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79D67295-E017-4A72-A267-C9F1BEB084EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79D67295-E017-4A72-A267-C9F1BEB084EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
