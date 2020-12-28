@@ -111,8 +111,8 @@ namespace StreetTalk.Areas.Identity.Pages.Account
                         await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                             $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                        if (_userManager.Options.SignIn.RequireConfirmedAccount && ModelState.IsValid)
-                        {
+                        if (_userManager.Options.SignIn.RequireConfirmedAccount && ModelState.IsValid) //ModelState.IsValid hoort hier mischien niet
+                    {
                             return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                         }
                         else
