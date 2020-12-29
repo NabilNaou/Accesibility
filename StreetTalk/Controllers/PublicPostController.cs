@@ -169,5 +169,17 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Post", new { id });
         }
 
+        public IActionResult EditComment()
+        {
+            //Functionaliteit hier
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult DeleteComment()
+        {
+            //Functionaliteit hier
+            return RedirectToAction("Index");
+        }
+
     }
 }
