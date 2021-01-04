@@ -6,6 +6,9 @@
 
 .post-image {
     max-width: 100%;
+    transform: translateY(-50%);
+    top: 50%;
+    position: relative;
 }
 
 .profile-image {

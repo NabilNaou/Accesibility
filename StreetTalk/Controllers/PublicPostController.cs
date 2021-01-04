@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using StreetTalk.Models;
 using StreetTalk.Data;
-using StreetTalk.Models;
 using StreetTalk.Services;
 
 namespace StreetTalk.Controllers
 {
-    [Serializable()]
+    [Serializable]
     public class PostJsonResult
     {
         public bool Succes { get; set; }
@@ -22,7 +26,7 @@ namespace StreetTalk.Controllers
     {
         public PublicPost Post { get; set; }
         public bool Liked { get; set; }
-        
+
         public bool Reported { get; set; }
     }
 
@@ -42,11 +46,17 @@ namespace StreetTalk.Controllers
     {
         private readonly PostService postService;
         private readonly UserService userService;
+        private readonly IConfiguration config;
+        private readonly IWebHostEnvironment environment;
+        private readonly string[] permittedUploadExtensions = {".png", ".jpg", ".jpeg"};
 
-        public PublicPostController(StreetTalkContext context, PostService postService, UserService userService) : base(context)
+        public PublicPostController(StreetTalkContext context, PostService postService, UserService userService,
+            IConfiguration config, IWebHostEnvironment environment) : base(context)
         {
             this.postService = postService;
             this.userService = userService;
+            this.config = config;
+            this.environment = environment;
         }
 
         public IActionResult Index(PublicPostListFilters filters, int page = 1)
@@ -85,16 +95,43 @@ namespace StreetTalk.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(PublicPost post)
+        public async Task<IActionResult> Create(PublicPost post)
         {
             if (!ModelState.IsValid) return View(post);
+
+            //Photo upload
+            if (post.UploadedPhoto != null && post.UploadedPhoto.Length > 0)
+            {
+                var extenstion = Path.GetExtension(post.UploadedPhoto.FileName);
+                if (extenstion == null || !permittedUploadExtensions.Contains(extenstion))
+                    return View(post);
+
+                var newFilename = Path.GetRandomFileName() + extenstion;
+                var filePath = Path.Combine(config["StoredFilesPath"], newFilename);
+                var uploadsPath = Path.Combine(environment.WebRootPath, config["StoredFilesPath"]);
+
+                if (!Directory.Exists(uploadsPath))
+                    Directory.CreateDirectory(uploadsPath);
+
+                await using var stream = System.IO.File.Create(Path.Combine(environment.WebRootPath, filePath));
+                await post.UploadedPhoto.CopyToAsync(stream);
+
+                post.Photo = new PostPhoto
+                {
+                    Sensitive = post.UploadedPhotoIsSensitive,
+                    Photo = new Photo
+                    {
+                        Filename = "/" + filePath
+                    }
+                };
+            }
 
             var user = userService.GetCurrentlyLoggedInUser();
             post.UserId = user?.Id;
             user?.Posts.Add(post);
-                
-            Db.SaveChanges();
-            
+
+            await Db.SaveChangesAsync();
+
             return RedirectToAction("Index");
         }
 
@@ -113,14 +150,14 @@ namespace StreetTalk.Controllers
         [HttpPost]
         public IActionResult PostLike(int id)
         {
-            if(userService.GetCurrentlyLoggedInUser() == null)
+            if (userService.GetCurrentlyLoggedInUser() == null)
                 return Json(new PostJsonResult {Succes = false, Error = "U moet eerst inloggen"});
-                
+
             try
             {
                 var post = postService.GetPublicPostById(id);
                 postService.ToggleLikeForPost(post, userService.GetCurrentlyLoggedInUser()?.Id);
-                
+
                 return Json(new PostJsonResult {Succes = true, NewLikes = post.Likes.Count()});
             }
             catch
@@ -128,17 +165,17 @@ namespace StreetTalk.Controllers
                 return Json(new PostJsonResult {Succes = false, Error = "Wijziging kon niet worden opgeslagen"});
             }
         }
-        
+
         [HttpPost]
         public IActionResult PostReport(int id)
         {
-            if(userService.GetCurrentlyLoggedInUser() == null)
+            if (userService.GetCurrentlyLoggedInUser() == null)
                 return Json(new PostJsonResult {Succes = false, Error = "U moet eerst inloggen"});
-            
+
             try
             {
                 var post = postService.GetPublicPostById(id);
-                
+
                 if (postService.UserReportedPost(post, userService.GetCurrentlyLoggedInUser()?.Id))
                     return Json(new PostJsonResult {Succes = false, Error = "Je hebt deze post al gerapporteerd"});
 
@@ -154,7 +191,7 @@ namespace StreetTalk.Controllers
         [HttpPost]
         public IActionResult PostComment(int id, string commentContent)
         {
-            if (commentContent == null || commentContent == "") return RedirectToAction("Post", new { id });
+            if (commentContent == null || commentContent == "") return RedirectToAction("Post", new {id});
 
             Comment postedComment = new Comment
             {
@@ -166,8 +203,7 @@ namespace StreetTalk.Controllers
             Db.SaveChanges();
 
 
-            return RedirectToAction("Post", new { id });
+            return RedirectToAction("Post", new {id});
         }
-
     }
 }

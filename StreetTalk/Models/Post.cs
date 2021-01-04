@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace StreetTalk.Models
 {
@@ -17,5 +18,11 @@ namespace StreetTalk.Models
         
         public virtual string UserId { get; set; }
         public virtual StreetTalkUser User { get; set; }
+        
+        [NotMapped]
+        [DataType(DataType.Upload)]
+        public virtual IFormFile UploadedPhoto { get; set; }
+        [NotMapped]
+        public virtual bool UploadedPhotoIsSensitive { get; set; }
     }
 }
