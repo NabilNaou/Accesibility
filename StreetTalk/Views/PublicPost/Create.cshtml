@@ -27,8 +27,10 @@
                     <span class="text-danger">@Html.ValidationMessageFor(m => m.UploadedPhoto)</span>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.UploadedPhotoIsSensitive)
-                    @Html.CheckBoxFor(m => m.UploadedPhotoIsSensitive, new {@class = "form-control"})
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.UploadedPhotoIsSensitive, new {@class = "form-check-input"})
+                        @Html.LabelFor(m => m.UploadedPhotoIsSensitive, new {@class = "form-check-label"})
+                    </div>
                     <span class="text-danger">@Html.ValidationMessageFor(m => m.UploadedPhotoIsSensitive)</span>
                 </div>
                 <div class="form-group">

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace StreetTalk.Models
 {
@@ -6,6 +7,7 @@ namespace StreetTalk.Models
     {
         public virtual bool Closed { get; set; }
         
+        [DisplayName("Categorie")]
         public virtual int CategoryId { get; set; }
         public virtual PostCategory Category { get; set; }
 
