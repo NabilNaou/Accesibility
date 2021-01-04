@@ -1,5 +1,6 @@
 ﻿@model PublicPost
 
+
 @{
     ViewData["Title"] = "Maak publieke melding";
 }
@@ -14,6 +15,11 @@
                     @Html.LabelFor(m => m.Title)
                     @Html.TextBoxFor(m => m.Title, new {@class = "form-control"})
                     <span class="text-danger">@Html.ValidationMessageFor(m => m.Title)</span>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.CategoryId)
+                    @Html.DropDownListFor(m => m.CategoryId, new SelectList((IEnumerable<PostCategory>) ViewData["categories"], "Id", "Name"), new {@class = "form-control"})
+                    <span class="text-danger">@Html.ValidationMessageFor(m => m.CategoryId)</span>
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(m => m.UploadedPhoto)

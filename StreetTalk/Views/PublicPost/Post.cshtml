@@ -5,6 +5,10 @@
     ViewData["Title"] = Model.Title;
 }
 
+@section Scripts {
+    <script src="~/js/post.js"></script>
+}
+
 @section styles {
     <link href="~/css/post.css" rel="stylesheet" />
 }
@@ -17,6 +21,7 @@
                     <h1 class="mb-0 mt-4">@Model.Title</h1>
                     <span class="d-flex align-items-end">Gemeld op @Model.CreatedAt?.ToString("dd-MM-yyyy") door @Model.User.Profile.FullName</span>
                 </div>
+                <span class="text-muted">Categorie: @Model.Category?.Name</span>
                 <hr class="my-4" />
             </div>
         </div>
@@ -25,7 +30,10 @@
             <div class="row">
                 <div class="col-12 d-flex justify-content-center">
                     <div class="post-image-wrapper mt-3 mb-5">
-                        <img class="img-fluid shadow post-image" alt="Afbeelding over @Model.Title" src="@Model.Photo.Photo.Filename" />
+                        <img class="img-fluid shadow post-image @(Model.Photo.Sensitive ? "sensitive" : "")" alt="Afbeelding over @Model.Title" src="@Model.Photo.Photo.Filename" />
+                        <div class="show-image justify-content-center align-items-center" onclick="showImage()">
+                            <span>Laat afbeelding zien</span>
+                        </div>
                     </div>
                 </div>
             </div>

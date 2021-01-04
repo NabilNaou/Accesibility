@@ -5,6 +5,9 @@ namespace StreetTalk.Models
     public class PublicPost : Post
     {
         public virtual bool Closed { get; set; }
+        
+        public virtual int CategoryId { get; set; }
+        public virtual PostCategory Category { get; set; }
 
         public virtual List<Comment> Comments { get; } = new List<Comment>();
         

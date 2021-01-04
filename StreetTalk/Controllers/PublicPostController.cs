@@ -91,6 +91,9 @@ namespace StreetTalk.Controllers
 
         public IActionResult Create()
         {
+            IEnumerable<PostCategory> categories = Db.PostCategory.ToList();
+            ViewData["categories"] = categories;
+            
             return View();
         }
 
@@ -129,10 +132,10 @@ namespace StreetTalk.Controllers
             var user = userService.GetCurrentlyLoggedInUser();
             post.UserId = user?.Id;
             user?.Posts.Add(post);
-
+            
             await Db.SaveChangesAsync();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Post", new { id = post.Id });
         }
 
         public IActionResult Post(int id)

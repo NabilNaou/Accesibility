@@ -19,6 +19,7 @@ namespace StreetTalk.Seeders
                     Id = 1,
                     Title = "Overlast touristen",
                     Content = SeederUtils.LoremIpsum,
+                    CategoryId = 1,
                     Photo = new PostPhoto
                     {
                         Sensitive = false,
@@ -68,6 +69,7 @@ namespace StreetTalk.Seeders
             {
                 Id = id,
                 Title = "Afval op straat",
+                CategoryId = 1,
                 Content = SeederUtils.LoremIpsum,
                 Closed = true,
                 Photo = new PostPhoto

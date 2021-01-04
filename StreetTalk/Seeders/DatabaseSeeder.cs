@@ -10,6 +10,7 @@ namespace StreetTalk.Seeders
         {
             new RoleSeeder(),
             new UserSeeder(),
+            new PostCategorySeeder(),
             new PostSeeder(),
             new LikeSeeder(),
             new CommentSeeder()
