@@ -7,6 +7,7 @@ using StreetTalk.Models;
 using StreetTalk.Data;
 using StreetTalk.Models;
 using StreetTalk.Services;
+using System.Threading.Tasks;
 
 namespace StreetTalk.Controllers
 {
@@ -22,7 +23,7 @@ namespace StreetTalk.Controllers
     {
         public PublicPost Post { get; set; }
         public bool Liked { get; set; }
-        
+
         public bool Reported { get; set; }
     }
 
@@ -92,9 +93,9 @@ namespace StreetTalk.Controllers
             var user = userService.GetCurrentlyLoggedInUser();
             post.UserId = user?.Id;
             user?.Posts.Add(post);
-                
+
             Db.SaveChanges();
-            
+
             return RedirectToAction("Index");
         }
 
@@ -113,41 +114,41 @@ namespace StreetTalk.Controllers
         [HttpPost]
         public IActionResult PostLike(int id)
         {
-            if(userService.GetCurrentlyLoggedInUser() == null)
-                return Json(new PostJsonResult {Succes = false, Error = "U moet eerst inloggen"});
-                
+            if (userService.GetCurrentlyLoggedInUser() == null)
+                return Json(new PostJsonResult { Succes = false, Error = "U moet eerst inloggen" });
+
             try
             {
                 var post = postService.GetPublicPostById(id);
                 postService.ToggleLikeForPost(post, userService.GetCurrentlyLoggedInUser()?.Id);
-                
-                return Json(new PostJsonResult {Succes = true, NewLikes = post.Likes.Count()});
+
+                return Json(new PostJsonResult { Succes = true, NewLikes = post.Likes.Count() });
             }
             catch
             {
-                return Json(new PostJsonResult {Succes = false, Error = "Wijziging kon niet worden opgeslagen"});
+                return Json(new PostJsonResult { Succes = false, Error = "Wijziging kon niet worden opgeslagen" });
             }
         }
-        
+
         [HttpPost]
         public IActionResult PostReport(int id)
         {
-            if(userService.GetCurrentlyLoggedInUser() == null)
-                return Json(new PostJsonResult {Succes = false, Error = "U moet eerst inloggen"});
-            
+            if (userService.GetCurrentlyLoggedInUser() == null)
+                return Json(new PostJsonResult { Succes = false, Error = "U moet eerst inloggen" });
+
             try
             {
                 var post = postService.GetPublicPostById(id);
-                
+
                 if (postService.UserReportedPost(post, userService.GetCurrentlyLoggedInUser()?.Id))
-                    return Json(new PostJsonResult {Succes = false, Error = "Je hebt deze post al gerapporteerd"});
+                    return Json(new PostJsonResult { Succes = false, Error = "Je hebt deze post al gerapporteerd" });
 
                 postService.AddReportForPost(post, userService.GetCurrentlyLoggedInUser()?.Id);
-                return Json(new PostJsonResult {Succes = true});
+                return Json(new PostJsonResult { Succes = true });
             }
             catch
             {
-                return Json(new PostJsonResult {Succes = false, Error = "Wijziging kon niet worden opgeslagen"});
+                return Json(new PostJsonResult { Succes = false, Error = "Wijziging kon niet worden opgeslagen" });
             }
         }
 
@@ -169,15 +170,23 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Post", new { id });
         }
 
-        public IActionResult EditComment()
+        public IActionResult EditPost()
         {
             //Functionaliteit hier
             return RedirectToAction("Index");
         }
 
-        public IActionResult DeleteComment()
+        public IActionResult DeletePost(int id)
         {
-            //Functionaliteit hier
+            var user = userService.GetCurrentlyLoggedInUser();
+
+            if (postService.GetPublicPostById(id).UserId != user?.Id)
+            {
+                return RedirectToAction("Index");
+            }
+
+            postService.DeletePostById(id);
+
             return RedirectToAction("Index");
         }
 
