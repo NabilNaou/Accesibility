@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StreetTalk.Models;
 using StreetTalk.Data;
-using StreetTalk.Models;
 using StreetTalk.Services;
 using System.Threading.Tasks;
 
