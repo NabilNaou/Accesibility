@@ -2,13 +2,45 @@
     max-height: 450px;
     border-radius: 4px;
     overflow: hidden;
+    position: relative;
 }
 
 .post-image {
     max-width: 100%;
+    transform: translateY(-50%);
+    top: 50%;
+    position: relative;
 }
 
 .profile-image {
     width: 64px;
     height: 64px;
+}
+
+.min-vh-75 {
+    min-height: 75vh;
+}
+
+.post-image.sensitive {
+    filter: blur(64px);
+}
+
+.show-image {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #FAFAFA;
+    font-size: 1.3rem;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.show-image:hover {
+    cursor: pointer;
+}
+
+.post-image.sensitive + .show-image {
+    display: flex;
 }

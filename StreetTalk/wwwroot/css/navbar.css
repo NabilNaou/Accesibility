@@ -30,7 +30,8 @@
     }
 }
 
-.st-navbar:hover {
+.st-navbar:hover,
+.st-navbar:focus-within {
     max-width: 350px;
 }
 
@@ -94,7 +95,7 @@
     width: 100px;
     height: 58px;
     
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: flex-end;
 }
@@ -131,5 +132,9 @@
     .st-nav-link > span {
         min-width: calc(100vw - 50px);
         padding-right: 50px;
+    }
+
+    .hamburger {
+        display: flex;
     }
 }

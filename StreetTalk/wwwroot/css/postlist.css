@@ -46,11 +46,11 @@
 }
 
 .status-indicator.open {
-    background-color: #1BA345;
+    background-color: #158438;
 }
 
 .status-indicator.closed {
-    background-color: #DE3E44;
+    background-color: #DC3238;
 }
 
 .post-info {
