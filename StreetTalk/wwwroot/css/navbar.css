@@ -30,7 +30,8 @@
     }
 }
 
-.st-navbar:hover {
+.st-navbar:hover,
+.st-navbar:focus-within {
     max-width: 350px;
 }
 
