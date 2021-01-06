@@ -23,6 +23,8 @@
                 </div>
                 <span class="text-muted">Categorie: @Model.Category?.Name</span>
                 <hr class="my-4" />
+                <a aria-label="Bewerk Post" class="btn btn-primary" value="Bewerk Post" asp-area="" asp-controller="PublicPost" asp-action="Edit"></a>
+                <hr class="my-4" />
             </div>
         </div>
         @if (Model.Photo != null)

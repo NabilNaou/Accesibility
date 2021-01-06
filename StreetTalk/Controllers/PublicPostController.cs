@@ -48,7 +48,7 @@ namespace StreetTalk.Controllers
         private readonly UserService userService;
         private readonly IConfiguration config;
         private readonly IWebHostEnvironment environment;
-        private readonly string[] permittedUploadExtensions = {".png", ".jpg", ".jpeg"};
+        private readonly string[] permittedUploadExtensions = { ".png", ".jpg", ".jpeg" };
 
         public PublicPostController(StreetTalkContext context, PostService postService, UserService userService,
             IConfiguration config, IWebHostEnvironment environment) : base(context)
@@ -93,7 +93,7 @@ namespace StreetTalk.Controllers
         {
             IEnumerable<PostCategory> categories = Db.PostCategory.ToList();
             ViewData["categories"] = categories;
-            
+
             return View();
         }
 
@@ -132,7 +132,7 @@ namespace StreetTalk.Controllers
             var user = userService.GetCurrentlyLoggedInUser();
             post.UserId = user?.Id;
             user?.Posts.Add(post);
-            
+
             await Db.SaveChangesAsync();
 
             return RedirectToAction("Post", new { id = post.Id });
@@ -154,18 +154,18 @@ namespace StreetTalk.Controllers
         public IActionResult PostLike(int id)
         {
             if (userService.GetCurrentlyLoggedInUser() == null)
-                return Json(new PostJsonResult {Succes = false, Error = "U moet eerst inloggen"});
+                return Json(new PostJsonResult { Succes = false, Error = "U moet eerst inloggen" });
 
             try
             {
                 var post = postService.GetPublicPostById(id);
                 postService.ToggleLikeForPost(post, userService.GetCurrentlyLoggedInUser()?.Id);
 
-                return Json(new PostJsonResult {Succes = true, NewLikes = post.Likes.Count()});
+                return Json(new PostJsonResult { Succes = true, NewLikes = post.Likes.Count() });
             }
             catch
             {
-                return Json(new PostJsonResult {Succes = false, Error = "Wijziging kon niet worden opgeslagen"});
+                return Json(new PostJsonResult { Succes = false, Error = "Wijziging kon niet worden opgeslagen" });
             }
         }
 
@@ -173,28 +173,28 @@ namespace StreetTalk.Controllers
         public IActionResult PostReport(int id)
         {
             if (userService.GetCurrentlyLoggedInUser() == null)
-                return Json(new PostJsonResult {Succes = false, Error = "U moet eerst inloggen"});
+                return Json(new PostJsonResult { Succes = false, Error = "U moet eerst inloggen" });
 
             try
             {
                 var post = postService.GetPublicPostById(id);
 
                 if (postService.UserReportedPost(post, userService.GetCurrentlyLoggedInUser()?.Id))
-                    return Json(new PostJsonResult {Succes = false, Error = "Je hebt deze post al gerapporteerd"});
+                    return Json(new PostJsonResult { Succes = false, Error = "Je hebt deze post al gerapporteerd" });
 
                 postService.AddReportForPost(post, userService.GetCurrentlyLoggedInUser()?.Id);
-                return Json(new PostJsonResult {Succes = true});
+                return Json(new PostJsonResult { Succes = true });
             }
             catch
             {
-                return Json(new PostJsonResult {Succes = false, Error = "Wijziging kon niet worden opgeslagen"});
+                return Json(new PostJsonResult { Succes = false, Error = "Wijziging kon niet worden opgeslagen" });
             }
         }
 
         [HttpPost]
         public IActionResult PostComment(int id, string commentContent)
         {
-            if (commentContent == null || commentContent == "") return RedirectToAction("Post", new {id});
+            if (commentContent == null || commentContent == "") return RedirectToAction("Post", new { id });
 
             Comment postedComment = new Comment
             {
@@ -206,7 +206,27 @@ namespace StreetTalk.Controllers
             Db.SaveChanges();
 
 
-            return RedirectToAction("Post", new {id});
+            return RedirectToAction("Post", new { id });
+        }
+
+        public IActionResult Edit()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Edit(PublicPost post, int id)
+        {
+            if (!ModelState.IsValid) return View(post);
+
+
+            var user = userService.GetCurrentlyLoggedInUser();
+            post.UserId = user?.Id;
+            user?.Posts.Add(post);
+
+            Db.SaveChanges();
+
+            return RedirectToAction("Post", new { id = post.Id });
         }
     }
 }
