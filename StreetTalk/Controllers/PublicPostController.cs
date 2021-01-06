@@ -100,6 +100,9 @@ namespace StreetTalk.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(PublicPost post)
         {
+            IEnumerable<PostCategory> categories = Db.PostCategory.ToList();
+            ViewData["categories"] = categories;
+            
             if (!ModelState.IsValid) return View(post);
 
             //Photo upload
@@ -135,7 +138,7 @@ namespace StreetTalk.Controllers
             
             await Db.SaveChangesAsync();
 
-            return RedirectToAction("Post", new { id = post.Id });
+            return RedirectToAction("Index");
         }
 
         public IActionResult Post(int id)
@@ -194,7 +197,7 @@ namespace StreetTalk.Controllers
         [HttpPost]
         public IActionResult PostComment(int id, string commentContent)
         {
-            if (commentContent == null || commentContent == "") return RedirectToAction("Post", new {id});
+            if (string.IsNullOrEmpty(commentContent)) return RedirectToAction("Post", new {id});
 
             Comment postedComment = new Comment
             {
@@ -202,9 +205,9 @@ namespace StreetTalk.Controllers
                 AuthorId = userService.GetCurrentlyLoggedInUser()?.Id,
                 PostId = id
             };
+            
             postService.GetPublicPostById(id).Comments.Add(postedComment);
             Db.SaveChanges();
-
 
             return RedirectToAction("Post", new {id});
         }
