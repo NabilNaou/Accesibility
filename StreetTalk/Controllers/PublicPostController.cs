@@ -35,11 +35,13 @@ namespace StreetTalk.Controllers
     {
         public List<PublicPostWithExtraData> Posts { get; set; }
         public PublicPostListFilters Filters { get; set; }
+        public int NextPage { get; set; }
+        public int PreviousPage { get; set; }
     }
 
     public class PublicPostListFilters
     {
-        public bool ShowClosedPosts { get; set; } = false;
+        public bool ShowClosedPosts { get; set; }
     }
 
     [Authorize]
@@ -84,7 +86,9 @@ namespace StreetTalk.Controllers
             var viewModelData = new PublicPostViewModel
             {
                 Posts = publicPostsWithLikes,
-                Filters = filters
+                Filters = filters,
+                PreviousPage = Math.Max(page - 1, 1), //TODO: Make a paginated list class
+                NextPage = page + 1
             };
 
             return View(viewModelData);

@@ -1,4 +1,5 @@
-﻿@model StreetTalk.Controllers.PublicPostViewModel
+﻿@using Microsoft.AspNetCore.Routing
+@model StreetTalk.Controllers.PublicPostViewModel
 
 @{
     ViewData["Title"] = "Publieke meldingen";
@@ -17,23 +18,19 @@
                 <img src="~/img/filter_list.svg" alt="Filter icoon"/>
                 <span class="d-inline-block ml-2">Filteren</span>
             </div>
-            <form>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Zoeken" aria-label="Zoeken">
-                    <div class="input-group-append">
-                        <button class="btn btn-secondary d-flex justify-content-center align-items-center" type="button">
-                            <img class="search-input-icon" src="~/img/search.svg" alt="Vergrootglas icoon"/>
-                        </button>
-                    </div>
-                </div>
-            </form>
         </div>
         <div id="filters">
             @using (Html.BeginForm("Index", "PublicPost", FormMethod.Get, new { @class = "m-3 p-3 card" }))
             {
                 <div class="form-check">
-                    <input asp-for="@Model.Filters.ShowClosedPosts" class="form-check-input"/>
-                    <label asp-for="@Model.Filters.ShowClosedPosts" class="form-check-label">Laat gesloten meldingen zien</label>
+                    @{
+                        var showClosedPostsOptions = new SelectList(new List<object>{ 
+                            new { value = "false", text = "No"  },
+                            new { value = "true", text = "Yes" }
+                        }, "value", "text");
+                    }
+                    @Html.LabelFor(m => m.Filters.ShowClosedPosts)
+                    @Html.DropDownListFor(m => m.Filters.ShowClosedPosts, showClosedPostsOptions, new {@class = "form-control"})
                 </div>
                 <input type="submit" value="Toepassen" class="btn btn-primary form-control mt-3"/>
             }
@@ -47,4 +44,14 @@
             </li>
         }
     </ul>
+    <div class="d-flex flex-row">
+        @Html.ActionLink("Vorige", "Index", new RouteValueDictionary {
+             {"Filters.ShowClosedPosts", Model.Filters.ShowClosedPosts },
+             {"page", Model.PreviousPage}
+        }, new { @class = "btn btn-secondary mr-3" })
+        @Html.ActionLink("Volgende", "Index", new RouteValueDictionary {
+             {"Filters.ShowClosedPosts", Model.Filters.ShowClosedPosts },
+             {"page", Model.NextPage}
+        }, new { @class = "btn btn-secondary" })
+    </div>
 </div>
