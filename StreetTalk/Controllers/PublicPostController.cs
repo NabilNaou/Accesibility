@@ -213,6 +213,17 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Post", new {id});
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Administrator,Moderator")]
+        public IActionResult Close(int id)
+        {
+            var post = postService.GetPublicPostById(id);
+            post.Closed = true;
+            Db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
         [HttpGet]
         public IActionResult CheckPostTitleSimilarity(string title)
         {
