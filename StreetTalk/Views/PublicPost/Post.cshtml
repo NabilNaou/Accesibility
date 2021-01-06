@@ -18,7 +18,7 @@
                     <span class="d-flex align-items-end">Gemeld op @Model.CreatedAt?.ToString("dd-MM-yyyy") door @Model.User.Profile.FullName</span>
                 </div>
                 <div class="d-flex w-100 justify-content-start flex-md-row">
-                    @if (User.Identity.Name == Model.User.UserName) {
+                    @if ((bool)ViewData["ViewAction"]) {
                         @using (Html.BeginForm("DeletePost", "PublicPost", new { id = Model.Id })){
                             <input class="btn btn-danger" type="submit" value="Verwijder" />
                         }

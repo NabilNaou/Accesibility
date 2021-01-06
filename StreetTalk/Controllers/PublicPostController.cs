@@ -102,7 +102,10 @@ namespace StreetTalk.Controllers
         {
             try
             {
-                return View(postService.GetPublicPostById(id));
+                var post = postService.GetPublicPostById(id);
+                var user = userService.GetCurrentlyLoggedInUser();
+                ViewData["ViewAction"] = user.Id == post.UserId;
+                return View(post);
             }
             catch
             {
@@ -167,12 +170,6 @@ namespace StreetTalk.Controllers
 
 
             return RedirectToAction("Post", new { id });
-        }
-
-        public IActionResult EditPost()
-        {
-            //Functionaliteit hier
-            return RedirectToAction("Index");
         }
 
         public IActionResult DeletePost(int id)
