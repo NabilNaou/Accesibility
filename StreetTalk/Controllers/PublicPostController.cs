@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
+using F23.StringSimilarity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using StreetTalk.Models;
 using StreetTalk.Data;
 using StreetTalk.Services;
@@ -199,7 +200,7 @@ namespace StreetTalk.Controllers
         {
             if (string.IsNullOrEmpty(commentContent)) return RedirectToAction("Post", new {id});
 
-            Comment postedComment = new Comment
+            var postedComment = new Comment
             {
                 Content = commentContent,
                 AuthorId = userService.GetCurrentlyLoggedInUser()?.Id,
@@ -210,6 +211,21 @@ namespace StreetTalk.Controllers
             Db.SaveChanges();
 
             return RedirectToAction("Post", new {id});
+        }
+
+        [HttpGet]
+        public IActionResult CheckPostTitleSimilarity(string title)
+        {
+            if (title.IsNullOrEmpty()) return BadRequest();
+            var lcs = new MetricLCS();
+            
+            foreach (var recentTitle in postService.GetRecentTitles())
+            {
+                if (lcs.Distance(title, recentTitle) <= 0.5)
+                    return Ok(new {Title = recentTitle});
+            }
+
+            return NoContent();
         }
     }
 }
