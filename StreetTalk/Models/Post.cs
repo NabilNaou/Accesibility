@@ -11,10 +11,12 @@ namespace StreetTalk.Models
         
         [StringLength(64)]
         [DisplayName("Titel")]
+        [MinLength(3, ErrorMessage = "Titel bevat minder dan 3 letters")]
         public virtual string Title { get; set; }
         
         [Column(TypeName = "text")]
         [DisplayName("Inhoud")]
+        [MinLength(10, ErrorMessage = "Inhoud bevat minder dan 10 letters")]
         public virtual string Content { get; set; }
         
         public virtual PostPhoto Photo { get; set; }
