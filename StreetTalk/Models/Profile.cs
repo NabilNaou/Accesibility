@@ -26,6 +26,8 @@ namespace StreetTalk.Models
                 
                 if (!FirstName.IsNullOrEmpty() && !LastName.IsNullOrEmpty())
                     name = $"{FirstName} {LastName}";
+                else if (!FirstName.IsNullOrEmpty())
+                    name = FirstName!;
 
                 return name;
             }
