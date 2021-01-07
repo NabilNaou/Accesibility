@@ -223,7 +223,8 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Post", new {id});
         }
 
-        public IActionResult DeletePost(int id)
+        [HttpPost]
+        public IActionResult Delete(int id)
         {
             var user = userService.GetCurrentlyLoggedInUser();
 
