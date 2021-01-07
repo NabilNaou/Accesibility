@@ -30,6 +30,8 @@ namespace StreetTalk.Data
         public DbSet<StreetTalkUser> User { get; set; }
 
         public DbSet<Post> Post { get; set; }
+        
+        public DbSet<PostCategory> PostCategory { get; set; }
 
         public IEnumerable<PublicPost> PublicPost => Post.OfType<PublicPost>();
         public IEnumerable<AnonymousPost> AnonymousPost => Post.OfType<AnonymousPost>();
