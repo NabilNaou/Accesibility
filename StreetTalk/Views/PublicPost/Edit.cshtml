@@ -8,7 +8,7 @@
 <div class="min-vh-100 w-100 d-flex justify-content-center align-items-center container-fluid my-4">
     <div class="row">
         <div class="card p-4 col-12">
-            <h1 class="mb-4 mr-5">Bewerk een publieke melding</h1>
+            <h1 class="mb-4 mr-5">Bewerk je melding</h1>
 
             @using (Html.BeginForm("Edit", "PublicPost", FormMethod.Post, new { id = Model.Id }))
             {
@@ -24,7 +24,7 @@
                     <span class="text-danger">@Html.ValidationMessageFor(m => m.Content)</span>
                 </div>
 
-                <input class="btn btn-primary float-right mt-4" type="submit" value="Maak publieke melding"/>
+                <input class="btn btn-primary float-right mt-4" type="submit" value="Pas melding aan"/>
             }
         </div>
     </div>
