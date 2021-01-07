@@ -5,6 +5,10 @@
     ViewData["Title"] = Model.Title;
 }
 
+@section Scripts {
+    <script src="~/js/post.js"></script>
+}
+
 @section styles {
     <link href="~/css/post.css" rel="stylesheet" />
 }
@@ -24,6 +28,7 @@
                         }
                     }
                 </div>
+                <span class="text-muted">Categorie: @Model.Category?.Name</span>
                 <hr class="my-4" />
             </div>
         </div>
@@ -32,12 +37,15 @@
             <div class="row">
                 <div class="col-12 d-flex justify-content-center">
                     <div class="post-image-wrapper mt-3 mb-5">
-                        <img class="img-fluid shadow post-image" alt="Afbeelding over @Model.Title" src="@Model.Photo.Photo.Filename" />
+                        <img class="img-fluid shadow post-image @(Model.Photo.Sensitive ? "sensitive" : "")" alt="Afbeelding over @Model.Title" src="@Model.Photo.Photo.Filename" />
+                        <div class="show-image justify-content-center align-items-center" onclick="showImage()">
+                            <span>Laat afbeelding zien</span>
+                        </div>
                     </div>
                 </div>
             </div>
         }
-        <div class="row justify-content-center min-vh-100" aria-label="Melding omschrijving">
+        <div class="row justify-content-center min-vh-75" aria-label="Melding omschrijving">
             <div class="col-xs-12 col-lg-9">
                 @Markdown.ParseHtmlString(Model.Content)
             </div>
@@ -58,20 +66,23 @@
                 </ul>
             </div>
         </div>
-        <div class="row justify-content-center" aria-labelledby="commentaar">
+        <div class="row justify-content-center" aria-labelledby="deelreactie">
             <div class="col-12">
-                <h1 id="commentaar" class="mb-0 mt-4">Deel uw reactie</h1>
+                <h1 id="deelreactie" class="mb-0 mt-4">Deel uw reactie</h1>
                 <hr class="my-4" />
             </div>
         </div>
-        <div>
-            @using (Html.BeginForm("PostComment", "PublicPost", new { id = Model.Id }, FormMethod.Post))
-            {
-                <div class="form-group w-100">
-                    <textarea class="form-control w-100" name="commentContent"></textarea>
-                </div>
-                <input class="btn btn-primary float-right" type="submit" value="Post Comment" />
-            }
+        <div class="d-flex justify-content-center w-100">
+            <div class="w-75">
+                @using (Html.BeginForm("PostComment", "PublicPost", new {id = Model.Id}, FormMethod.Post))
+                {
+                    <div class="form-group w-100">
+                        <label for="commentContent">Uw reactie</label>
+                        <textarea class="form-control w-100" id="commentContent" name="commentContent"></textarea>
+                    </div>
+                    <input class="btn btn-primary float-right" type="submit" value="Post Comment"/>
+                }
+            </div>
         </div>
     </div>
 </div>

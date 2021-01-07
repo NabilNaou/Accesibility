@@ -30,10 +30,17 @@ namespace StreetTalk.Seeders
                 null, 
                 null);
 
-            if (roleManager.RoleExistsAsync("Buurtbewoner").Result) return;
+            if (!roleManager.RoleExistsAsync("Buurtbewoner").Result)
+                roleManager.CreateAsync(new IdentityRole { Name = "Buurtbewoner" }).Wait();
             
-            var role = new IdentityRole { Name = "Buurtbewoner" };
-            roleManager.CreateAsync(role).Wait();
+            if (!roleManager.RoleExistsAsync("Moderator").Result)
+                roleManager.CreateAsync(new IdentityRole { Name = "Moderator" }).Wait();
+            
+            if (!roleManager.RoleExistsAsync("Administrator").Result)
+                roleManager.CreateAsync(new IdentityRole { Name = "Administrator" }).Wait();
+            
+            if (!roleManager.RoleExistsAsync("Gemeentemedewerker").Result)
+                roleManager.CreateAsync(new IdentityRole { Name = "Gemeentemedewerker" }).Wait();
         }
     }
 }
