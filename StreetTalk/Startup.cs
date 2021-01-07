@@ -1,3 +1,4 @@
+using System;
 using GoogleReCaptcha.V3;
 using GoogleReCaptcha.V3.Interface;
 using Microsoft.AspNetCore.Builder;
@@ -54,7 +55,12 @@ namespace StreetTalk
             services.AddRazorPages();
             services.AddIdentity<StreetTalkUser, IdentityRole>
                     (options =>
-                        options.SignIn.RequireConfirmedAccount = true)
+                    {
+                        options.SignIn.RequireConfirmedAccount = true;
+                        options.Lockout.AllowedForNewUsers = true;
+                        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                        options.Lockout.MaxFailedAccessAttempts = 5;
+                    })
                     .AddEntityFrameworkStores<StreetTalkContext>()
                     .AddRoles<IdentityRole>()
                     .AddRoleManager<RoleManager<IdentityRole>>()

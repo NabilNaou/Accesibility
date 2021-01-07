@@ -21,19 +21,35 @@
                     <h1 class="mb-0 mt-4">@Model.Title</h1>
                     <span class="d-flex align-items-end">Gemeld op @Model.CreatedAt?.ToString("dd-MM-yyyy") door @Model.User.Profile.FullName</span>
                 </div>
-                <div class="d-flex w-100 justify-content-start flex-md-row">
-                    @if ((bool)ViewData["ViewAction"]) {
-                        @using (Html.BeginForm("DeletePost", "PublicPost", new { id = Model.Id })){
-                            <input class="btn btn-danger" type="submit" value="Verwijder" />
-                        }
-                    }
-                </div>
                 <span class="text-muted">Categorie: @Model.Category?.Name</span>
                 <hr class="my-4" />
                 <a aria-label="Bewerk Post" class="btn btn-primary" value="Bewerk Post" asp-route-id="@Model.Id" asp-controller="PublicPost" asp-action="Edit">Bewerk</a>
                 <hr class="my-4" />
             </div>
         </div>
+        @if ((bool)ViewData["ViewAction"]) {
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <form method="post" asp-controller="PublicPost" asp-action="Delete" asp-route-id="@Model.Id">
+                        <input class="btn btn-danger" type="submit" value="Verwijder melding" />
+                    </form>
+                    <hr class="my-4" />
+                </div>
+            </div>
+        }
+        @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+        {
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    @if (!Model.Closed) {
+                        <form method="post" asp-controller="PublicPost" asp-action="Close" asp-route-id="@Model.Id">
+                            <input type="submit" class="btn btn-danger" value="Sluit deze melding"/>
+                        </form>
+                    }
+                    <hr class="my-4"/>
+                </div>
+            </div>
+        }
         @if (Model.Photo != null)
         {
             <div class="row">
@@ -74,8 +90,8 @@
                 <hr class="my-4" />
             </div>
         </div>
-        <div class="d-flex justify-content-center w-100">
-            <div class="w-75">
+        <div class="row d-flex justify-content-center">
+            <div class="col-xs-12 col-lg-9">
                 @using (Html.BeginForm("PostComment", "PublicPost", new {id = Model.Id}, FormMethod.Post))
                 {
                     <div class="form-group w-100">

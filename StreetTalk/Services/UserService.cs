@@ -19,5 +19,10 @@ namespace StreetTalk.Services
         {
             return userManager.GetUserAsync(httpContext.HttpContext.User).Result;
         }
+
+        public string GetCurrentlyLoggedInUsername()
+        {
+            return GetCurrentlyLoggedInUser().Profile.FullName;
+        }
     }
 }
