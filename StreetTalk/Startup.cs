@@ -60,6 +60,7 @@ namespace StreetTalk
                     .AddEntityFrameworkStores<StreetTalkContext>()
                     .AddRoles<IdentityRole>()
                     .AddRoleManager<RoleManager<IdentityRole>>()
+                    .AddSignInManager<StreetTalkSignInManager>()
                     .AddDefaultTokenProviders();
             
             services.ConfigureApplicationCookie(options =>

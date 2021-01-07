@@ -98,13 +98,17 @@ namespace StreetTalk.Areas.Identity.Pages.Account
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Ongeldige login");
+
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    if (user == null) return Page();
                     
-                    if (await _userManager.GetAccessFailedCountAsync(
-                        await _userManager.FindByEmailAsync(Input.Email)) >= 3)
+                    var failedAttempts = await _userManager.GetAccessFailedCountAsync(user);
+                    if (failedAttempts >= 3)
                     {
-                        ModelState.AddModelError(string.Empty, "Als u uw wachtwoord vergeten bent, klik op 'Forgot your password?'");
+                        ModelState.AddModelError(string.Empty,
+                            "Als u uw wachtwoord vergeten bent, klik op 'Forgot your password?'");
                     }
-                    
+
                     return Page();
                 }
             }
