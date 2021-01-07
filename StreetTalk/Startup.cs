@@ -1,4 +1,6 @@
 using System;
+using GoogleReCaptcha.V3;
+using GoogleReCaptcha.V3.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -43,6 +45,8 @@ namespace StreetTalk
 
             services.AddTransient<IEmailSender, EmailSender>();
 
+            services.AddHttpClient<ICaptchaValidator, GoogleReCaptchaValidator>();
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddResponseCompression();
             services.AddHttpContextAccessor();
@@ -60,7 +64,6 @@ namespace StreetTalk
                     .AddEntityFrameworkStores<StreetTalkContext>()
                     .AddRoles<IdentityRole>()
                     .AddRoleManager<RoleManager<IdentityRole>>()
-                    .AddSignInManager<StreetTalkSignInManager>()
                     .AddDefaultTokenProviders();
             
             services.ConfigureApplicationCookie(options =>
