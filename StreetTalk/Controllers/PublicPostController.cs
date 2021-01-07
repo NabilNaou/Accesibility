@@ -14,6 +14,7 @@ using StreetTalk.Models;
 using StreetTalk.Data;
 using StreetTalk.Services;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace StreetTalk.Controllers
 {
@@ -53,7 +54,7 @@ namespace StreetTalk.Controllers
         private readonly UserService userService;
         private readonly IConfiguration config;
         private readonly IWebHostEnvironment environment;
-        private readonly string[] permittedUploadExtensions = {".png", ".jpg", ".jpeg"};
+        private readonly string[] permittedUploadExtensions = { ".png", ".jpg", ".jpeg" };
 
         public PublicPostController(StreetTalkContext context, PostService postService, UserService userService,
             IConfiguration config, IWebHostEnvironment environment) : base(context)
@@ -100,7 +101,7 @@ namespace StreetTalk.Controllers
         {
             IEnumerable<PostCategory> categories = Db.PostCategory.ToList();
             ViewData["categories"] = categories;
-            
+
             return View();
         }
 
@@ -142,7 +143,7 @@ namespace StreetTalk.Controllers
             var user = userService.GetCurrentlyLoggedInUser();
             post.UserId = user?.Id;
             user?.Posts.Add(post);
-            
+
             await Db.SaveChangesAsync();
 
             return RedirectToAction("Index");
@@ -167,14 +168,14 @@ namespace StreetTalk.Controllers
         public IActionResult PostLike(int id)
         {
             if (userService.GetCurrentlyLoggedInUser() == null)
-                return Json(new PostJsonResult {Succes = false, Error = "U moet eerst inloggen"});
+                return Json(new PostJsonResult { Succes = false, Error = "U moet eerst inloggen" });
 
             try
             {
                 var post = postService.GetPublicPostById(id);
                 postService.ToggleLikeForPost(post, userService.GetCurrentlyLoggedInUser()?.Id);
 
-                return Json(new PostJsonResult {Succes = true, NewLikes = post.Likes.Count()});
+                return Json(new PostJsonResult { Succes = true, NewLikes = post.Likes.Count() });
             }
             catch
             {
@@ -186,7 +187,7 @@ namespace StreetTalk.Controllers
         public IActionResult PostReport(int id)
         {
             if (userService.GetCurrentlyLoggedInUser() == null)
-                return Json(new PostJsonResult {Succes = false, Error = "U moet eerst inloggen"});
+                return Json(new PostJsonResult { Succes = false, Error = "U moet eerst inloggen" });
 
             try
             {
@@ -220,7 +221,35 @@ namespace StreetTalk.Controllers
             Db.SaveChanges();
 
 
-            return RedirectToAction("Post", new {id});
+            return RedirectToAction("Post", new { id });
+        }
+
+        public IActionResult Edit(int id)
+        {
+            return View(postService.GetPublicPostById(id));
+        }
+
+        [HttpPost]
+        public IActionResult Edit(PublicPost post, int id)
+        {
+            var user = userService.GetCurrentlyLoggedInUser();
+
+            if (postService.GetPublicPostById(id).UserId != user?.Id)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var EditedPost = postService.EditPostById(id, post);
+
+            var context = new ValidationContext(EditedPost);
+            var validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(EditedPost, context, validationResults, true);
+
+            if (!isValid) return View(post);
+
+            Db.SaveChanges();
+
+            return RedirectToAction("Post", new { id = post.Id });
         }
 
         [HttpPost]

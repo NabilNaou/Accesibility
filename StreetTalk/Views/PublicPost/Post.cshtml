@@ -28,9 +28,12 @@
         @if ((bool)ViewData["ViewAction"]) {
             <div class="row justify-content-center">
                 <div class="col-12">
-                    <form method="post" asp-controller="PublicPost" asp-action="Delete" asp-route-id="@Model.Id">
-                        <input class="btn btn-danger" type="submit" value="Verwijder melding" />
-                    </form>
+                    <div class="d-flex flex-row">
+                        <form class="mr-2" method="post" asp-controller="PublicPost" asp-action="Delete" asp-route-id="@Model.Id">
+                            <input class="btn btn-danger" type="submit" value="Verwijder melding" />
+                        </form>
+                        <a aria-label="Bewerk Post" class="btn btn-primary" value="Bewerk Post" asp-route-id="@Model.Id" asp-controller="PublicPost" asp-action="Edit">Bewerk</a>
+                    </div>
                     <hr class="my-4" />
                 </div>
             </div>

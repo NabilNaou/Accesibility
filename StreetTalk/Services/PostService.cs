@@ -87,5 +87,15 @@ namespace StreetTalk.Services
                 .Select(p => p.Title)
                 .AsEnumerable();
         }
+
+        public PublicPost EditPostById(int id, PublicPost newpost)
+        {
+            var post = GetPublicPostById(id);
+
+            post.Title = newpost.Title;
+            post.Content = newpost.Content;
+
+            return post;
+        }
     }
 }
