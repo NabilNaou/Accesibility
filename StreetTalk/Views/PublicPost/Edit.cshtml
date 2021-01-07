@@ -2,13 +2,14 @@
 
 
 @{
-    ViewData["Title"] = "Maak publieke melding";
+    ViewData["Title"] = "Bewerk publieke melding";
 }
 
 <div class="min-vh-100 w-100 d-flex justify-content-center align-items-center container-fluid my-4">
     <div class="row">
         <div class="card p-4 col-12">
-            <h1 class="mb-4 mr-5">Publiek melden</h1>
+            <h1 class="mb-4 mr-5">Bewerk een publieke melding</h1>
+
             @using (Html.BeginForm("Edit", "PublicPost", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <div class="form-group">
@@ -16,11 +17,13 @@
                     @Html.TextBoxFor(m => m.Title, new {@class = "form-control"})
                     <span class="text-danger">@Html.ValidationMessageFor(m => m.Title)</span>
                 </div>
+
                 <div class="form-group">
                     @Html.LabelFor(m => m.Content)
                     @Html.TextAreaFor(m => m.Content, new {@class = "form-control", id = "postContent"})
                     <span class="text-danger">@Html.ValidationMessageFor(m => m.Content)</span>
                 </div>
+
                 <input class="btn btn-primary float-right mt-4" type="submit" value="Maak publieke melding"/>
             }
         </div>
