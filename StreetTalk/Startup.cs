@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -50,7 +51,12 @@ namespace StreetTalk
             services.AddRazorPages();
             services.AddIdentity<StreetTalkUser, IdentityRole>
                     (options =>
-                        options.SignIn.RequireConfirmedAccount = true)
+                    {
+                        options.SignIn.RequireConfirmedAccount = true;
+                        options.Lockout.AllowedForNewUsers = true;
+                        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                        options.Lockout.MaxFailedAccessAttempts = 5;
+                    })
                     .AddEntityFrameworkStores<StreetTalkContext>()
                     .AddRoles<IdentityRole>()
                     .AddRoleManager<RoleManager<IdentityRole>>()

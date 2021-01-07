@@ -51,6 +51,8 @@ namespace StreetTalk.Seeders
                     }
                 }
             };
+
+            user.LockoutEnabled = role == "Buurtbewoner";
             
             var passwordHasher = new PasswordHasher<StreetTalkUser>();
             var hashed = passwordHasher.HashPassword(user, password);
