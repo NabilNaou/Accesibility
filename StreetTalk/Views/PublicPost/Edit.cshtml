@@ -10,7 +10,7 @@
         <div class="card p-4 col-12">
             <h1 class="mb-4 mr-5">Bewerk een publieke melding</h1>
 
-            @using (Html.BeginForm("Edit", "PublicPost", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("Edit", "PublicPost", FormMethod.Post, new { id = Model.Id }))
             {
                 <div class="form-group">
                     @Html.LabelFor(m => m.Title)

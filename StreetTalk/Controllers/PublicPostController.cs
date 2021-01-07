@@ -12,6 +12,7 @@ using StreetTalk.Models;
 using StreetTalk.Data;
 using StreetTalk.Services;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace StreetTalk.Controllers
 {
@@ -213,20 +214,28 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Post", new { id });
         }
 
-        public IActionResult Edit()
+        public IActionResult Edit(int id)
         {
-            return View();
+            return View(postService.GetPublicPostById(id));
         }
 
         [HttpPost]
         public IActionResult Edit(PublicPost post, int id)
         {
-            if (!ModelState.IsValid) return View(post);
-
-
             var user = userService.GetCurrentlyLoggedInUser();
-            post.UserId = user?.Id;
-            user?.Posts.Add(post);
+
+            if (postService.GetPublicPostById(id).UserId != user?.Id)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var EditedPost = postService.EditPostById(id, post);
+
+            var context = new ValidationContext(EditedPost);
+            var validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(EditedPost, context, validationResults, true);
+
+            if (!isValid) return View(post);
 
             Db.SaveChanges();
 
