@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using StreetTalk.Models;
+using GoogleReCaptcha.V3.Interface;
 
 namespace StreetTalk.Areas.Identity.Pages.Account
 {
@@ -21,14 +22,17 @@ namespace StreetTalk.Areas.Identity.Pages.Account
         private readonly UserManager<StreetTalkUser> _userManager;
         private readonly SignInManager<StreetTalkUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly ICaptchaValidator _captchaValidator;
 
         public LoginModel(SignInManager<StreetTalkUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<StreetTalkUser> userManager)
+            UserManager<StreetTalkUser> userManager,
+            ICaptchaValidator captchaValidator)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _captchaValidator = captchaValidator;
         }
 
         [BindProperty]
@@ -72,9 +76,15 @@ namespace StreetTalk.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string captcha, string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
+
+            if (!await _captchaValidator.IsCaptchaPassedAsync(captcha))
+            {
+                ModelState.AddModelError("captcha", "Captcha validation failed");
+                return Page();
+            }
 
             if (ModelState.IsValid)
             {
