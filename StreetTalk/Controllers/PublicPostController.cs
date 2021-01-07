@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using StreetTalk.Models;
 using StreetTalk.Data;
 using StreetTalk.Services;
+using System.Threading.Tasks;
 
 namespace StreetTalk.Controllers
 {
@@ -142,7 +143,10 @@ namespace StreetTalk.Controllers
         {
             try
             {
-                return View(postService.GetPublicPostById(id));
+                var post = postService.GetPublicPostById(id);
+                var user = userService.GetCurrentlyLoggedInUser();
+                ViewData["ViewAction"] = user.Id == post.UserId;
+                return View(post);
             }
             catch
             {
@@ -228,5 +232,20 @@ namespace StreetTalk.Controllers
 
             return RedirectToAction("Post", new { id = post.Id });
         }
+
+        public IActionResult DeletePost(int id)
+        {
+            var user = userService.GetCurrentlyLoggedInUser();
+
+            if (postService.GetPublicPostById(id).UserId != user?.Id)
+            {
+                return RedirectToAction("Index");
+            }
+
+            postService.DeletePostById(id);
+
+            return RedirectToAction("Index");
+        }
+
     }
 }

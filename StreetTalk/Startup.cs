@@ -1,3 +1,5 @@
+using GoogleReCaptcha.V3;
+using GoogleReCaptcha.V3.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -41,6 +43,8 @@ namespace StreetTalk
             });
 
             services.AddTransient<IEmailSender, EmailSender>();
+
+            services.AddHttpClient<ICaptchaValidator, GoogleReCaptchaValidator>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddResponseCompression();
