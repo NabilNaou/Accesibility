@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using StreetTalk.Data;
 using StreetTalk.Models;
@@ -77,6 +78,14 @@ namespace StreetTalk.Services
             Db.Post.Remove(post);
 
             Db.SaveChanges();
+        }
+
+        public IEnumerable<string> GetRecentTitles()
+        {
+            return Db.PublicPost
+                .Where(p => (p.CreatedAt!.Value - DateTime.Now).TotalDays < 30)
+                .Select(p => p.Title)
+                .AsEnumerable();
         }
     }
 }

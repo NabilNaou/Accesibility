@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
+using F23.StringSimilarity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -35,11 +37,13 @@ namespace StreetTalk.Controllers
     {
         public List<PublicPostWithExtraData> Posts { get; set; }
         public PublicPostListFilters Filters { get; set; }
+        public int NextPage { get; set; }
+        public int PreviousPage { get; set; }
     }
 
     public class PublicPostListFilters
     {
-        public bool ShowClosedPosts { get; set; } = false;
+        public bool ShowClosedPosts { get; set; }
     }
 
     [Authorize]
@@ -84,7 +88,9 @@ namespace StreetTalk.Controllers
             var viewModelData = new PublicPostViewModel
             {
                 Posts = publicPostsWithLikes,
-                Filters = filters
+                Filters = filters,
+                PreviousPage = Math.Max(page - 1, 1), //TODO: Make a paginated list class
+                NextPage = page + 1
             };
 
             return View(viewModelData);
@@ -101,6 +107,9 @@ namespace StreetTalk.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(PublicPost post)
         {
+            IEnumerable<PostCategory> categories = Db.PostCategory.ToList();
+            ViewData["categories"] = categories;
+            
             if (!ModelState.IsValid) return View(post);
 
             //Photo upload
@@ -136,7 +145,7 @@ namespace StreetTalk.Controllers
             
             await Db.SaveChangesAsync();
 
-            return RedirectToAction("Post", new { id = post.Id });
+            return RedirectToAction("Index");
         }
 
         public IActionResult Post(int id)
@@ -198,14 +207,15 @@ namespace StreetTalk.Controllers
         [HttpPost]
         public IActionResult PostComment(int id, string commentContent)
         {
-            if (commentContent == null || commentContent == "") return RedirectToAction("Post", new {id});
+            if (string.IsNullOrEmpty(commentContent)) return RedirectToAction("Post", new {id});
 
-            Comment postedComment = new Comment
+            var postedComment = new Comment
             {
                 Content = commentContent,
                 AuthorId = userService.GetCurrentlyLoggedInUser()?.Id,
                 PostId = id
             };
+            
             postService.GetPublicPostById(id).Comments.Add(postedComment);
             Db.SaveChanges();
 
@@ -213,7 +223,8 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Post", new {id});
         }
 
-        public IActionResult DeletePost(int id)
+        [HttpPost]
+        public IActionResult Delete(int id)
         {
             var user = userService.GetCurrentlyLoggedInUser();
 
@@ -227,5 +238,30 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Administrator,Moderator")]
+        public IActionResult Close(int id)
+        {
+            var post = postService.GetPublicPostById(id);
+            post.Closed = true;
+            Db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult CheckPostTitleSimilarity(string title)
+        {
+            if (title.IsNullOrEmpty()) return BadRequest();
+            var lcs = new MetricLCS();
+            
+            foreach (var recentTitle in postService.GetRecentTitles())
+            {
+                if (lcs.Distance(title, recentTitle) <= 0.5)
+                    return Ok(new {Title = recentTitle});
+            }
+
+            return NoContent();
+        }
     }
 }
