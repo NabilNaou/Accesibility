@@ -18,7 +18,6 @@ namespace StreetTalk.Services
 
         public async Task SendEmailAsync(string email, string subject, string message)
         {
-            Console.WriteLine("SendEmailAsync");
             await Execute(subject, message, email);
         }
 
@@ -26,9 +25,7 @@ namespace StreetTalk.Services
         {
             var key = Configuration.GetSection("SendGrid").GetValue<string>("Key");
             var name = Configuration.GetSection("SendGrid").GetValue<string>("User");
-            
-            Console.WriteLine($"key:{key} from:{name} to:{email}");
-            
+
             var client = new SendGridClient(key);
             
             var msg = new SendGridMessage
