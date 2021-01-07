@@ -78,6 +78,13 @@ namespace StreetTalk.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            if (!await _captchaValidator.IsCaptchaPassedAsync(captcha))
+            {
+                ModelState.AddModelError("captcha", "Captcha validation failed");
+                return Page();
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new StreetTalkUser { UserName = Input.Email, Email = Input.Email, Profile = new Profile
@@ -91,10 +98,6 @@ namespace StreetTalk.Areas.Identity.Pages.Account
                     }
                 } };
 
-                if (!await _captchaValidator.IsCaptchaPassedAsync(captcha))
-                {
-                    ModelState.AddModelError("captcha", "Captcha validation failed");
-                }
                 var result = await _userManager.CreateAsync(user, Input.Password);
                     if (result.Succeeded)
                     {
@@ -111,7 +114,7 @@ namespace StreetTalk.Areas.Identity.Pages.Account
                         await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                             $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                        if (_userManager.Options.SignIn.RequireConfirmedAccount && ModelState.IsValid) //ModelState.IsValid hoort hier mischien niet
+                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                             return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                         }
