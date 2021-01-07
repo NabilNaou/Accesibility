@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using StreetTalk.Models;
 using StreetTalk.Data;
 using StreetTalk.Services;
+using System.Threading.Tasks;
 
 namespace StreetTalk.Controllers
 {
@@ -142,7 +143,10 @@ namespace StreetTalk.Controllers
         {
             try
             {
-                return View(postService.GetPublicPostById(id));
+                var post = postService.GetPublicPostById(id);
+                var user = userService.GetCurrentlyLoggedInUser();
+                ViewData["ViewAction"] = user.Id == post.UserId;
+                return View(post);
             }
             catch
             {
@@ -165,7 +169,7 @@ namespace StreetTalk.Controllers
             }
             catch
             {
-                return Json(new PostJsonResult {Succes = false, Error = "Wijziging kon niet worden opgeslagen"});
+                return Json(new PostJsonResult { Succes = false, Error = "Wijziging kon niet worden opgeslagen" });
             }
         }
 
@@ -180,14 +184,14 @@ namespace StreetTalk.Controllers
                 var post = postService.GetPublicPostById(id);
 
                 if (postService.UserReportedPost(post, userService.GetCurrentlyLoggedInUser()?.Id))
-                    return Json(new PostJsonResult {Succes = false, Error = "Je hebt deze post al gerapporteerd"});
+                    return Json(new PostJsonResult { Succes = false, Error = "Je hebt deze post al gerapporteerd" });
 
                 postService.AddReportForPost(post, userService.GetCurrentlyLoggedInUser()?.Id);
-                return Json(new PostJsonResult {Succes = true});
+                return Json(new PostJsonResult { Succes = true });
             }
             catch
             {
-                return Json(new PostJsonResult {Succes = false, Error = "Wijziging kon niet worden opgeslagen"});
+                return Json(new PostJsonResult { Succes = false, Error = "Wijziging kon niet worden opgeslagen" });
             }
         }
 
@@ -208,5 +212,20 @@ namespace StreetTalk.Controllers
 
             return RedirectToAction("Post", new {id});
         }
+
+        public IActionResult DeletePost(int id)
+        {
+            var user = userService.GetCurrentlyLoggedInUser();
+
+            if (postService.GetPublicPostById(id).UserId != user?.Id)
+            {
+                return RedirectToAction("Index");
+            }
+
+            postService.DeletePostById(id);
+
+            return RedirectToAction("Index");
+        }
+
     }
 }
