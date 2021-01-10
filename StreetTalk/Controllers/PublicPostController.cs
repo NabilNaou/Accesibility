@@ -142,6 +142,7 @@ namespace StreetTalk.Controllers
         {
             try
             {
+                ViewData["CurrentUserId"] = userService.GetCurrentlyLoggedInUser().Id;
                 return View(postService.GetPublicPostById(id));
             }
             catch
@@ -168,7 +169,7 @@ namespace StreetTalk.Controllers
                 return Json(new PostJsonResult {Succes = false, Error = "Wijziging kon niet worden opgeslagen"});
             }
         }
-
+        
         [HttpPost]
         public IActionResult PostReport(int id)
         {
@@ -178,7 +179,7 @@ namespace StreetTalk.Controllers
             try
             {
                 var post = postService.GetPublicPostById(id);
-
+                
                 if (postService.UserReportedPost(post, userService.GetCurrentlyLoggedInUser()?.Id))
                     return Json(new PostJsonResult {Succes = false, Error = "Je hebt deze post al gerapporteerd"});
 
@@ -208,5 +209,31 @@ namespace StreetTalk.Controllers
 
             return RedirectToAction("Post", new {id});
         }
+
+        [HttpGet]
+        public IActionResult EditComment(int id, int commentId)
+        {
+            ViewData["PublicPostId"] = id;
+            return View(postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId));
+        }
+
+        [HttpPost]
+        public IActionResult EditComment(int commentId, int id, string NewContent)
+        {
+            postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId).Content = NewContent;
+            Db.SaveChanges();
+
+            return RedirectToAction("Post", new { id });
+        }
+
+        public IActionResult DeleteComment(int id, int commentId)
+        {
+            postService.GetPublicPostById(id).Comments.RemoveAll(c => c.Id == commentId);
+            Db.SaveChanges();
+
+
+            return RedirectToAction("Post", new { id });
+        }
+
     }
 }
