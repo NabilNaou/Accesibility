@@ -1,0 +1,20 @@
+﻿@model Comment
+
+@{
+    ViewData["Title"] = "Bewerk uw commentaar";
+}
+
+<div class="min-vh-100 w-100 d-flex justify-content-center align-items-center">
+    <div class="card p-4 w-75">
+        <h1 class="mb-4 mr-5">Bewerk uw commentaar</h1>
+        @using (Html.BeginForm("EditComment", "PublicPost", new { commentId = Model.Id, id = (int) ViewData["PublicPostId"] }, FormMethod.Post))
+        {
+    <div class="form-group">
+        <input class="form-control w-100" value="@Model.Content" name="NewContent"/>
+    </div>
+            
+            <input class="btn btn-primary float-right mt-4" type="submit" value="Bevestig" />
+        }
+    </div>
+    <div class="w-100 position-fixed min-vh-100 st-working-from-anywhere"></div>
+</div>
