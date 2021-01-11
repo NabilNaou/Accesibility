@@ -10,10 +10,10 @@ namespace StreetTalk.Models
     {
         public virtual int Id { get; set; }
         
-        [StringLength(45)]
+        [Encrypted]
         public virtual string? FirstName { get; set; }
         
-        [StringLength(45)]
+        [Encrypted]
         public virtual string? LastName { get; set; }
 
         [NotMapped]
@@ -35,17 +35,19 @@ namespace StreetTalk.Models
 
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
+        [Encrypted]
         public virtual DateTime? DateOfBirth { get; set; }
         
-        [StringLength(64)]
+        [Encrypted]
         public virtual string? City { get; set; }
         
-        [StringLength(64)]
+        [Encrypted]
         public virtual string? Street { get; set; }
         
+        [Encrypted]
         public virtual int? HouseNumber { get; set; }
         
-        [StringLength(5)]
+        [Encrypted]
         public virtual string? HouseNumberAddition { get; set; }
         
         public virtual string UserId { get; set; }

@@ -1,17 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using StreetTalk.Data;
+using Microsoft.EntityFrameworkCore.DataEncryption;
+using Microsoft.EntityFrameworkCore.DataEncryption.Providers;
+using Microsoft.Extensions.Configuration;
 using StreetTalk.Models;
 
 namespace StreetTalk.Data
 {
     public class StreetTalkContext : IdentityDbContext<StreetTalkUser>
     {
-        
-        public StreetTalkContext(DbContextOptions options) : base(options) {}
+        private readonly IEncryptionProvider encryptionProvider;
+
+        public StreetTalkContext(DbContextOptions options, IConfiguration configuration) : base(options)
+        {
+            var encryptionKey = Convert.FromBase64String(configuration.GetValue<string>("DatabaseEncryptionKey"));
+            var encryptionIv = Convert.FromBase64String(configuration.GetValue<string>("DatabaseEncryptionIV"));
+            encryptionProvider = new AesProvider(encryptionKey, encryptionIv);
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -21,6 +29,7 @@ namespace StreetTalk.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.UseEncryption(encryptionProvider);
             modelBuilder.Entity<View>().HasKey(view => new { view.UserId, view.PostId });
             modelBuilder.Entity<Like>().HasKey(like => new { like.UserId, like.PostId });
             modelBuilder.Entity<Report>().HasKey(report => new { report.UserId, report.PostId });
