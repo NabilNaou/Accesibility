@@ -21,6 +21,7 @@ namespace StreetTalk.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<View>().HasKey(view => new { view.UserId, view.PostId });
             modelBuilder.Entity<Like>().HasKey(like => new { like.UserId, like.PostId });
             modelBuilder.Entity<Report>().HasKey(report => new { report.UserId, report.PostId });
             modelBuilder.Entity<PostPhoto>().HasKey(photo => new { photo.PhotoId, photo.PostId });
