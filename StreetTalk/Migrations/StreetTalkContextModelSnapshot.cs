@@ -282,8 +282,7 @@ namespace StreetTalk.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("City")
-                        .HasMaxLength(64)
-                        .HasColumnType("varchar(64) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -292,26 +291,22 @@ namespace StreetTalk.Migrations
                         .HasColumnType("Date");
 
                     b.Property<string>("FirstName")
-                        .HasMaxLength(45)
-                        .HasColumnType("varchar(45) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int?>("HouseNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("HouseNumberAddition")
-                        .HasMaxLength(5)
-                        .HasColumnType("varchar(5) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("LastName")
-                        .HasMaxLength(45)
-                        .HasColumnType("varchar(45) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Street")
-                        .HasMaxLength(64)
-                        .HasColumnType("varchar(64) CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("UserId")
                         .IsRequired()

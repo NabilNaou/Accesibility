@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace StreetTalk.Migrations
 {
-    public partial class Identity : Migration
+    public partial class @fixed : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,6 +27,7 @@ namespace StreetTalk.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: false),
+                    LastKnownIpAddress = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     UserName = table.Column<string>(type: "varchar(256) CHARACTER SET utf8mb4", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "varchar(256) CHARACTER SET utf8mb4", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "varchar(256) CHARACTER SET utf8mb4", maxLength: 256, nullable: true),
@@ -58,6 +59,19 @@ namespace StreetTalk.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Photo", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PostCategory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostCategory", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -167,16 +181,45 @@ namespace StreetTalk.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Profile",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    FirstName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    LastName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "Date", nullable: true),
+                    City = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    Street = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    HouseNumber = table.Column<int>(type: "int", nullable: true),
+                    HouseNumberAddition = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    UserId = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Profile", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Profile_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Post",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(type: "varchar(64) CHARACTER SET utf8mb4", maxLength: 64, nullable: true),
-                    Content = table.Column<string>(type: "text", nullable: true),
+                    Title = table.Column<string>(type: "varchar(64) CHARACTER SET utf8mb4", maxLength: 64, nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: true),
                     Discriminator = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: false),
                     Closed = table.Column<bool>(type: "tinyint(1)", nullable: true),
+                    CategoryId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
@@ -189,34 +232,36 @@ namespace StreetTalk.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Post_PostCategory_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "PostCategory",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Profile",
+                name: "ProfilePhoto",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FirstName = table.Column<string>(type: "varchar(45) CHARACTER SET utf8mb4", maxLength: 45, nullable: true),
-                    LastName = table.Column<string>(type: "varchar(45) CHARACTER SET utf8mb4", maxLength: 45, nullable: true),
-                    DateOfBirth = table.Column<DateTime>(type: "Date", nullable: true),
-                    City = table.Column<string>(type: "varchar(64) CHARACTER SET utf8mb4", maxLength: 64, nullable: true),
-                    Street = table.Column<string>(type: "varchar(64) CHARACTER SET utf8mb4", maxLength: 64, nullable: true),
-                    HouseNumber = table.Column<int>(type: "int", nullable: true),
-                    HouseNumberAddition = table.Column<string>(type: "varchar(5) CHARACTER SET utf8mb4", maxLength: 5, nullable: true),
-                    UserId = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                    PhotoId = table.Column<int>(type: "int", nullable: false),
+                    ProfileId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Profile", x => x.Id);
+                    table.PrimaryKey("PK_ProfilePhoto", x => new { x.PhotoId, x.ProfileId });
                     table.ForeignKey(
-                        name: "FK_Profile_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_ProfilePhoto_Photo_PhotoId",
+                        column: x => x.PhotoId,
+                        principalTable: "Photo",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProfilePhoto_Profile_ProfileId",
+                        column: x => x.ProfileId,
+                        principalTable: "Profile",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -323,25 +368,25 @@ namespace StreetTalk.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProfilePhoto",
+                name: "View",
                 columns: table => new
                 {
-                    PhotoId = table.Column<int>(type: "int", nullable: false),
-                    ProfileId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: false),
+                    PostId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProfilePhoto", x => new { x.PhotoId, x.ProfileId });
+                    table.PrimaryKey("PK_View", x => new { x.UserId, x.PostId });
                     table.ForeignKey(
-                        name: "FK_ProfilePhoto_Photo_PhotoId",
-                        column: x => x.PhotoId,
-                        principalTable: "Photo",
+                        name: "FK_View_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProfilePhoto_Profile_ProfileId",
-                        column: x => x.ProfileId,
-                        principalTable: "Profile",
+                        name: "FK_View_Post_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Post",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -399,6 +444,11 @@ namespace StreetTalk.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Post_CategoryId",
+                table: "Post",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Post_UserId",
                 table: "Post",
                 column: "UserId");
@@ -424,6 +474,11 @@ namespace StreetTalk.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Report_PostId",
                 table: "Report",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_View_PostId",
+                table: "View",
                 column: "PostId");
         }
 
@@ -460,6 +515,9 @@ namespace StreetTalk.Migrations
                 name: "Report");
 
             migrationBuilder.DropTable(
+                name: "View");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -473,6 +531,9 @@ namespace StreetTalk.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "PostCategory");
         }
     }
 }

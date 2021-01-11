@@ -20,6 +20,10 @@ namespace StreetTalk.Data
             var encryptionIv = Convert.FromBase64String(configuration.GetValue<string>("DatabaseEncryptionIV"));
             encryptionProvider = new AesProvider(encryptionKey, encryptionIv);
         }
+        
+        public StreetTalkContext(DbContextOptions options) : base(options)
+        {
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -29,7 +33,10 @@ namespace StreetTalk.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.UseEncryption(encryptionProvider);
+            
+            if(encryptionProvider != null)
+                modelBuilder.UseEncryption(encryptionProvider);
+            
             modelBuilder.Entity<View>().HasKey(view => new { view.UserId, view.PostId });
             modelBuilder.Entity<Like>().HasKey(like => new { like.UserId, like.PostId });
             modelBuilder.Entity<Report>().HasKey(report => new { report.UserId, report.PostId });

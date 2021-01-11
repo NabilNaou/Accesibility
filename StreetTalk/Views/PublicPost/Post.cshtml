@@ -21,8 +21,7 @@
                     <h1 class="mb-0 mt-4">@Model.Title</h1>
                     <span class="d-flex align-items-end">Gemeld op @Model.CreatedAt?.ToString("dd-MM-yyyy") door @Model.User.Profile.FullName</span>
                 </div>
-                <span class="text-muted">Categorie: @Model.Category?.Name</span>
-                <span class="text-muted">Aantal views: @Model.Views?.Count</span>
+                <p class="text-muted">Categorie: @Model.Category?.Name<br/>Aantal views: @Model.Views?.Count</p>
                 <hr class="my-4" />
             </div>
         </div>
