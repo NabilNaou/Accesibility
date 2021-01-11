@@ -22,6 +22,10 @@ namespace StreetTalk.Seeders
             CreateUser("Jelle", "Krupe", "19083181@student.hhs.nl", "Qwerty123!", "Buurtbewoner");
             CreateUser("Rik", "Helder", "19050380@student.hhs.nl", "Qwerty123!", "Buurtbewoner");
             CreateUser("Nabil", "Naou", "19037570@student.hhs.nl", "Qwerty123!", "Buurtbewoner");
+            
+            CreateUser("Moderator", "", "moderator@streettalk.nl", "Qwerty123!", "Moderator");
+            CreateUser("Administrator", "", "administrator@streettalk.nl", "Qwerty123!", "Administrator");
+            CreateUser("Gemeentemedewerker", "", "gemeentemedewerker@streettalk.nl", "Qwerty123!", "Gemeentemedewerker");
         }
 
         private void CreateUser(string firstName, string lastName, string email, string password, string role)
@@ -47,6 +51,8 @@ namespace StreetTalk.Seeders
                     }
                 }
             };
+
+            user.LockoutEnabled = role == "Buurtbewoner";
             
             var passwordHasher = new PasswordHasher<StreetTalkUser>();
             var hashed = passwordHasher.HashPassword(user, password);

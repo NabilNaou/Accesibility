@@ -150,9 +150,15 @@
           <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
           <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
+        <Content Update="wwwroot\js\createPost.js">
+          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+          <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="F23.StringSimilarity" Version="3.1.0" />
+        <PackageReference Include="GoogleReCaptcha.V3" Version="1.3.0" />
         <PackageReference Include="Markdig" Version="0.22.0" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.10" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.10" />

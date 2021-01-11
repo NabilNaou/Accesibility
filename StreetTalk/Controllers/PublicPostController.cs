@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
+using F23.StringSimilarity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +13,8 @@ using Microsoft.Extensions.Hosting;
 using StreetTalk.Models;
 using StreetTalk.Data;
 using StreetTalk.Services;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace StreetTalk.Controllers
 {
@@ -34,11 +38,13 @@ namespace StreetTalk.Controllers
     {
         public List<PublicPostWithExtraData> Posts { get; set; }
         public PublicPostListFilters Filters { get; set; }
+        public int NextPage { get; set; }
+        public int PreviousPage { get; set; }
     }
 
     public class PublicPostListFilters
     {
-        public bool ShowClosedPosts { get; set; } = false;
+        public bool ShowClosedPosts { get; set; }
     }
 
     [Authorize]
@@ -48,7 +54,7 @@ namespace StreetTalk.Controllers
         private readonly UserService userService;
         private readonly IConfiguration config;
         private readonly IWebHostEnvironment environment;
-        private readonly string[] permittedUploadExtensions = {".png", ".jpg", ".jpeg"};
+        private readonly string[] permittedUploadExtensions = { ".png", ".jpg", ".jpeg" };
 
         public PublicPostController(StreetTalkContext context, PostService postService, UserService userService,
             IConfiguration config, IWebHostEnvironment environment) : base(context)
@@ -83,7 +89,9 @@ namespace StreetTalk.Controllers
             var viewModelData = new PublicPostViewModel
             {
                 Posts = publicPostsWithLikes,
-                Filters = filters
+                Filters = filters,
+                PreviousPage = Math.Max(page - 1, 1), //TODO: Make a paginated list class
+                NextPage = page + 1
             };
 
             return View(viewModelData);
@@ -93,13 +101,16 @@ namespace StreetTalk.Controllers
         {
             IEnumerable<PostCategory> categories = Db.PostCategory.ToList();
             ViewData["categories"] = categories;
-            
+
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(PublicPost post)
         {
+            IEnumerable<PostCategory> categories = Db.PostCategory.ToList();
+            ViewData["categories"] = categories;
+            
             if (!ModelState.IsValid) return View(post);
 
             //Photo upload
@@ -132,18 +143,20 @@ namespace StreetTalk.Controllers
             var user = userService.GetCurrentlyLoggedInUser();
             post.UserId = user?.Id;
             user?.Posts.Add(post);
-            
+
             await Db.SaveChangesAsync();
 
-            return RedirectToAction("Post", new { id = post.Id });
+            return RedirectToAction("Index");
         }
 
         public IActionResult Post(int id)
         {
             try
             {
-                ViewData["CurrentUserId"] = userService.GetCurrentlyLoggedInUser().Id;
-                return View(postService.GetPublicPostById(id));
+                var post = postService.GetPublicPostById(id);
+                var user = userService.GetCurrentlyLoggedInUser();
+                ViewData["ViewAction"] = user.Id == post.UserId;
+                return View(post);
             }
             catch
             {
@@ -155,85 +168,129 @@ namespace StreetTalk.Controllers
         public IActionResult PostLike(int id)
         {
             if (userService.GetCurrentlyLoggedInUser() == null)
-                return Json(new PostJsonResult {Succes = false, Error = "U moet eerst inloggen"});
+                return Json(new PostJsonResult { Succes = false, Error = "U moet eerst inloggen" });
 
             try
             {
                 var post = postService.GetPublicPostById(id);
                 postService.ToggleLikeForPost(post, userService.GetCurrentlyLoggedInUser()?.Id);
 
-                return Json(new PostJsonResult {Succes = true, NewLikes = post.Likes.Count()});
+                return Json(new PostJsonResult { Succes = true, NewLikes = post.Likes.Count() });
             }
             catch
             {
-                return Json(new PostJsonResult {Succes = false, Error = "Wijziging kon niet worden opgeslagen"});
+                return Json(new PostJsonResult { Succes = false, Error = "Wijziging kon niet worden opgeslagen" });
             }
         }
-        
+
         [HttpPost]
         public IActionResult PostReport(int id)
         {
             if (userService.GetCurrentlyLoggedInUser() == null)
-                return Json(new PostJsonResult {Succes = false, Error = "U moet eerst inloggen"});
+                return Json(new PostJsonResult { Succes = false, Error = "U moet eerst inloggen" });
 
             try
             {
                 var post = postService.GetPublicPostById(id);
-                
+
                 if (postService.UserReportedPost(post, userService.GetCurrentlyLoggedInUser()?.Id))
-                    return Json(new PostJsonResult {Succes = false, Error = "Je hebt deze post al gerapporteerd"});
+                    return Json(new PostJsonResult { Succes = false, Error = "Je hebt deze post al gerapporteerd" });
 
                 postService.AddReportForPost(post, userService.GetCurrentlyLoggedInUser()?.Id);
-                return Json(new PostJsonResult {Succes = true});
+                return Json(new PostJsonResult { Succes = true });
             }
             catch
             {
-                return Json(new PostJsonResult {Succes = false, Error = "Wijziging kon niet worden opgeslagen"});
+                return Json(new PostJsonResult { Succes = false, Error = "Wijziging kon niet worden opgeslagen" });
             }
         }
 
         [HttpPost]
         public IActionResult PostComment(int id, string commentContent)
         {
-            if (commentContent == null || commentContent == "") return RedirectToAction("Post", new {id});
+            if (string.IsNullOrEmpty(commentContent)) return RedirectToAction("Post", new {id});
 
-            Comment postedComment = new Comment
+            var postedComment = new Comment
             {
                 Content = commentContent,
                 AuthorId = userService.GetCurrentlyLoggedInUser()?.Id,
                 PostId = id
             };
+            
             postService.GetPublicPostById(id).Comments.Add(postedComment);
             Db.SaveChanges();
 
 
-            return RedirectToAction("Post", new {id});
+            return RedirectToAction("Post", new { id });
         }
 
-        [HttpGet]
-        public IActionResult EditComment(int id, int commentId)
+        public IActionResult Edit(int id)
         {
-            ViewData["PublicPostId"] = id;
-            return View(postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId));
+            return View(postService.GetPublicPostById(id));
         }
 
         [HttpPost]
-        public IActionResult EditComment(int commentId, int id, string NewContent)
+        public IActionResult Edit(PublicPost post, int id)
         {
-            postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId).Content = NewContent;
+            var user = userService.GetCurrentlyLoggedInUser();
+
+            if (postService.GetPublicPostById(id).UserId != user?.Id)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var EditedPost = postService.EditPostById(id, post);
+
+            var context = new ValidationContext(EditedPost);
+            var validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(EditedPost, context, validationResults, true);
+
+            if (!isValid) return View(post);
+
             Db.SaveChanges();
 
-            return RedirectToAction("Post", new { id });
+            return RedirectToAction("Post", new { id = post.Id });
         }
 
-        public IActionResult DeleteComment(int id, int commentId)
+        [HttpPost]
+        public IActionResult Delete(int id)
         {
-            postService.GetPublicPostById(id).Comments.RemoveAll(c => c.Id == commentId);
+            var user = userService.GetCurrentlyLoggedInUser();
+
+            if (postService.GetPublicPostById(id).UserId != user?.Id)
+            {
+                return RedirectToAction("Index");
+            }
+
+            postService.DeletePostById(id);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrator,Moderator")]
+        public IActionResult Close(int id)
+        {
+            var post = postService.GetPublicPostById(id);
+            post.Closed = true;
             Db.SaveChanges();
 
-
-            return RedirectToAction("Post", new { id });
+            return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public IActionResult CheckPostTitleSimilarity(string title)
+        {
+            if (title.IsNullOrEmpty()) return BadRequest();
+            var lcs = new MetricLCS();
+            
+            foreach (var recentTitle in postService.GetRecentTitles())
+            {
+                if (lcs.Distance(title, recentTitle) <= 0.5)
+                    return Ok(new {Title = recentTitle});
+            }
+
+            return NoContent();
+        }
     }
 }
