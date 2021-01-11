@@ -16,5 +16,7 @@ namespace StreetTalk.Models
         public virtual List<Like> Likes { get; } = new List<Like>();
         
         public virtual List<Report> Reports { get; } = new List<Report>();
+
+        public virtual List<View> Views { get; } = new List<View>();
     }
 }

@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StreetTalk.Data;
 
 namespace StreetTalk.Migrations
 {
     [DbContext(typeof(StreetTalkContext))]
-    partial class StreetTalkContextModelSnapshot : ModelSnapshot
+    [Migration("20210111112048_editview")]
+    partial class editview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -423,19 +425,23 @@ namespace StreetTalk.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("StreetTalk.Models.View", b =>
+            modelBuilder.Entity("StreetTalk.Models.Views", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.Property<int>("PostId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.HasKey("UserId", "PostId");
+                    b.Property<int?>("PublicPostId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("PostId");
+                    b.Property<int>("ViewerId")
+                        .HasColumnType("int");
 
-                    b.ToTable("View");
+                    b.HasKey("Id");
+
+                    b.HasIndex("PublicPostId");
+
+                    b.ToTable("Views");
                 });
 
             modelBuilder.Entity("StreetTalk.Models.PublicPost", b =>
@@ -617,23 +623,11 @@ namespace StreetTalk.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("StreetTalk.Models.View", b =>
+            modelBuilder.Entity("StreetTalk.Models.Views", b =>
                 {
-                    b.HasOne("StreetTalk.Models.PublicPost", "Post")
-                        .WithMany("Views")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("StreetTalk.Models.StreetTalkUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-
-                    b.Navigation("User");
+                    b.HasOne("StreetTalk.Models.PublicPost", null)
+                        .WithMany("View")
+                        .HasForeignKey("PublicPostId");
                 });
 
             modelBuilder.Entity("StreetTalk.Models.PublicPost", b =>
@@ -679,7 +673,7 @@ namespace StreetTalk.Migrations
 
                     b.Navigation("Reports");
 
-                    b.Navigation("Views");
+                    b.Navigation("View");
                 });
 #pragma warning restore 612, 618
         }

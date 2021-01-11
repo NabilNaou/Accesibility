@@ -155,6 +155,8 @@ namespace StreetTalk.Controllers
             {
                 var post = postService.GetPublicPostById(id);
                 var user = userService.GetCurrentlyLoggedInUser();
+                if (!postService.UserViewedPost(user.Id, post))
+                    postService.AddView(user.Id, post);
                 ViewData["ViewAction"] = user.Id == post.UserId;
                 return View(post);
             }
@@ -292,5 +294,6 @@ namespace StreetTalk.Controllers
 
             return NoContent();
         }
+
     }
 }
