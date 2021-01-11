@@ -153,6 +153,7 @@ namespace StreetTalk.Controllers
         {
             try
             {
+                ViewData["CurrentUserId"] = userService.GetCurrentlyLoggedInUser().Id;
                 var post = postService.GetPublicPostById(id);
                 var user = userService.GetCurrentlyLoggedInUser();
                 if (!postService.UserViewedPost(user.Id, post))
@@ -226,7 +227,35 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Post", new { id });
         }
 
-        public IActionResult Edit(int id)
+        [HttpGet]
+        public IActionResult EditComment(int id, int commentId)
+        {
+            ViewData["PublicPostId"] = id;
+            return View(postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId));
+        }
+
+        [HttpPost]
+        public IActionResult EditComment(int commentId, int id, string NewContent)
+        {
+            postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId).Content = NewContent;
+            Db.SaveChanges();
+
+            return RedirectToAction("Post", new { id });
+        }
+
+        public IActionResult DeleteComment(int id, int commentId)
+        {
+            postService.GetPublicPostById(id).Comments.RemoveAll(c => c.Id == commentId);
+            Db.SaveChanges();
+
+
+            return RedirectToAction("Post", new { id });
+        }
+
+    
+
+
+    public IActionResult Edit(int id)
         {
             return View(postService.GetPublicPostById(id));
         }

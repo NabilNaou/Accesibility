@@ -80,7 +80,29 @@
                 <ul class="undecorated-list d-flex flex-column">
                     @foreach (var comment in Model.Comments.OrderBy(c => c.CreatedAt))
                     {
-                        <li aria-label="Reactie van @comment.Author.Profile.FullName"><partial name="_Comment" for="@comment" /></li>
+
+                        if (comment.AuthorId == (string)ViewData["CurrentUserId"])
+                        {
+                    <div class="flex-lg-nowrap">
+                        @using (Html.BeginForm("DeleteComment", "PublicPost", new { id = Model.Id, commentId = comment.Id }))
+                        {
+                            <input class="btn btn-danger float-right" type="submit" value="Verwijder Comment" />
+                        }
+                        @using (Html.BeginForm("EditComment", "PublicPost", new { id = Model.Id }, FormMethod.Get))
+                        {
+                            <input type="number" value="@comment.Id" name="commentId" hidden />
+                            <input class="btn btn-primary float-right" type="submit" value="Bewerk Comment" />
+                        }
+                    </div>
+                            
+                        }
+
+                        <li aria-label="Reactie van @comment.Author.Profile.FullName">
+                            <partial name="_Comment" for="@comment" />
+
+                        </li>
+
+
                     }
                 </ul>
             </div>
