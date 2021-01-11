@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
-using StreetTalk.Models;
 
 namespace StreetTalk.Models
 {
-    // Add profile data for application users by adding properties to the StreetTalkUser class
     public class StreetTalkUser : IdentityUser
     {
+        public virtual string LastKnownIpAddress { get; set; }
         public virtual Profile Profile { get; set; }
 
         public virtual List<Comment> Comments { get; } = new List<Comment>();

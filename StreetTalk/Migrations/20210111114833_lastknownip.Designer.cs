@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StreetTalk.Data;
 
 namespace StreetTalk.Migrations
 {
     [DbContext(typeof(StreetTalkContext))]
-    partial class StreetTalkContextModelSnapshot : ModelSnapshot
+    [Migration("20210111114833_lastknownip")]
+    partial class lastknownip
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -426,21 +428,6 @@ namespace StreetTalk.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("StreetTalk.Models.View", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "PostId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("View");
-                });
-
             modelBuilder.Entity("StreetTalk.Models.PublicPost", b =>
                 {
                     b.HasBaseType("StreetTalk.Models.Post");
@@ -620,25 +607,6 @@ namespace StreetTalk.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("StreetTalk.Models.View", b =>
-                {
-                    b.HasOne("StreetTalk.Models.PublicPost", "Post")
-                        .WithMany("Views")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("StreetTalk.Models.StreetTalkUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("StreetTalk.Models.PublicPost", b =>
                 {
                     b.HasOne("StreetTalk.Models.PostCategory", "Category")
@@ -681,8 +649,6 @@ namespace StreetTalk.Migrations
                     b.Navigation("Photo");
 
                     b.Navigation("Reports");
-
-                    b.Navigation("Views");
                 });
 #pragma warning restore 612, 618
         }
