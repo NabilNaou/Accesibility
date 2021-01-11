@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using StreetTalk.Models;
 using GoogleReCaptcha.V3.Interface;
+using Microsoft.AspNetCore.Http;
+using StreetTalk.Data;
 
 namespace StreetTalk.Areas.Identity.Pages.Account
 {
@@ -23,16 +25,25 @@ namespace StreetTalk.Areas.Identity.Pages.Account
         private readonly SignInManager<StreetTalkUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly ICaptchaValidator _captchaValidator;
+        private readonly HttpContext _httpContext;
+        private readonly StreetTalkContext _context;
+        private readonly IEmailSender _emailSender;
 
         public LoginModel(SignInManager<StreetTalkUser> signInManager, 
             ILogger<LoginModel> logger,
             UserManager<StreetTalkUser> userManager,
-            ICaptchaValidator captchaValidator)
+            ICaptchaValidator captchaValidator,
+            IHttpContextAccessor httpContextAccessor,
+            StreetTalkContext context,
+            IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _captchaValidator = captchaValidator;
+            _httpContext = httpContextAccessor.HttpContext;
+            _context = context;
+            _emailSender = emailSender;
         }
 
         [BindProperty]
@@ -93,6 +104,22 @@ namespace StreetTalk.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
+                    //Notify user about login from a different ip address
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    if (user != null)
+                    {
+                        var ip = _httpContext.Connection.RemoteIpAddress.ToString();
+                        if (user.LastKnownIpAddress != ip)
+                        {
+                            //Logged in from new ip address
+                            user.LastKnownIpAddress = ip;
+                            await _context.SaveChangesAsync();
+                            _logger.LogInformation("User logged in from new ip address");
+
+                            await _emailSender.SendEmailAsync(user.Email, "Login vanaf een nieuwe locatie", $"Er is inglogt op uw account vanaf een nieuwe locatie ({ip}).<br>Als u dit niet was, raden wij aan om uw wachtwoord te veranderen en 2 factor authenticatie in te stellen.");
+                        }
+                    }
+                    
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

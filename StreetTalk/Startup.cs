@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Linq;
 using GoogleReCaptcha.V3;
 using GoogleReCaptcha.V3.Interface;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StreetTalk.Data;
+using StreetTalk.Middleware;
 using StreetTalk.Models;
 using StreetTalk.Services;
 
@@ -88,6 +91,9 @@ namespace StreetTalk
             }
 
             app.UseHttpsRedirection();
+
+            app.UseIpBlacklist(File.ReadLines("./blacklist.txt").ToList());
+            
             app.UseStaticFiles();
 
             app.UseRouting();
