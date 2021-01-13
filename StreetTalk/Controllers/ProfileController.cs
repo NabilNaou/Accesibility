@@ -21,10 +21,12 @@ namespace StreetTalk.Controllers
             this.signInManager = signInManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(bool editSuccess = false)
         {
             var user = userService.GetCurrentlyLoggedInUser();
             if (user == null) return BadRequest("User not logged in");
+
+            ViewData["editSuccess"] = editSuccess;
             
             return View(user.Profile);
         }
@@ -121,7 +123,7 @@ namespace StreetTalk.Controllers
             
             Db.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { editSuccess = true });
         }
     }
 }

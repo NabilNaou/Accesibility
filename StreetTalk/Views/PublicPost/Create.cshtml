@@ -39,7 +39,7 @@
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(m => m.Content)
-                    @Html.TextAreaFor(m => m.Content, new {@class = "form-control", id = "postContent"})
+                    @Html.TextAreaFor(m => m.Content, new {@class = "form-control"})
                     <span class="text-danger">@Html.ValidationMessageFor(m => m.Content)</span>
                 </div>
                 <input class="btn btn-primary float-right mt-4" type="submit" value="Maak publieke melding"/>

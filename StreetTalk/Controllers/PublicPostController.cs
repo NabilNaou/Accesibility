@@ -65,8 +65,9 @@ namespace StreetTalk.Controllers
             this.environment = environment;
         }
 
-        public IActionResult Index(PublicPostListFilters filters, int page = 1)
+        public IActionResult Index(PublicPostListFilters filters, int page = 1, bool createSuccess = false)
         {
+            ViewData["createSuccess"] = createSuccess;
             //TODO: Refactor this
             var perPage = 10;
             var skip = Math.Max(page - 1, 0) * perPage;
@@ -146,28 +147,21 @@ namespace StreetTalk.Controllers
 
             await Db.SaveChangesAsync();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { createSuccess = true });
         }
 
         public IActionResult Post(int id)
         {
-            try
-            {
-                ViewData["CurrentUserId"] = userService.GetCurrentlyLoggedInUser().Id;
-                var post = postService.GetPublicPostById(id);
-                var user = userService.GetCurrentlyLoggedInUser();
-                
-                if (!postService.UserViewedPost(user.Id, post))
-                    postService.AddView(user.Id, post);
-                
-                ViewData["ViewAction"] = user.Id == post.UserId;
-                
-                return View(post);
-            }
-            catch
-            {
-                return View();
-            }
+            ViewData["CurrentUserId"] = userService.GetCurrentlyLoggedInUser().Id;
+            var post = postService.GetPublicPostById(id);
+            var user = userService.GetCurrentlyLoggedInUser();
+            
+            if (!postService.UserViewedPost(user.Id, post))
+                postService.AddView(user.Id, post);
+            
+            ViewData["ViewAction"] = user.Id == post.UserId;
+            
+            return View(post);
         }
 
         [HttpPost]

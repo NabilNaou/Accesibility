@@ -10,6 +10,15 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
+                        @if ((bool) ViewData["editSuccess"])
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                Profiel bewerken geslaagt
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        }
                         <h1 class="mb-4 mr-5">Uw profiel</h1>
                         @using (Html.BeginForm("Index", "Profile", FormMethod.Post))
                         {
@@ -57,7 +66,7 @@
                                             @Html.LabelFor(p => p.DateOfBirth)
                                             @Html.TextBoxFor(p => p.DateOfBirth, "{0:yyyy-MM-dd}", new {type = "date", @class = "form-control"})
                                             <span class="text-danger">@Html.ValidationMessageFor(p => p.DateOfBirth)</span>
-                                        </div>                            
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
