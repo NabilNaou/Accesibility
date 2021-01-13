@@ -238,9 +238,9 @@ namespace StreetTalk.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditComment(int commentId, int id, string NewContent)
+        public IActionResult EditComment(int commentId, int id, string newContent)
         {
-            postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId).Content = NewContent;
+            postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId).Content = newContent;
             Db.SaveChanges();
 
             return RedirectToAction("Post", new { id });
