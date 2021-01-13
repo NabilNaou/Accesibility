@@ -156,9 +156,12 @@ namespace StreetTalk.Controllers
                 ViewData["CurrentUserId"] = userService.GetCurrentlyLoggedInUser().Id;
                 var post = postService.GetPublicPostById(id);
                 var user = userService.GetCurrentlyLoggedInUser();
+                
                 if (!postService.UserViewedPost(user.Id, post))
                     postService.AddView(user.Id, post);
+                
                 ViewData["ViewAction"] = user.Id == post.UserId;
+                
                 return View(post);
             }
             catch

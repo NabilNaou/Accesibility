@@ -1,10 +1,10 @@
 ﻿@model Comment
 
 <div class="card d-flex flex-row mb-4 p-3">
-    <img class="rounded-circle profile-image mr-3" alt="Profiel foto van @Model.Author.Profile.FullName" src="@Model.Author.Profile.Photo.Photo.Filename"/>
+    <img class="rounded-circle profile-image mr-3" alt="Profiel foto van @Model.Author.GetDisplayName()" src="@Model.Author.GetProfilePhoto()"/>
     <div class="d-flex flex-column w-100">
         <div class="d-flex flex-column-reverse flex-md-row justify-content-between text-muted">
-            <span aria-label="Auteur">@Model.Author.Profile.FullName schrijft:</span>
+            <span aria-label="Auteur">@Model.Author.GetDisplayName() schrijft:</span>
             <span aria-label="Datum">@Model.CreatedAt?.ToString("dd-MM-yyyy HH:mm")</span>
         </div>
         <p aria-label="Inhoud">@Model.Content</p>
