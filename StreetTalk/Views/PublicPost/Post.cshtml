@@ -10,7 +10,7 @@
 }
 
 @section styles {
-    <link href="~/css/post.css" rel="stylesheet" />
+    <link href="~/css/post.css" rel="stylesheet"/>
 }
 
 <div class="d-flex flex-column align-items-center pb-5">
@@ -19,22 +19,20 @@
             <div class="col-12">
                 <div class="d-flex w-100 justify-content-between flex-column flex-md-row">
                     <h1 class="mb-0 mt-4">@Model.Title</h1>
-                    <span class="d-flex align-items-end">Gemeld op @Model.CreatedAt?.ToString("dd-MM-yyyy") door @Model.User.Profile.FullName</span>
+                    <span class="d-flex align-items-end">Gemeld op @Model.CreatedAt?.ToString("dd-MM-yyyy") door @Model.User.GetDisplayName()</span>
                 </div>
-                <span class="text-muted">Categorie: @Model.Category?.Name</span>
+                <p class="text-muted">Categorie: @Model.Category?.Name<br />Aantal views: @Model.Views?.Count</p>
                 <hr class="my-4" />
             </div>
         </div>
-        @if ((bool)ViewData["ViewAction"]) {
+        @if ((bool)ViewData["ViewAction"])
+        {
             <div class="row justify-content-center">
                 <div class="col-12">
                     <div class="d-flex flex-row">
-                        <form class="mr-2" method="post" asp-controller="PublicPost" asp-action="Delete" asp-route-id="@Model.Id">
-                            <input class="btn btn-danger" type="submit" value="Verwijder melding" />
-                        </form>
                         <a aria-label="Bewerk Post" class="btn btn-primary" value="Bewerk Post" asp-route-id="@Model.Id" asp-controller="PublicPost" asp-action="Edit">Bewerk</a>
                     </div>
-                    <hr class="my-4" />
+                    <hr class="my-4"/>
                 </div>
             </div>
         }
@@ -42,12 +40,15 @@
         {
             <div class="row justify-content-center">
                 <div class="col-12">
-                    @if (!Model.Closed) {
-                        <form method="post" asp-controller="PublicPost" asp-action="Close" asp-route-id="@Model.Id">
-                            <input type="submit" class="btn btn-danger" value="Sluit deze melding"/>
-                        </form>
-                    }
-                    <hr class="my-4"/>
+                    <div class="d-flex flex-row">
+                        @if (!Model.Closed)
+                        {
+                            <form method="post" asp-controller="PublicPost" asp-action="Close" asp-route-id="@Model.Id">
+                                <input type="submit" class="btn btn-danger" value="Sluit deze melding"/>
+                            </form>
+                        }
+                    </div>
+                    <hr class="my-4" />
                 </div>
             </div>
         }
@@ -56,7 +57,7 @@
             <div class="row">
                 <div class="col-12 d-flex justify-content-center">
                     <div class="post-image-wrapper mt-3 mb-5">
-                        <img class="img-fluid shadow post-image @(Model.Photo.Sensitive ? "sensitive" : "")" alt="Afbeelding over @Model.Title" src="@Model.Photo.Photo.Filename" />
+                        <img class="img-fluid shadow post-image @(Model.Photo.Sensitive ? "sensitive" : "")" alt="Afbeelding over @Model.Title" src="@Model.Photo.Photo.Filename"/>
                         <div class="show-image justify-content-center align-items-center" onclick="showImage()">
                             <span>Laat afbeelding zien</span>
                         </div>
@@ -72,7 +73,7 @@
         <div class="row justify-content-center" aria-labelledby="commentaar">
             <div class="col-12">
                 <h1 id="commentaar" class="mb-0 mt-4">Commentaar</h1>
-                <hr class="my-4" />
+                <hr class="my-4"/>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -80,7 +81,9 @@
                 <ul class="undecorated-list d-flex flex-column">
                     @foreach (var comment in Model.Comments.OrderBy(c => c.CreatedAt))
                     {
-                        <li aria-label="Reactie van @comment.Author.Profile.FullName"><partial name="_Comment" for="@comment" /></li>
+                        <li aria-label="Reactie van @comment.Author.GetDisplayName()">
+                            <partial name="_Comment" for="@comment"/>
+                        </li>
                     }
                 </ul>
             </div>
@@ -88,18 +91,18 @@
         <div class="row justify-content-center" aria-labelledby="deelreactie">
             <div class="col-12">
                 <h1 id="deelreactie" class="mb-0 mt-4">Deel uw reactie</h1>
-                <hr class="my-4" />
+                <hr class="my-4"/>
             </div>
         </div>
         <div class="row d-flex justify-content-center">
             <div class="col-xs-12 col-lg-9">
-                @using (Html.BeginForm("PostComment", "PublicPost", new {id = Model.Id}, FormMethod.Post))
+                @using (Html.BeginForm("PostComment", "PublicPost", new { id = Model.Id }, FormMethod.Post))
                 {
                     <div class="form-group w-100">
                         <label for="commentContent">Uw reactie</label>
                         <textarea class="form-control w-100" id="commentContent" name="commentContent"></textarea>
                     </div>
-                    <input class="btn btn-primary float-right" type="submit" value="Post Comment"/>
+                    <input class="btn btn-primary float-right" type="submit" value="Post Comment" />
                 }
             </div>
         </div>

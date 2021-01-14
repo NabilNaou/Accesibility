@@ -10,6 +10,15 @@
 }
 
 <div class="st-container">
+    @if ((bool) ViewData["createSuccess"])
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Melding maken geslaagt
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
     <h1 class="mb-3">Publieke meldingen</h1>
     <hr class="my-4"/>
     <div class="w-100 d-flex flex-column mb-4" aria-label="Filters">

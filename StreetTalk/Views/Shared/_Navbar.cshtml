@@ -1,4 +1,4 @@
-﻿@inject SignInManager<StreetTalkUser> SignInManager
+﻿@inject StreetTalkSignInManager SignInManager
 @inject UserManager<StreetTalkUser> UserManager
 @inject UserService UserService;
 
@@ -29,12 +29,12 @@
     <div class="st-nav-item flex-grow-0 d-flex flex-column pt-2">
         @if (SignInManager.IsSignedIn(User))
         {
-            <a aria-label="Account" class="st-nav-link" asp-area="Identity" asp-page="/Account/Manage">
+            <a aria-label="Account" class="st-nav-link" asp-controller="Profile" asp-action="Index">
                 <img alt="Account icoon" src="~/img/account-circle.svg"/>
                 <span>@UserService.GetCurrentlyLoggedInUsername()</span>
             </a>
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="st-nav-link">
+            <form id="logoutForm" class="form-inline st-nav-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout" type="submit" class="st-nav-link align-items-center">
                     <img alt="Uitloggen icoon" src="~/img/logout.svg"/>
                     <span>Uitloggen</span>
                 </button>

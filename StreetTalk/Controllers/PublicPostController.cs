@@ -65,8 +65,9 @@ namespace StreetTalk.Controllers
             this.environment = environment;
         }
 
-        public IActionResult Index(PublicPostListFilters filters, int page = 1)
+        public IActionResult Index(PublicPostListFilters filters, int page = 1, bool createSuccess = false)
         {
+            ViewData["createSuccess"] = createSuccess;
             //TODO: Refactor this
             var perPage = 10;
             var skip = Math.Max(page - 1, 0) * perPage;
@@ -146,22 +147,21 @@ namespace StreetTalk.Controllers
 
             await Db.SaveChangesAsync();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { createSuccess = true });
         }
 
         public IActionResult Post(int id)
         {
-            try
-            {
-                var post = postService.GetPublicPostById(id);
-                var user = userService.GetCurrentlyLoggedInUser();
-                ViewData["ViewAction"] = user.Id == post.UserId;
-                return View(post);
-            }
-            catch
-            {
-                return View();
-            }
+            ViewData["CurrentUserId"] = userService.GetCurrentlyLoggedInUser().Id;
+            var post = postService.GetPublicPostById(id);
+            var user = userService.GetCurrentlyLoggedInUser();
+            
+            if (!postService.UserViewedPost(user.Id, post))
+                postService.AddView(user.Id, post);
+            
+            ViewData["ViewAction"] = user.Id == post.UserId;
+            
+            return View(post);
         }
 
         [HttpPost]
@@ -224,7 +224,35 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Post", new { id });
         }
 
-        public IActionResult Edit(int id)
+        [HttpGet]
+        public IActionResult EditComment(int id, int commentId)
+        {
+            ViewData["PublicPostId"] = id;
+            return View(postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId));
+        }
+
+        [HttpPost]
+        public IActionResult EditComment(int commentId, int id, string newContent)
+        {
+            postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId).Content = newContent;
+            Db.SaveChanges();
+
+            return RedirectToAction("Post", new { id });
+        }
+
+        public IActionResult DeleteComment(int id, int commentId)
+        {
+            postService.GetPublicPostById(id).Comments.RemoveAll(c => c.Id == commentId);
+            Db.SaveChanges();
+
+
+            return RedirectToAction("Post", new { id });
+        }
+
+    
+
+
+    public IActionResult Edit(int id)
         {
             return View(postService.GetPublicPostById(id));
         }
@@ -292,5 +320,6 @@ namespace StreetTalk.Controllers
 
             return NoContent();
         }
+
     }
 }

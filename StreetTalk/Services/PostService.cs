@@ -97,5 +97,21 @@ namespace StreetTalk.Services
 
             return post;
         }
+        public void AddView(String userid, PublicPost post)
+        {
+            var view = new View
+            {
+                Post = post,
+                UserId = userid
+            };
+            post.Views.Add(view);
+            Db.SaveChanges();
+        }
+
+        public bool UserViewedPost(String userid, PublicPost post)
+        {
+
+            return post.Views.Any(view => view.UserId == userid);
+        }
     }
 }
