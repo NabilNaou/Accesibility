@@ -1,0 +1,96 @@
+﻿@model Profile
+
+@{
+    ViewData["Title"] = "Uw profiel";
+}
+
+<div class="d-flex justify-content-center align-items-center container my-4">
+    <div class="row w-100">
+        <div class="card p-4 col-12">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        @if ((bool) ViewData["editSuccess"])
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                Profiel bewerken geslaagt
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        }
+                        <h1 class="mb-4 mr-5">Uw profiel</h1>
+                        @using (Html.BeginForm("Index", "Profile", FormMethod.Post))
+                        {
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            @Html.LabelFor(p => p.City)
+                                            @Html.TextBoxFor(p => p.City, new {@class = "form-control"})
+                                            <span class="text-danger">@Html.ValidationMessageFor(p => p.City)</span>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(p => p.Street)
+                                            @Html.TextBoxFor(p => p.Street, new {@class = "form-control"})
+                                            <span class="text-danger">@Html.ValidationMessageFor(p => p.Street)</span>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(p => p.HouseNumber)
+                                            @Html.TextBoxFor(p => p.HouseNumber, new {type = "number", @class = "form-control"})
+                                            <span class="text-danger">@Html.ValidationMessageFor(p => p.HouseNumber)</span>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(p => p.HouseNumberAddition)
+                                            @Html.TextBoxFor(p => p.HouseNumberAddition, new {@class = "form-control"})
+                                            <span class="text-danger">@Html.ValidationMessageFor(p => p.HouseNumberAddition)</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            @Html.LabelFor(p => p.PostalCode)
+                                            @Html.TextBoxFor(p => p.PostalCode, new {@class = "form-control"})
+                                            <span class="text-danger">@Html.ValidationMessageFor(p => p.PostalCode)</span>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(p => p.FirstName)
+                                            @Html.TextBoxFor(p => p.FirstName, new {@class = "form-control"})
+                                            <span class="text-danger">@Html.ValidationMessageFor(p => p.FirstName)</span>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(p => p.LastName)
+                                            @Html.TextBoxFor(p => p.LastName, new {@class = "form-control"})
+                                            <span class="text-danger">@Html.ValidationMessageFor(p => p.LastName)</span>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(p => p.DateOfBirth)
+                                            @Html.TextBoxFor(p => p.DateOfBirth, "{0:yyyy-MM-dd}", new {type = "date", @class = "form-control"})
+                                            <span class="text-danger">@Html.ValidationMessageFor(p => p.DateOfBirth)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <input type="submit" value="Opslaan" class="btn btn-primary"/>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <hr class="my-4" />
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="mb-4 mr-5">Privacy</h1>
+                        @using (Html.BeginForm("FetchPersonalData", "Profile", FormMethod.Post))
+                        {
+                            <input type="submit" class="btn btn-primary" value="Al uw data opvragen"/>
+                        }
+                        <a class="btn btn-primary mt-3" asp-controller="Profile" asp-action="DeleteAccount">Account permanent verwijderen</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
