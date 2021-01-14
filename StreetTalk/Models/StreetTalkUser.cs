@@ -13,5 +13,15 @@ namespace StreetTalk.Models
         public virtual List<Like> Likes { get; } = new List<Like>();
 
         public virtual List<Post> Posts { get; } = new List<Post>();
+
+        public string GetDisplayName()
+        {
+            return Profile == null ? "[verwijderde gebruiker]" : Profile.FullName;
+        }
+
+        public string GetProfilePhoto()
+        {
+            return Profile == null ? "/img/profile_photo_placeholder.png" : Profile.Photo.Photo.Filename;
+        }
     }
 }

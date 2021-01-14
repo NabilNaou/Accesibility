@@ -55,6 +55,7 @@ namespace StreetTalk
             services.AddHttpContextAccessor();
             services.AddTransient<PostService>();
             services.AddTransient<UserService>();
+            services.AddTransient<StreetTalkSignInManager>();
             services.AddRazorPages();
             services.AddIdentity<StreetTalkUser, IdentityRole>
                     (options =>

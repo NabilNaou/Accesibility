@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
@@ -108,15 +106,18 @@ namespace StreetTalk.Areas.Identity.Pages.Account
                     var user = await _userManager.FindByEmailAsync(Input.Email);
                     if (user != null)
                     {
-                        var ip = _httpContext.Connection.RemoteIpAddress.ToString();
+                        var ip = _httpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
                         if (user.LastKnownIpAddress != ip)
                         {
                             //Logged in from new ip address
+                            if (user.LastKnownIpAddress != null)
+                            {
+                                _logger.LogInformation("User logged in from new ip address");
+                                await _emailSender.SendEmailAsync(user.Email, "Login vanaf een nieuwe locatie", $"Er is inglogt op uw account vanaf een nieuwe locatie ({ip}).<br>Als u dit niet was, raden wij aan om uw wachtwoord te veranderen en 2 factor authenticatie in te stellen.");
+                            }
+                            
                             user.LastKnownIpAddress = ip;
                             await _context.SaveChangesAsync();
-                            _logger.LogInformation("User logged in from new ip address");
-
-                            await _emailSender.SendEmailAsync(user.Email, "Login vanaf een nieuwe locatie", $"Er is inglogt op uw account vanaf een nieuwe locatie ({ip}).<br>Als u dit niet was, raden wij aan om uw wachtwoord te veranderen en 2 factor authenticatie in te stellen.");
                         }
                     }
                     

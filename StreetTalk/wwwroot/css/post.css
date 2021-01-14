@@ -15,6 +15,7 @@
 .profile-image {
     width: 64px;
     height: 64px;
+    background-image: url("../img/profile_photo_placeholder.png");
 }
 
 .min-vh-75 {
