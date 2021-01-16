@@ -242,9 +242,6 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Post", new { id });
         }
 
-
-
-
         public IActionResult Edit(int id)
         {
             return View(postService.GetPublicPostById(id));
