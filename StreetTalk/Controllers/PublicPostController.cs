@@ -225,14 +225,14 @@ namespace StreetTalk.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditComment(int id, int commentId)
+        public IActionResult CensorComment(int id, int commentId)
         {
             ViewData["PublicPostId"] = id;
             return View(postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId));
         }
 
         [HttpPost]
-        public IActionResult EditComment(int commentId, int id, string newContent)
+        public IActionResult CensorComment(int commentId, int id, string newContent)
         {
             postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId).Content = newContent;
             Db.SaveChanges();
