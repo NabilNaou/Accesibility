@@ -225,27 +225,20 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Post", new { id });
         }
 
+        [Authorize(Roles = "Moderator, Administrator")]
         [HttpGet]
-        public IActionResult EditComment(int id, int commentId)
+        public IActionResult CensorComment(int id, int commentId)
         {
             ViewData["PublicPostId"] = id;
             return View(postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId));
         }
 
+        [Authorize(Roles = "Moderator, Administrator")]
         [HttpPost]
-        public IActionResult EditComment(int commentId, int id, string newContent)
+        public IActionResult CensorComment(int commentId, int id, string newContent)
         {
             postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId).Content = newContent;
             Db.SaveChanges();
-
-            return RedirectToAction("Post", new { id });
-        }
-
-        public IActionResult DeleteComment(int id, int commentId)
-        {
-            postService.GetPublicPostById(id).Comments.RemoveAll(c => c.Id == commentId);
-            Db.SaveChanges();
-
 
             return RedirectToAction("Post", new { id });
         }
