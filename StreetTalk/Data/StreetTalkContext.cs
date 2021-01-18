@@ -51,6 +51,6 @@ namespace StreetTalk.Data
         public DbSet<PostCategory> PostCategory { get; set; }
 
         public IEnumerable<PublicPost> PublicPost => Post.OfType<PublicPost>();
-        public IEnumerable<AnonymousPost> AnonymousPost => Post.OfType<AnonymousPost>();
+        public IEnumerable<Post> AnonymousPost => Post.AsEnumerable().OfType<Post>();
     }
 }

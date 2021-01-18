@@ -1,0 +1,24 @@
+﻿@model IEnumerable<StreetTalk.Models.Post>
+@{
+    ViewData["Title"] = "Anonieme meldingen";
+}
+
+<table>
+    <thead>
+        <tr>
+            <th>Titel</th>
+            <th>ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var post in Model)
+        {
+            <tr>
+                <td><a asp-controller="AnonymousPost" asp-action="Content" asp-route-id="@post.Id">@post.Title</a></td>
+                <td>@post.Id</td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
