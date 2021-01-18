@@ -6,7 +6,23 @@ using StreetTalk.Models;
 
 namespace StreetTalk.Services
 {
-    public class PostService
+    public interface IPostService
+    {
+        PublicPost GetPublicPostById(int id);
+        bool UserLikedPost(PublicPost post, string userId);
+        void RemoveLikeFromPost(PublicPost post, string userId);
+        void AddLikeForPost(PublicPost post, string userId);
+        void ToggleLikeForPost(PublicPost post, string userId);
+        bool UserReportedPost(PublicPost post, string userId);
+        void AddReportForPost(PublicPost post, string userId);
+        void DeletePostById(int id);
+        IEnumerable<string> GetRecentTitles();
+        PublicPost EditPostById(int id, PublicPost newPost);
+        void AddView(string userid, PublicPost post);
+        bool UserViewedPost(string userid, PublicPost post);
+    }
+
+    public class PostService : IPostService
     {
         private readonly StreetTalkContext Db;
 
@@ -88,16 +104,16 @@ namespace StreetTalk.Services
                 .AsEnumerable();
         }
 
-        public PublicPost EditPostById(int id, PublicPost newpost)
+        public PublicPost EditPostById(int id, PublicPost newPost)
         {
             var post = GetPublicPostById(id);
 
-            post.Title = newpost.Title;
-            post.Content = newpost.Content;
+            post.Title = newPost.Title;
+            post.Content = newPost.Content;
 
             return post;
         }
-        public void AddView(String userid, PublicPost post)
+        public void AddView(string userid, PublicPost post)
         {
             var view = new View
             {
@@ -108,7 +124,7 @@ namespace StreetTalk.Services
             Db.SaveChanges();
         }
 
-        public bool UserViewedPost(String userid, PublicPost post)
+        public bool UserViewedPost(string userid, PublicPost post)
         {
 
             return post.Views.Any(view => view.UserId == userid);

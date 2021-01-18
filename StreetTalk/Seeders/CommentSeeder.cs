@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using StreetTalk.Data;
 using StreetTalk.Models;
 
@@ -10,7 +11,7 @@ namespace StreetTalk.Seeders
     {
         public override bool ShouldSeed => !Context.Post.OfType<PublicPost>().Single(p => p.Id == 1).Comments.Any();
 
-        public override void DoSeed(StreetTalkContext context)
+        public override async Task DoSeed(StreetTalkContext context)
         {
             var firstPost = Context.Post.OfType<PublicPost>().Single(p => p.Id == 1);
             var secondPost = Context.Post.OfType<PublicPost>().Single(p => p.Id == 2);

@@ -50,13 +50,13 @@ namespace StreetTalk.Controllers
     [Authorize]
     public class PublicPostController : BaseController
     {
-        private readonly PostService postService;
-        private readonly UserService userService;
+        private readonly IPostService postService;
+        private readonly IUserService userService;
         private readonly IConfiguration config;
         private readonly IWebHostEnvironment environment;
         private readonly string[] permittedUploadExtensions = { ".png", ".jpg", ".jpeg" };
 
-        public PublicPostController(StreetTalkContext context, PostService postService, UserService userService,
+        public PublicPostController(StreetTalkContext context, IPostService postService, IUserService userService,
             IConfiguration config, IWebHostEnvironment environment) : base(context)
         {
             this.postService = postService;

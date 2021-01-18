@@ -9,12 +9,12 @@ namespace StreetTalkTests
     {
         private string databaseName;
 
-        protected StreetTalkContext Db
+        protected StreetTalkContext SeededCleanContext
         {
             get
             {
                 var context = GetNewInMemoryDatabase(true);
-                DatabaseSeeder.SeedAll(context);
+                DatabaseSeeder.SeedAll(context).Wait();
                 return GetNewInMemoryDatabase(false);
             }
         }

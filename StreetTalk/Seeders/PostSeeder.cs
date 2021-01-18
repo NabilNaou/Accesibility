@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using StreetTalk.Data;
 using StreetTalk.Models;
 
@@ -10,7 +11,7 @@ namespace StreetTalk.Seeders
     {
         public override bool ShouldSeed => !Context.Post.Any();
         
-        public override void DoSeed(StreetTalkContext context)
+        public override async Task DoSeed(StreetTalkContext context)
         {
             var rows = new List<Post>
             {
@@ -29,7 +30,7 @@ namespace StreetTalk.Seeders
                             Filename = "https://assets.nos.nl/data/image/2017/11/23/433105/xxl.jpg",
                         }
                     },
-                    User = Context.User.Skip(0).First()
+                    User = Context.User.OrderBy(u => u.Id).Skip(0).First()
                 },
                 CreateGarbagePost(2, 1),
                 CreateGarbagePost(3, 2),
@@ -81,7 +82,7 @@ namespace StreetTalk.Seeders
                         Filename = "https://upload.wikimedia.org/wikipedia/commons/1/14/Klein_gevaarlijk_afval_A.jpg",
                     }
                 },
-                User = Context.User.Skip(userId - 1).First()
+                User = Context.User.OrderBy(u => u.Id).Skip(userId - 1).First()
             };
         }
     }

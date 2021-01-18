@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +17,7 @@ namespace StreetTalk.Seeders
 
         public override bool ShouldSeed => true;
 
-        public override void DoSeed(StreetTalkContext context)
+        public override async Task DoSeed(StreetTalkContext context)
         {
             var validators = new Collection<IRoleValidator<IdentityRole>>
             {

@@ -1,5 +1,6 @@
 ﻿using StreetTalk.Data;
 using System;
+using System.Threading.Tasks;
 
 namespace StreetTalk.Seeders
 {
@@ -7,17 +8,18 @@ namespace StreetTalk.Seeders
     {
         protected StreetTalkContext Context;
 
-        public void Seed(StreetTalkContext ctx)
+        public async Task Seed(StreetTalkContext ctx)
         {
             Context = ctx;
 
-            if (!ShouldSeed) return;
-            
-            DoSeed(Context);
-            Context.SaveChanges();
+            if (ShouldSeed)
+            {
+                await DoSeed(Context);
+                await Context.SaveChangesAsync();
+            }
         }
 
-        public abstract void DoSeed(StreetTalkContext context);
+        public abstract Task DoSeed(StreetTalkContext context);
         public abstract bool ShouldSeed { get; }
     }
 }

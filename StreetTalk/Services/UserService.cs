@@ -5,13 +5,19 @@ using StreetTalk.Models;
 
 namespace StreetTalk.Services
 {
-    public class UserService
+    public interface IUserService
+    {
+        StreetTalkUser GetCurrentlyLoggedInUser();
+        string GetCurrentlyLoggedInUsername();
+    }
+    
+    public class UserService : IUserService
     {
         private readonly UserManager<StreetTalkUser> userManager;
-        private readonly StreetTalkSignInManager signInManager;
+        private readonly SignInManager<StreetTalkUser> signInManager;
         private readonly IHttpContextAccessor httpContext;
 
-        public UserService(UserManager<StreetTalkUser> userManager, StreetTalkSignInManager signInManager, IHttpContextAccessor httpContext)
+        public UserService(UserManager<StreetTalkUser> userManager, SignInManager<StreetTalkUser> signInManager, IHttpContextAccessor httpContext)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;

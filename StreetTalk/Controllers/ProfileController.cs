@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StreetTalk.Data;
 using StreetTalk.Models;
@@ -12,10 +13,10 @@ namespace StreetTalk.Controllers
     [Authorize]
     public class ProfileController : BaseController
     {
-        private readonly UserService userService;
-        private readonly StreetTalkSignInManager signInManager;
+        private readonly IUserService userService;
+        private readonly SignInManager<StreetTalkUser> signInManager;
 
-        public ProfileController(StreetTalkContext context, UserService userService, StreetTalkSignInManager signInManager) : base(context)
+        public ProfileController(StreetTalkContext context, IUserService userService, SignInManager<StreetTalkUser> signInManager) : base(context)
         {
             this.userService = userService;
             this.signInManager = signInManager;

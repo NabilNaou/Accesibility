@@ -7,7 +7,7 @@ namespace StreetTalkTests.ControllerTests
 {
     public class Home : BaseTest
     {
-        private HomeController Controller => new HomeController(Db);
+        private HomeController Controller => new HomeController(SeededCleanContext);
         
         [Fact]
         public void IndexReturnsView()
@@ -27,6 +27,13 @@ namespace StreetTalkTests.ControllerTests
         public void SiteMapReturnsView()
         {
             var result = Controller.SiteMap();
+            Assert.IsType<ViewResult>(result);
+        }
+        
+        [Fact]
+        public void RondleidingReturnsView()
+        {
+            var result = Controller.Rondleiding();
             Assert.IsType<ViewResult>(result);
         }
     }
