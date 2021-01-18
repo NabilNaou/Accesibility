@@ -44,7 +44,7 @@ namespace StreetTalk.Controllers
 
     public class PublicPostListFilters
     {
-        public bool ShowClosedPosts { get; set; }
+        public bool ShowClosedPosts { get; set; } = false;
     }
 
     [Authorize]
@@ -52,17 +52,14 @@ namespace StreetTalk.Controllers
     {
         private readonly IPostService postService;
         private readonly IUserService userService;
-        private readonly IConfiguration config;
-        private readonly IWebHostEnvironment environment;
+        private readonly IFileUploadService fileUploadService;
         private readonly string[] permittedUploadExtensions = { ".png", ".jpg", ".jpeg" };
 
-        public PublicPostController(StreetTalkContext context, IPostService postService, IUserService userService,
-            IConfiguration config, IWebHostEnvironment environment) : base(context)
+        public PublicPostController(StreetTalkContext context, IPostService postService, IUserService userService, IFileUploadService fileUploadService) : base(context)
         {
             this.postService = postService;
             this.userService = userService;
-            this.config = config;
-            this.environment = environment;
+            this.fileUploadService = fileUploadService;
         }
 
         public IActionResult Index(PublicPostListFilters filters, int page = 1, bool createSuccess = false)
@@ -117,28 +114,8 @@ namespace StreetTalk.Controllers
             //Photo upload
             if (post.UploadedPhoto != null && post.UploadedPhoto.Length > 0)
             {
-                var extenstion = Path.GetExtension(post.UploadedPhoto.FileName);
-                if (extenstion == null || !permittedUploadExtensions.Contains(extenstion))
-                    return View(post);
-
-                var newFilename = Path.GetRandomFileName() + extenstion;
-                var filePath = Path.Combine(config["StoredFilesPath"], newFilename);
-                var uploadsPath = Path.Combine(environment.WebRootPath, config["StoredFilesPath"]);
-
-                if (!Directory.Exists(uploadsPath))
-                    Directory.CreateDirectory(uploadsPath);
-
-                await using var stream = System.IO.File.Create(Path.Combine(environment.WebRootPath, filePath));
-                await post.UploadedPhoto.CopyToAsync(stream);
-
-                post.Photo = new PostPhoto
-                {
-                    Sensitive = post.UploadedPhotoIsSensitive,
-                    Photo = new Photo
-                    {
-                        Filename = "/" + filePath
-                    }
-                };
+                var postPhoto = fileUploadService.HandlePostPhotoUpload(post.UploadedPhoto, post.UploadedPhotoIsSensitive);
+                post.Photo = postPhoto;
             }
 
             var user = userService.GetCurrentlyLoggedInUser();
