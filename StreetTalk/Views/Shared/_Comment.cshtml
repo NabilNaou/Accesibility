@@ -9,11 +9,10 @@
             <span aria-label="Datum">@Model.CreatedAt?.ToString("dd-MM-yyyy HH:mm")</span>
         </div>
         <p aria-label="Inhoud">@Model.Content</p>
-        @if (Model.Author.Id == userService.GetCurrentlyLoggedInUser().Id)
+        @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
         {
             <span>
-                <a asp-action="EditComment" asp-controller="PublicPost" asp-route-id="@Model.Post.Id" asp-route-commentId="@Model.Id">Bewerk</a>
-                <a class="d-inline-block ml-2" asp-action="DeleteComment" asp-controller="PublicPost" asp-route-id="@Model.Post.Id" asp-route-commentId="@Model.Id">Verwijder</a>
+                <a asp-action="CensorComment" asp-controller="PublicPost" asp-route-id="@Model.Post.Id" asp-route-commentId="@Model.Id">Censor</a>
             </span>
         }
     </div>
