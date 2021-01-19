@@ -82,8 +82,8 @@ namespace StreetTalk.Controllers
                 new PublicPostWithExtraData
                 {
                     Post = a,
-                    Liked = a.Likes.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser()?.Id),
-                    Reported = a.Reports.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser()?.Id)
+                    Liked = a.Likes.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser().Id),
+                    Reported = a.Reports.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser().Id)
                 }
             ).ToList();
 

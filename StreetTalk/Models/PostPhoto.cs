@@ -2,6 +2,8 @@
 {
     public class PostPhoto
     {
+        public int Id { get; set; }
+
         public virtual bool Sensitive { get; set; }
         
         public virtual int PhotoId { get; set; }

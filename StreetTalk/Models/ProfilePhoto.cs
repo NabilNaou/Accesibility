@@ -2,6 +2,8 @@
 {
     public class ProfilePhoto
     {
+        public int Id { get; set; }
+        
         public virtual int PhotoId { get; set; }
         public virtual Photo Photo { get; set; }
         

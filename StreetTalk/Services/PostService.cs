@@ -75,7 +75,7 @@ namespace StreetTalk.Services
         {
             var post = GetPublicPostById(id);
 
-            Db.Post.Remove(post);
+            Db.PublicPost.Remove(post);
 
             Db.SaveChanges();
         }

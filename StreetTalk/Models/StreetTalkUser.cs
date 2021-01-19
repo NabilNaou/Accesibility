@@ -12,7 +12,7 @@ namespace StreetTalk.Models
 
         public virtual List<Like> Likes { get; } = new List<Like>();
 
-        public virtual List<Post> Posts { get; } = new List<Post>();
+        public virtual List<PublicPost> Posts { get; } = new List<PublicPost>();
 
         public string GetDisplayName()
         {
