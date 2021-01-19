@@ -82,7 +82,7 @@ namespace StreetTalk.Services
 
         public IEnumerable<string> GetRecentTitles()
         {
-            return Db.PublicPost
+            return Db.PublicPost.ToList()
                 .Where(p => (p.CreatedAt!.Value - DateTime.Now).TotalDays < 30)
                 .Select(p => p.Title)
                 .AsEnumerable();

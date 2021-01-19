@@ -45,6 +45,10 @@ namespace StreetTalk.Data
             modelBuilder.Entity<AnonymousPost>().ToTable("anonymouspost");
         }
 
+        public string Encrypt (string plaintext)
+        {
+            return encryptionProvider.Encrypt(plaintext);
+        }
         public DbSet<StreetTalkUser> User { get; set; }
         
         

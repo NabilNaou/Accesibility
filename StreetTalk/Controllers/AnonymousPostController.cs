@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using StreetTalk.Data;
 using StreetTalk.Models;
+using StreetTalk.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,9 @@ namespace StreetTalk.Controllers
 
     public class AnonymousPostController : BaseController
     {
-        public AnonymousPostController(StreetTalkContext context): base(context) { 
-            
+        private readonly UserService userService;
+        public AnonymousPostController(StreetTalkContext context, UserService userService): base(context) {
+            this.userService = userService;
         }
         
         [Authorize(Roles = "Administrator, Gemeentemedewerker")]
@@ -35,7 +37,8 @@ namespace StreetTalk.Controllers
             if (!ModelState.IsValid ) {
                 return View();
             }
-            
+            var currentuser = userService.GetCurrentlyLoggedInUser();
+            anoniemeMelding.Pseudonym = Db.Encrypt(currentuser.Email);
             Db.AnonymousPost.Add(anoniemeMelding);
             Db.SaveChanges();
             
@@ -47,5 +50,7 @@ namespace StreetTalk.Controllers
         {
             return View(Db.AnonymousPost.Single(post => post.Id == id));
         }
+
+
     }
 }
