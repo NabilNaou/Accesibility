@@ -33,7 +33,7 @@ namespace StreetTalk.Services
 
         public PublicPost GetPublicPostById(int id)
         {
-            return Db.PublicPost.Single(p => p.Id == id);
+            return Db.PublicPost.SingleOrDefault(p => p.Id == id);
         }
 
         public bool UserLikedPost(PublicPost post, string userId)

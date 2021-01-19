@@ -129,9 +129,15 @@ namespace StreetTalk.Controllers
 
         public IActionResult Post(int id)
         {
-            ViewData["CurrentUserId"] = userService.GetCurrentlyLoggedInUser().Id;
+            ViewData["CurrentUserId"] = userService.GetCurrentlyLoggedInUser()?.Id;
             var post = postService.GetPublicPostById(id);
             var user = userService.GetCurrentlyLoggedInUser();
+            
+            if(post == null)
+                return BadRequest("Post is null");
+            
+            if(user == null)
+                return BadRequest("User is null");
             
             if (!postService.UserViewedPost(user.Id, post))
                 postService.AddView(user.Id, post);

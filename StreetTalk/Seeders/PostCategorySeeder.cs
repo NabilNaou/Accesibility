@@ -26,7 +26,7 @@ namespace StreetTalk.Seeders
                 }
             };
             
-            Context.PostCategory.AddRange(rows);
+            await Context.PostCategory.AddRangeAsync(rows);
         }
     }
 }

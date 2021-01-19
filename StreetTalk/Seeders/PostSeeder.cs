@@ -61,7 +61,7 @@ namespace StreetTalk.Seeders
                 }
             };
 
-            Context.Post.AddRange(rows);
+            await Context.Post.AddRangeAsync(rows);
         }
 
         private PublicPost CreateGarbagePost(int id, int userId)

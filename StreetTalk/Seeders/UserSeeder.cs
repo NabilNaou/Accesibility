@@ -40,8 +40,15 @@ namespace StreetTalk.Seeders
                 EmailConfirmed = true,
                 LockoutEnabled = false,
                 SecurityStamp = Guid.NewGuid().ToString(),
+                LastKnownIpAddress = "",
                 Profile = new Profile
                 {
+                    DateOfBirth = DateTime.Now,
+                    City = "",
+                    Street = "",
+                    HouseNumber = 0,
+                    HouseNumberAddition = "",
+                    PostalCode = "",
                     FirstName = firstName,
                     LastName = lastName,
                     Photo = new ProfilePhoto {

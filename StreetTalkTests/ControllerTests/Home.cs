@@ -36,5 +36,12 @@ namespace StreetTalkTests.ControllerTests
             var result = Controller.Rondleiding();
             Assert.IsType<ViewResult>(result);
         }
+
+        [Fact]
+        public void ErrorReturnsView()
+        {
+            var result = Controller.Error();
+            Assert.IsType<ViewResult>(result);
+        }
     }
 }

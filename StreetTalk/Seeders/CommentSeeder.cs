@@ -36,7 +36,7 @@ namespace StreetTalk.Seeders
                 }
             );
             
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
             
             secondPost.Comments.Add(
                 new Comment
@@ -47,7 +47,7 @@ namespace StreetTalk.Seeders
                 }
             );
                 
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
         }
     }
 }
