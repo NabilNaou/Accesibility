@@ -47,6 +47,7 @@ namespace StreetTalk.Controllers
         public bool ShowClosedPosts { get; set; }
         public string SorteerOptie { get; set; }
         public bool OnlyLikedPosts { get; set; }
+        public string ZoekFilter { get; set; }
     }
 
     [Authorize]
@@ -70,25 +71,27 @@ namespace StreetTalk.Controllers
         public IActionResult Index(PublicPostListFilters filters, int page = 1, bool createSuccess = false)
         {
             ViewData["createSuccess"] = createSuccess;
-            //TODO: Refactor this
             var perPage = 10;
             var skip = Math.Max(page - 1, 0) * perPage;
-            IEnumerable<PublicPost> posts;
+            var posts = Db.PublicPost.Where(p => !p.Closed || filters.ShowClosedPosts);
 
-            if (filters.SorteerOptie == "likes")
+            if (filters.OnlyLikedPosts)
             {
-                posts = SorteerOpLikes(filters, skip, perPage);
+                posts = MyLikedPosts(posts);
             }
-            else if (filters.SorteerOptie == "views") 
-            {
-                posts = SorteerOpViews(filters, skip, perPage);
-            }
-            else
-            {
-                posts = SorteerOpDatum(filters, skip, perPage);
-            }
-                
 
+            posts = ZoekFilter(posts, filters.ZoekFilter);
+
+
+            switch (filters.SorteerOptie)
+            {
+                case "likes": posts = SorteerOpLikes(posts); break;
+                case "views": posts = SorteerOpViews(posts); break;
+                default: posts = SorteerOpDatum(posts); break;
+            }
+
+            posts.Skip(skip)
+           .Take(perPage);
 
             var publicPostsWithLikes = posts.Select(a =>
                 new PublicPostWithExtraData
@@ -111,83 +114,34 @@ namespace StreetTalk.Controllers
             return View(viewModelData);
         }
 
-        private IEnumerable<PublicPost> SorteerOpLikes(PublicPostListFilters filters, int skip, int perPage)
+        private IEnumerable<PublicPost> SorteerOpLikes(IEnumerable<PublicPost> posts)
         {
-            var posts = Db.PublicPost
-                .Where(p => !p.Closed || filters.ShowClosedPosts)
-                .OrderByDescending(p => p.Likes.Count)
-                .Skip(skip)
-                .Take(perPage);
-
-            return posts;
+            return posts.OrderByDescending(p => p.Likes.Count);
         }
-        private IEnumerable<PublicPost> SorteerOpViews(PublicPostListFilters filters, int skip, int perPage)
+        private IEnumerable<PublicPost> SorteerOpViews(IEnumerable<PublicPost> posts)
         {
-            var posts = Db.PublicPost
-                .Where(p => !p.Closed || filters.ShowClosedPosts)
-                .OrderByDescending(p => p.Views.Count)
-                .Skip(skip)
-                .Take(perPage);
-
-            return posts;
+            return posts.OrderByDescending(p => p.Views.Count);
         }
-        private IEnumerable<PublicPost> SorteerOpDatum(PublicPostListFilters filters, int skip, int perPage)
+        private IEnumerable<PublicPost> SorteerOpDatum(IEnumerable<PublicPost> posts)
         {
-            var posts = Db.PublicPost
-                .Where(p => !p.Closed || filters.ShowClosedPosts)
-                .OrderByDescending(p => p.CreatedAt)
-                .Skip(skip)
-                .Take(perPage);
-
-            return posts;
+            return posts.OrderByDescending(p => p.CreatedAt);
         }
 
-        private IEnumerable<PublicPost> SortPosts (string SorteerVolgorde, IEnumerable<PublicPost> sorteerLijst)
+        private IEnumerable<PublicPost> ZoekFilter(IEnumerable<PublicPost> post, string zoekterm)
         {
-            switch (SorteerVolgorde)
+            if (!String.IsNullOrEmpty(zoekterm))
             {
-                case "aflopend": sorteerLijst = sorteerLijst.OrderByDescending(p => p.Likes.Count); break;
-                case "datum": sorteerLijst = sorteerLijst.OrderBy(p => p.CreatedAt); break;
-                default: sorteerLijst = sorteerLijst.OrderBy(s => s.Likes.Count); break;
+                return post.Where(s => s.Title.ToUpper().Contains(zoekterm.ToUpper()));
             }
-
-            return (sorteerLijst);
+            return post;
         }
 
-
-        /*public IActionResult Index(string SorteerVolgorde, PublicPostListFilters filters, int page = 1, bool createSuccess = false)
+        private IEnumerable<PublicPost> MyLikedPosts(IEnumerable<PublicPost> post)
         {
-            ViewData["createSuccess"] = createSuccess;
-            //TODO: Refactor this
-            var perPage = 10;
-            var skip = Math.Max(page - 1, 0) * perPage;
+            var user = userService.GetCurrentlyLoggedInUser();
+            return post.ToList().Where(p => p.Likes.Any(b => b.UserId == user.Id));
+        }
 
-
-            var posts = Db.PublicPost
-                .Where(p => !p.Closed || filters.ShowClosedPosts)
-                .OrderBy(p => p.CreatedAt)
-                .Skip(skip)
-                .Take(perPage);
-
-            var publicPostsWithLikes = posts.Select(a =>
-                new PublicPostWithExtraData
-                {
-                    Post = a,
-                    Liked = a.Likes.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser()?.Id),
-                    Reported = a.Reports.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser()?.Id)
-                }
-            ).ToList();
-
-            switch (SorteerVolgorde)
-            {
-                
-            }
-
-
-
-            return View();
-
-        }*/
         public IActionResult Create()
         {
             IEnumerable<PostCategory> categories = Db.PostCategory.ToList();

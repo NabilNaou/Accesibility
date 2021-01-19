@@ -51,14 +51,17 @@
 
                         }, "value", "text");
                     }
-                    @Html.LabelFor(m => m.Filters.SorteerOptie)
+                    @Html.Label("Sorteeropties:")
                     @Html.DropDownListFor(m => m.Filters.SorteerOptie, showSortOptions, new { @class = "form-control" })
                 </div>
-
-
+                <div class="form-check">
+                    @Html.Label("Zoekopdracht:")
+                    @Html.TextBoxFor(m => m.Filters.ZoekFilter)
+                </div>
 
                 <input type="submit" value="Toepassen" class="btn btn-primary form-control mt-3" />
             }
+
         </div>
     </div>
     <ul id="meldingen" class="flex-grow-1 undecorated-list d-flex flex-column" aria-label="Meldingen lijst">
