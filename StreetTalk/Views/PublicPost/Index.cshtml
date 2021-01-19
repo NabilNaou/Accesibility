@@ -6,11 +6,11 @@
 }
 
 @section styles {
-    <link href="~/css/postlist.css" rel="stylesheet"/>
+    <link href="~/css/postlist.css" rel="stylesheet" />
 }
 
 <div class="st-container">
-    @if ((bool) ViewData["createSuccess"])
+    @if ((bool)ViewData["createSuccess"])
     {
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             Melding maken geslaagt
@@ -20,28 +20,44 @@
         </div>
     }
     <h1 class="mb-3">Publieke meldingen</h1>
-    <hr class="my-4"/>
+    <hr class="my-4" />
     <div class="w-100 d-flex flex-column mb-4" aria-label="Filters">
         <div class="d-flex flex-row align-items-center justify-content-between">
             <div id="filter-button" role="button">
-                <img src="~/img/filter_list.svg" alt="Filter icoon"/>
+                <img src="~/img/filter_list.svg" alt="Filter icoon" />
                 <span class="d-inline-block ml-2">Filteren</span>
             </div>
         </div>
         <div id="filters">
             @using (Html.BeginForm("Index", "PublicPost", FormMethod.Get, new { @class = "m-3 p-3 card" }))
             {
+
+
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.Filters.ShowClosedPosts)
+                    @Html.Label("Sorteer op gesloten melding")
+                </div>
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.Filters.OnlyLikedPosts)
+                    @Html.Label("Alleen gelikete posts")
+                </div>
                 <div class="form-check">
                     @{
-                        var showClosedPostsOptions = new SelectList(new List<object>{ 
-                            new { value = "false", text = "No"  },
-                            new { value = "true", text = "Yes" }
+                        var showSortOptions = new SelectList(new List<object>{
+
+                            new { value = "datum", text = "Datum"},
+                            new { value = "likes", text = "Likes"  },
+                            new { value = "views", text = "Views" }
+
                         }, "value", "text");
                     }
-                    @Html.LabelFor(m => m.Filters.ShowClosedPosts)
-                    @Html.DropDownListFor(m => m.Filters.ShowClosedPosts, showClosedPostsOptions, new {@class = "form-control"})
+                    @Html.LabelFor(m => m.Filters.SorteerOptie)
+                    @Html.DropDownListFor(m => m.Filters.SorteerOptie, showSortOptions, new { @class = "form-control" })
                 </div>
-                <input type="submit" value="Toepassen" class="btn btn-primary form-control mt-3"/>
+
+
+
+                <input type="submit" value="Toepassen" class="btn btn-primary form-control mt-3" />
             }
         </div>
     </div>
@@ -49,7 +65,7 @@
         @foreach (var post in Model.Posts)
         {
             <li aria-label="Melding: @post.Post.Title">
-                <partial name="_PostRow" for="@post"/>
+                <partial name="_PostRow" for="@post" />
             </li>
         }
     </ul>

@@ -45,6 +45,8 @@ namespace StreetTalk.Controllers
     public class PublicPostListFilters
     {
         public bool ShowClosedPosts { get; set; }
+        public string SorteerOptie { get; set; }
+        public bool OnlyLikedPosts { get; set; }
     }
 
     [Authorize]
@@ -71,12 +73,22 @@ namespace StreetTalk.Controllers
             //TODO: Refactor this
             var perPage = 10;
             var skip = Math.Max(page - 1, 0) * perPage;
+            IEnumerable<PublicPost> posts;
 
-            var posts = Db.PublicPost
-                .Where(p => !p.Closed || filters.ShowClosedPosts)
-                .OrderBy(p => p.CreatedAt)
-                .Skip(skip)
-                .Take(perPage);
+            if (filters.SorteerOptie == "likes")
+            {
+                posts = SorteerOpLikes(filters, skip, perPage);
+            }
+            else if (filters.SorteerOptie == "views") 
+            {
+                posts = SorteerOpViews(filters, skip, perPage);
+            }
+            else
+            {
+                posts = SorteerOpDatum(filters, skip, perPage);
+            }
+                
+
 
             var publicPostsWithLikes = posts.Select(a =>
                 new PublicPostWithExtraData
@@ -95,9 +107,87 @@ namespace StreetTalk.Controllers
                 NextPage = page + 1
             };
 
+
             return View(viewModelData);
         }
 
+        private IEnumerable<PublicPost> SorteerOpLikes(PublicPostListFilters filters, int skip, int perPage)
+        {
+            var posts = Db.PublicPost
+                .Where(p => !p.Closed || filters.ShowClosedPosts)
+                .OrderByDescending(p => p.Likes.Count)
+                .Skip(skip)
+                .Take(perPage);
+
+            return posts;
+        }
+        private IEnumerable<PublicPost> SorteerOpViews(PublicPostListFilters filters, int skip, int perPage)
+        {
+            var posts = Db.PublicPost
+                .Where(p => !p.Closed || filters.ShowClosedPosts)
+                .OrderByDescending(p => p.Views.Count)
+                .Skip(skip)
+                .Take(perPage);
+
+            return posts;
+        }
+        private IEnumerable<PublicPost> SorteerOpDatum(PublicPostListFilters filters, int skip, int perPage)
+        {
+            var posts = Db.PublicPost
+                .Where(p => !p.Closed || filters.ShowClosedPosts)
+                .OrderByDescending(p => p.CreatedAt)
+                .Skip(skip)
+                .Take(perPage);
+
+            return posts;
+        }
+
+        private IEnumerable<PublicPost> SortPosts (string SorteerVolgorde, IEnumerable<PublicPost> sorteerLijst)
+        {
+            switch (SorteerVolgorde)
+            {
+                case "aflopend": sorteerLijst = sorteerLijst.OrderByDescending(p => p.Likes.Count); break;
+                case "datum": sorteerLijst = sorteerLijst.OrderBy(p => p.CreatedAt); break;
+                default: sorteerLijst = sorteerLijst.OrderBy(s => s.Likes.Count); break;
+            }
+
+            return (sorteerLijst);
+        }
+
+
+        /*public IActionResult Index(string SorteerVolgorde, PublicPostListFilters filters, int page = 1, bool createSuccess = false)
+        {
+            ViewData["createSuccess"] = createSuccess;
+            //TODO: Refactor this
+            var perPage = 10;
+            var skip = Math.Max(page - 1, 0) * perPage;
+
+
+            var posts = Db.PublicPost
+                .Where(p => !p.Closed || filters.ShowClosedPosts)
+                .OrderBy(p => p.CreatedAt)
+                .Skip(skip)
+                .Take(perPage);
+
+            var publicPostsWithLikes = posts.Select(a =>
+                new PublicPostWithExtraData
+                {
+                    Post = a,
+                    Liked = a.Likes.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser()?.Id),
+                    Reported = a.Reports.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser()?.Id)
+                }
+            ).ToList();
+
+            switch (SorteerVolgorde)
+            {
+                
+            }
+
+
+
+            return View();
+
+        }*/
         public IActionResult Create()
         {
             IEnumerable<PostCategory> categories = Db.PostCategory.ToList();
