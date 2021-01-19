@@ -21,11 +21,6 @@
                     <span class="text-danger">@Html.ValidationMessageFor(m => m.Title)</span>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.UploadedPhoto)
-                    @Html.TextBoxFor(m => m.UploadedPhoto, new { @class = "form-control", type = "file" })
-                    <span class="text-danger">@Html.ValidationMessageFor(m => m.UploadedPhoto)</span>
-                </div>
-                <div class="form-group">
                     @Html.LabelFor(m => m.Content)
                     @Html.TextAreaFor(m => m.Content, new { @class = "form-control" })
                     <span class="text-danger">@Html.ValidationMessageFor(m => m.Content)</span>
