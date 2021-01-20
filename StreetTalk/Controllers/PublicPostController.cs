@@ -15,6 +15,7 @@ using StreetTalk.Data;
 using StreetTalk.Services;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace StreetTalk.Controllers
 {
@@ -48,6 +49,14 @@ namespace StreetTalk.Controllers
         public string SorteerOptie { get; set; }
         public bool OnlyLikedPosts { get; set; }
         public string ZoekFilter { get; set; }
+
+        [DisplayName("Start Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime StartTime { get; set; }
+        
+        [DisplayName("End Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime EndTime { get; set; }
     }
 
     [Authorize]
@@ -75,11 +84,13 @@ namespace StreetTalk.Controllers
             var skip = Math.Max(page - 1, 0) * perPage;
             var posts = Db.PublicPost.Where(p => !p.Closed || filters.ShowClosedPosts);
 
+
             if (filters.OnlyLikedPosts)
             {
                 posts = MyLikedPosts(posts);
             }
 
+            posts = DateRange(posts, filters);
             posts = ZoekFilter(posts, filters.ZoekFilter);
 
 
@@ -140,6 +151,15 @@ namespace StreetTalk.Controllers
         {
             var user = userService.GetCurrentlyLoggedInUser();
             return post.ToList().Where(p => p.Likes.Any(b => b.UserId == user.Id));
+        }
+
+        private IEnumerable<PublicPost> DateRange(IEnumerable<PublicPost> posts, PublicPostListFilters filters)
+        {
+            if (!(filters.StartTime < new DateTime (1950, 01, 01)) && !(filters.EndTime < new DateTime(1950, 01, 01)))
+            {
+                return posts.Where(p => p.ToDate(p.CreatedAt) <= filters.EndTime.Date && p.ToDate(p.CreatedAt) >= filters.StartTime.Date);
+            }
+            return posts;
         }
 
         public IActionResult Create()

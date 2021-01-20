@@ -6,7 +6,8 @@
 }
 
 @section styles {
-    <link href="~/css/postlist.css" rel="stylesheet" />
+
+    <link href="~/css/postlist.css" rel="stylesheet" asp-append-version="true"/>
 }
 
 <div class="st-container">
@@ -31,35 +32,56 @@
         <div id="filters">
             @using (Html.BeginForm("Index", "PublicPost", FormMethod.Get, new { @class = "m-3 p-3 card" }))
             {
-
-
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.Filters.ShowClosedPosts)
-                    @Html.Label("Sorteer op gesloten melding")
-                </div>
-                <div class="form-check">
-                    @Html.CheckBoxFor(m => m.Filters.OnlyLikedPosts)
-                    @Html.Label("Alleen gelikete posts")
-                </div>
-                <div class="form-check">
-                    @{
-                        var showSortOptions = new SelectList(new List<object>{
+                
+            <div class="container">
+                <div class="row">
+                    <div class="column col-12 col-md-6">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.Filters.ShowClosedPosts)
+                            @Html.Label("Sorteer op gesloten melding")
+                        </div>
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.Filters.OnlyLikedPosts)
+                            @Html.Label("Alleen gelikete posts")
+                        </div>
+                        <div class="form-group">
+                            @{
+                                var showSortOptions = new SelectList(new List<object>{
 
                             new { value = "datum", text = "Datum"},
                             new { value = "likes", text = "Likes"  },
                             new { value = "views", text = "Views" }
 
                         }, "value", "text");
-                    }
-                    @Html.Label("Sorteeropties:")
-                    @Html.DropDownListFor(m => m.Filters.SorteerOptie, showSortOptions, new { @class = "form-control" })
-                </div>
-                <div class="form-check">
-                    @Html.Label("Zoekopdracht:")
-                    @Html.TextBoxFor(m => m.Filters.ZoekFilter)
-                </div>
+                            }
+                            @Html.Label("Sorteeropties:")
+                            @Html.DropDownListFor(m => m.Filters.SorteerOptie, showSortOptions, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Zoekopdracht:")
+                            @Html.TextBoxFor(m => m.Filters.ZoekFilter, new { @class = "form-control" })
+                        </div>
 
-                <input type="submit" value="Toepassen" class="btn btn-primary form-control mt-3" />
+                    </div>
+                    <div class="column col-12 col-md-6">
+                        <div class="form-group">
+                            
+                            @Html.LabelFor(m => m.Filters.StartTime)
+                            @Html.TextBoxFor(m => m.Filters.StartTime, new { type="date", @class="form-control"})
+                            </div>
+                            <div class="form-group">
+
+                                @Html.Label("Eind datum")
+                                @Html.TextBoxFor(m => m.Filters.EndTime, new { type = "date", @class = "form-control" })
+                            </div>
+
+                            <input type="submit" value="Toepassen" class="btn btn-primary form-control mt-3" />
+                        </div>
+                </div>
+                
+            </div>
+                
+                
             }
 
         </div>
