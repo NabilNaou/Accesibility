@@ -110,7 +110,6 @@ namespace StreetTalk.Services
 
         public bool UserViewedPost(String userid, PublicPost post)
         {
-
             return post.Views.Any(view => view.UserId == userid);
         }
     }
