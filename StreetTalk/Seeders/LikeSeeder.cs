@@ -37,7 +37,7 @@ namespace StreetTalk.Seeders
                     {
                         Post = secondPost,
                         User = Context.User.Skip(0).First()
-                    },
+                    }
                 }
             );
         }

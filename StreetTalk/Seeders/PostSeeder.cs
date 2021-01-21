@@ -27,7 +27,7 @@ namespace StreetTalk.Seeders
                         Photo = new Photo
                         {
                             Id = 500,
-                            Filename = "https://assets.nos.nl/data/image/2017/11/23/433105/xxl.jpg",
+                            Filename = "https://assets.nos.nl/data/image/2017/11/23/433105/xxl.jpg"
                         }
                     },
                     User = Context.User.Single(u => u.Email == "19097530@student.hhs.nl")
@@ -77,7 +77,7 @@ namespace StreetTalk.Seeders
                     Photo = new Photo
                     {
                         Id = 1000 + id,
-                        Filename = "https://upload.wikimedia.org/wikipedia/commons/1/14/Klein_gevaarlijk_afval_A.jpg",
+                        Filename = "https://upload.wikimedia.org/wikipedia/commons/1/14/Klein_gevaarlijk_afval_A.jpg"
                     }
                 },
                 User = Context.User.OrderBy(u => u.Id).Skip(userId - 1).First()

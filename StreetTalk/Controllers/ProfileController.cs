@@ -70,7 +70,7 @@ namespace StreetTalk.Controllers
             var personalData = new Dictionary<string, string>
             {
                 {"Email", user.Email},
-                {"Full name", user.Profile.FullName},
+                {"Full name", user.Profile.FullName}
             };
 
             //Optional fields

@@ -14,8 +14,8 @@ namespace StreetTalk.Models
             DateTime temp = (DateTime) date;
             return temp.Date; 
         }
-        
-        public Timestamped()
+
+        protected Timestamped()
         {
             CreatedAt = DateTime.UtcNow;
             ModifiedAt = DateTime.UtcNow;

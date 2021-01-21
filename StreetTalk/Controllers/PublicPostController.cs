@@ -266,11 +266,11 @@ namespace StreetTalk.Controllers
                 return RedirectToAction("Index");
             }
 
-            var EditedPost = postService.EditPostById(id, post);
+            var editedPost = postService.EditPostById(id, post);
 
-            var context = new ValidationContext(EditedPost);
+            var context = new ValidationContext(editedPost);
             var validationResults = new List<ValidationResult>();
-            bool isValid = Validator.TryValidateObject(EditedPost, context, validationResults, true);
+            bool isValid = Validator.TryValidateObject(editedPost, context, validationResults, true);
 
             if (!isValid) return View(post);
 
