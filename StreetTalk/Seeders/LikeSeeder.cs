@@ -9,11 +9,11 @@ namespace StreetTalk.Seeders
 {
     public class LikeSeeder : Seeder
     {
-        public override bool ShouldSeed => !Context.Post.OfType<PublicPost>().Single(p => p.Id == 1).Likes.Any();
+        public override bool ShouldSeed => !Context.PublicPost.OfType<PublicPost>().Single(p => p.Id == 1).Likes.Any();
 
         public override async Task DoSeed(StreetTalkContext context)
         {
-            var firstPost = Context.Post.OfType<PublicPost>().Single(p => p.Id == 1);
+            var firstPost = Context.PublicPost.OfType<PublicPost>().Single(p => p.Id == 1);
             //The second and the third user like the first post
             firstPost.Likes.AddRange(new List<Like>
                 {
@@ -30,7 +30,7 @@ namespace StreetTalk.Seeders
                 }
             );
             
-            var secondPost = Context.Post.OfType<PublicPost>().Single(p => p.Id == 2);
+            var secondPost = Context.PublicPost.OfType<PublicPost>().Single(p => p.Id == 2);
             //The first user likes the second post
             secondPost.Likes.AddRange(new List<Like>
                 {

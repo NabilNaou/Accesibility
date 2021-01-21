@@ -70,7 +70,8 @@ namespace StreetTalk.Controllers
             var skip = Math.Max(page - 1, 0) * perPage;
 
             var posts = Db.PublicPost
-                .Where(p => !p.Closed || filters.ShowClosedPosts)
+                .ToList()
+                .Where(p => !p.IsClosed() || filters.ShowClosedPosts)
                 .OrderBy(p => p.CreatedAt)
                 .Skip(skip)
                 .Take(perPage);
@@ -79,8 +80,8 @@ namespace StreetTalk.Controllers
                 new PublicPostWithExtraData
                 {
                     Post = a,
-                    Liked = a.Likes.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser()?.Id),
-                    Reported = a.Reports.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser()?.Id)
+                    Liked = a.Likes.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser().Id),
+                    Reported = a.Reports.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser().Id)
                 }
             ).ToList();
 

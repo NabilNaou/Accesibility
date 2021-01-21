@@ -40,17 +40,21 @@ namespace StreetTalk.Data
             modelBuilder.Entity<View>().HasKey(view => new { view.UserId, view.PostId });
             modelBuilder.Entity<Like>().HasKey(like => new { like.UserId, like.PostId });
             modelBuilder.Entity<Report>().HasKey(report => new { report.UserId, report.PostId });
-            modelBuilder.Entity<PostPhoto>().HasKey(photo => new { photo.PhotoId, photo.PostId });
-            modelBuilder.Entity<ProfilePhoto>().HasKey(photo => new { photo.PhotoId, photo.ProfileId });
+
+            modelBuilder.Entity<PublicPost>().ToTable("publicpost");
+            modelBuilder.Entity<AnonymousPost>().ToTable("anonymouspost");
         }
 
+        public string Encrypt (string plaintext)
+        {
+            return encryptionProvider.Encrypt(plaintext);
+        }
         public DbSet<StreetTalkUser> User { get; set; }
-
-        public DbSet<Post> Post { get; set; }
+        
         
         public DbSet<PostCategory> PostCategory { get; set; }
 
-        public IEnumerable<PublicPost> PublicPost => Post.OfType<PublicPost>();
-        public IEnumerable<AnonymousPost> AnonymousPost => Post.OfType<AnonymousPost>();
+        public DbSet<PublicPost> PublicPost { get; set; }
+        public DbSet<AnonymousPost> AnonymousPost { get; set; }
     }
 }

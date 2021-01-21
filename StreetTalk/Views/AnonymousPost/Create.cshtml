@@ -1,0 +1,33 @@
+﻿@model AnonymousPost
+
+@{
+    ViewData["Title"] = "Maak anonieme melding";
+}
+
+@section Scripts {
+    <script src="~/js/createPost.js"></script>
+}
+
+<div class="d-flex justify-content-center align-items-center container my-4">
+    <div class="row w-100">
+        <div class="card p-4 col-12">
+            <h1 class="mb-4 mr-5">Anoniem melden</h1>
+            <div id="similarTitleWarning" class="alert alert-warning d-none" role="alert"></div>
+            @using (Html.BeginForm("Create", "AnonymousPost", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Title)
+                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control", onchange = "checkTitleSimilarity(this.value)" })
+                    <span class="text-danger">@Html.ValidationMessageFor(m => m.Title)</span>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Content)
+                    @Html.TextAreaFor(m => m.Content, new { @class = "form-control" })
+                    <span class="text-danger">@Html.ValidationMessageFor(m => m.Content)</span>
+                </div>
+                <input class="btn btn-primary float-right mt-4" type="submit" value="Maak anonieme melding" />
+            }
+        </div>
+    </div>
+    <div class="w-100 position-fixed min-vh-100 st-working-from-anywhere"></div>
+</div>
