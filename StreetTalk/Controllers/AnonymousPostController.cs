@@ -15,8 +15,8 @@ namespace StreetTalk.Controllers
 
     public class AnonymousPostController : BaseController
     {
-        private readonly UserService userService;
-        public AnonymousPostController(StreetTalkContext context, UserService userService): base(context) {
+        private readonly IUserService userService;
+        public AnonymousPostController(StreetTalkContext context, IUserService userService): base(context) {
             this.userService = userService;
         }
         
