@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using StreetTalk.Controllers;
+using StreetTalk.Dtos;
 using StreetTalk.Models;
 using StreetTalk.Services;
 using Xunit;
