@@ -4,18 +4,15 @@
             <div class="d-none d-md-flex col-xs-12 col-md-4">
                 <img alt="Afbeelding van een huis" src="~/img/footer_picture_home.svg" class="footer-image img-fluid">
             </div>
-            <div class="text-center col-xs-12 col-md-4 d-flex justify-content-center align-items-center p-md-2 pb-0">
+            <div class="text-center col-xs-12 col-md-4 d-flex justify-content-center align-items-center flex-column p-md-2 pb-0">
                 <span aria-label="Copyright vermelding">&copy; 2020, StreetTalk.</span>
-            </div>
-            <div class="d-flex align-items-center justify-content-center justify-content-md-end col-xs-12 col-md-4 text-center text-md-right p-md-2 pr-md-4 pt-0">
-                <nav aria-label="Footer links">
-                    <ul class="undecorated-list">
-                        <li><a href="#">Privacy</a></li>
-                        <li><a href="#">Voorwaarden</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Sitemap</a></li>
-                    </ul>
-                </nav>
+                <span>
+                    <a href="mailto:info@streettalk.nl">info@streettalk.nl</a>
+                    &#8226;
+                    <a href="tel:0612345678">06-12345678</a>
+                    &#8226;
+                    <a asp-controller="Home" asp-action="Sitemap">Sitemap</a>
+                </span>
             </div>
         </div>
     </div>

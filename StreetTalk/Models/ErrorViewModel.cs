@@ -1,5 +1,3 @@
-using System;
-
 namespace StreetTalk.Models
 {
     public class ErrorViewModel

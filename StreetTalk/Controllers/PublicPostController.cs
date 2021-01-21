@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Castle.Core.Internal;
 using F23.StringSimilarity;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using StreetTalk.Models;
 using StreetTalk.Data;
 using StreetTalk.Services;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using StreetTalk.Dtos;
 
@@ -23,19 +18,15 @@ namespace StreetTalk.Controllers
     [Authorize]
     public class PublicPostController : BaseController
     {
-        private readonly PostService postService;
-        private readonly UserService userService;
-        private readonly IConfiguration config;
-        private readonly IWebHostEnvironment environment;
-        private readonly string[] permittedUploadExtensions = { ".png", ".jpg", ".jpeg" };
+        private readonly IPostService postService;
+        private readonly IUserService userService;
+        private readonly IFileUploadService fileUploadService;
 
-        public PublicPostController(StreetTalkContext context, PostService postService, UserService userService,
-            IConfiguration config, IWebHostEnvironment environment) : base(context)
+        public PublicPostController(StreetTalkContext context, IPostService postService, IUserService userService, IFileUploadService fileUploadService) : base(context)
         {
             this.postService = postService;
             this.userService = userService;
-            this.config = config;
-            this.environment = environment;
+            this.fileUploadService = fileUploadService;
         }
 
         public IActionResult Index(PublicPostListFilters filters, int page = 1, bool createSuccess = false)
@@ -62,8 +53,7 @@ namespace StreetTalk.Controllers
                 default: posts = SorteerOpDatum(posts); break;
             }
 
-            posts.Skip(skip)
-           .Take(perPage);
+            posts = posts.Skip(skip).Take(perPage);
 
             var publicPostsWithLikes = posts.Select(a =>
                 new PublicPostWithExtraData
@@ -86,41 +76,49 @@ namespace StreetTalk.Controllers
             return View(viewModelData);
         }
 
-        private IEnumerable<PublicPost> SorteerOpLikes(IEnumerable<PublicPost> posts)
+        private IQueryable<PublicPost> SorteerOpLikes(IEnumerable<PublicPost> posts)
         {
-            return posts.OrderByDescending(p => p.Likes.Count);
+            return posts.OrderByDescending(p => p.Likes.Count).AsQueryable();
         }
-        private IEnumerable<PublicPost> SorteerOpViews(IEnumerable<PublicPost> posts)
+        private IQueryable<PublicPost> SorteerOpViews(IEnumerable<PublicPost> posts)
         {
-            return posts.OrderByDescending(p => p.Views.Count);
+            return posts.OrderByDescending(p => p.Views.Count).AsQueryable();
         }
-        private IEnumerable<PublicPost> SorteerOpDatum(IEnumerable<PublicPost> posts)
+        private IQueryable<PublicPost> SorteerOpDatum(IEnumerable<PublicPost> posts)
         {
-            return posts.OrderByDescending(p => p.CreatedAt);
+            return posts.OrderByDescending(p => p.CreatedAt).AsQueryable();
         }
 
-        private IEnumerable<PublicPost> ZoekFilter(IEnumerable<PublicPost> post, string zoekterm)
+        private IQueryable<PublicPost> ZoekFilter(IEnumerable<PublicPost> post, string zoekterm)
         {
-            if (!String.IsNullOrEmpty(zoekterm))
+            if (!string.IsNullOrEmpty(zoekterm))
             {
-                return post.Where(s => s.Title.ToUpper().Contains(zoekterm.ToUpper()));
+                return post
+                    .Where(s => s.Title.ToUpper().Contains(zoekterm.ToUpper()))
+                    .AsQueryable();
             }
-            return post;
+            
+            return post.AsQueryable();
         }
 
-        private IEnumerable<PublicPost> MyLikedPosts(IEnumerable<PublicPost> post)
+        private IQueryable<PublicPost> MyLikedPosts(IEnumerable<PublicPost> post)
         {
             var user = userService.GetCurrentlyLoggedInUser();
-            return post.ToList().Where(p => p.Likes.Any(b => b.UserId == user.Id));
+            return post
+                .ToList()
+                .Where(p => p.Likes.Any(b => b.UserId == user.Id))
+                .AsQueryable();
         }
 
-        private IEnumerable<PublicPost> DateRange(IEnumerable<PublicPost> posts, PublicPostListFilters filters)
+        private IQueryable<PublicPost> DateRange(IEnumerable<PublicPost> posts, PublicPostListFilters filters)
         {
             if (!(filters.StartTime < new DateTime (1950, 01, 01)) && !(filters.EndTime < new DateTime(1950, 01, 01)))
             {
-                return posts.Where(p => p.ToDate(p.CreatedAt) <= filters.EndTime.Date && p.ToDate(p.CreatedAt) >= filters.StartTime.Date);
+                return posts
+                    .Where(p => p.ToDate(p.CreatedAt) <= filters.EndTime.Date && p.ToDate(p.CreatedAt) >= filters.StartTime.Date)
+                    .AsQueryable();
             }
-            return posts;
+            return posts.AsQueryable();
         }
 
         public IActionResult Create()
@@ -142,28 +140,8 @@ namespace StreetTalk.Controllers
             //Photo upload
             if (post.UploadedPhoto != null && post.UploadedPhoto.Length > 0)
             {
-                var extenstion = Path.GetExtension(post.UploadedPhoto.FileName);
-                if (extenstion == null || !permittedUploadExtensions.Contains(extenstion))
-                    return View(post);
-
-                var newFilename = Path.GetRandomFileName() + extenstion;
-                var filePath = Path.Combine(config["StoredFilesPath"], newFilename);
-                var uploadsPath = Path.Combine(environment.WebRootPath, config["StoredFilesPath"]);
-
-                if (!Directory.Exists(uploadsPath))
-                    Directory.CreateDirectory(uploadsPath);
-
-                await using var stream = System.IO.File.Create(Path.Combine(environment.WebRootPath, filePath));
-                await post.UploadedPhoto.CopyToAsync(stream);
-
-                post.Photo = new PostPhoto
-                {
-                    Sensitive = post.UploadedPhotoIsSensitive,
-                    Photo = new Photo
-                    {
-                        Filename = "/" + filePath
-                    }
-                };
+                var postPhoto = fileUploadService.HandlePostPhotoUpload(post.UploadedPhoto, post.UploadedPhotoIsSensitive);
+                post.Photo = postPhoto;
             }
 
             var user = userService.GetCurrentlyLoggedInUser();
@@ -177,10 +155,16 @@ namespace StreetTalk.Controllers
 
         public IActionResult Post(int id)
         {
-            ViewData["CurrentUserId"] = userService.GetCurrentlyLoggedInUser().Id;
+            ViewData["CurrentUserId"] = userService.GetCurrentlyLoggedInUser()?.Id;
             var post = postService.GetPublicPostById(id);
             var user = userService.GetCurrentlyLoggedInUser();
-
+            
+            if(post == null)
+                return BadRequest("Post is null");
+            
+            if(user == null)
+                return BadRequest("User is null");
+            
             if (!postService.UserViewedPost(user.Id, post))
                 postService.AddView(user.Id, post);
             
@@ -282,11 +266,11 @@ namespace StreetTalk.Controllers
                 return RedirectToAction("Index");
             }
 
-            var EditedPost = postService.EditPostById(id, post);
+            var editedPost = postService.EditPostById(id, post);
 
-            var context = new ValidationContext(EditedPost);
+            var context = new ValidationContext(editedPost);
             var validationResults = new List<ValidationResult>();
-            bool isValid = Validator.TryValidateObject(EditedPost, context, validationResults, true);
+            bool isValid = Validator.TryValidateObject(editedPost, context, validationResults, true);
 
             if (!isValid) return View(post);
 

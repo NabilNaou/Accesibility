@@ -2,18 +2,17 @@
 using Microsoft.Extensions.Configuration;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
 using System.Threading.Tasks;
 
 namespace StreetTalk.Services
 {
     public class EmailSender : IEmailSender
     {
-        private readonly IConfiguration Configuration;
+        private readonly IConfiguration configuration;
 
         public EmailSender(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.configuration = configuration;
         }
 
         public async Task SendEmailAsync(string email, string subject, string message)
@@ -23,8 +22,8 @@ namespace StreetTalk.Services
 
         private async Task Execute(string subject, string message, string email)
         {
-            var key = Configuration.GetSection("SendGrid").GetValue<string>("Key");
-            var name = Configuration.GetSection("SendGrid").GetValue<string>("User");
+            var key = configuration.GetSection("SendGrid").GetValue<string>("Key");
+            var name = configuration.GetSection("SendGrid").GetValue<string>("User");
 
             var client = new SendGridClient(key);
             

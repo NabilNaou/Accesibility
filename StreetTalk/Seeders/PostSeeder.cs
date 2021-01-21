@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using StreetTalk.Data;
 using StreetTalk.Models;
 
@@ -10,7 +10,7 @@ namespace StreetTalk.Seeders
     {
         public override bool ShouldSeed => !Context.PublicPost.Any();
         
-        public override void DoSeed(StreetTalkContext context)
+        public override async Task DoSeed(StreetTalkContext context)
         {
             var rows = new List<PublicPost>
             {
@@ -26,10 +26,11 @@ namespace StreetTalk.Seeders
                         Sensitive = false,
                         Photo = new Photo
                         {
-                            Filename = "https://assets.nos.nl/data/image/2017/11/23/433105/xxl.jpg",
+                            Id = 500,
+                            Filename = "https://assets.nos.nl/data/image/2017/11/23/433105/xxl.jpg"
                         }
                     },
-                    User = Context.User.OrderBy(u => u.Id).First()
+                    User = Context.User.Single(u => u.Email == "19097530@student.hhs.nl")
                 },
                 CreateGarbagePost(2, 1),
                 CreateGarbagePost(3, 2),
@@ -57,7 +58,7 @@ namespace StreetTalk.Seeders
                 }
             };
             
-            Context.AnonymousPost.AddRange(anonymousRows);
+           await Context.AnonymousPost.AddRangeAsync(anonymousRows);
         }
 
         private PublicPost CreateGarbagePost(int id, int userId)
@@ -75,7 +76,8 @@ namespace StreetTalk.Seeders
                     Sensitive = true,
                     Photo = new Photo
                     {
-                        Filename = "https://upload.wikimedia.org/wikipedia/commons/1/14/Klein_gevaarlijk_afval_A.jpg",
+                        Id = 1000 + id,
+                        Filename = "https://upload.wikimedia.org/wikipedia/commons/1/14/Klein_gevaarlijk_afval_A.jpg"
                     }
                 },
                 User = Context.User.OrderBy(u => u.Id).Skip(userId - 1).First()

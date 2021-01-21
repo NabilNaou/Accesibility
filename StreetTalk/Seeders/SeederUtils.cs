@@ -2,7 +2,7 @@
 {
     public static class SeederUtils
     {
-        public static string LoremIpsum = @"## Lorem ipsum
+        public const string LoremIpsum = @"## Lorem ipsum
 Dolor sit amet, consectetur adipiscing elit. Nam porta tellus nulla, ac ultrices erat faucibus non. Quisque eget nibh non ante lacinia eleifend. Nullam quam mauris, euismod eget sapien et, convallis aliquet elit. Aenean convallis pharetra nibh, quis pretium ante tincidunt nec. Curabitur commodo nulla eu pulvinar condimentum. Maecenas non nisl dui. Aliquam aliquam molestie dui. Duis id orci arcu.
 
 Nullam mattis interdum eros sit amet ultrices. Etiam in eros vulputate, eleifend mauris non, tempus odio. Suspendisse mollis ornare eros, sit amet finibus neque auctor sed. Nullam laoreet augue nisi, id hendrerit lorem sagittis vel. Morbi a tortor nisi. Ut dapibus consectetur varius. Etiam sit amet mi et urna rhoncus faucibus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce non dolor porttitor, ornare nunc et, egestas nibh. Sed sodales diam dictum est mollis, quis hendrerit est placerat. Nullam elementum est sed lectus dictum, ut laoreet justo finibus. Ut dignissim vulputate pharetra. In hac habitasse platea dictumst. Mauris rutrum justo accumsan elit porttitor blandit. Aliquam ut sagittis sem, non vulputate mauris. Nam vel enim at augue commodo blandit vel in elit. 

@@ -1,29 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using StreetTalk.Data;
 
 namespace StreetTalk.Seeders
 {
     public class DatabaseSeeder
     {
-        private static readonly List<Seeder> Seeders = new List<Seeder>
+        public static async Task SeedAll(StreetTalkContext context)
         {
-            new RoleSeeder(),
-            new UserSeeder(),
-            new PostCategorySeeder(),
-            new PostSeeder(),
-            new LikeSeeder(),
-            new CommentSeeder()
-        };
-        
-        public static void SeedAll(StreetTalkContext context)
-        {
-            context.Database.EnsureCreated();
-            Seeders.ForEach(seeder =>
+            await context.Database.EnsureCreatedAsync();
+            
+            var seeders = new List<Seeder>
+            {
+                new RoleSeeder(),
+                new UserSeeder(),
+                new PostCategorySeeder(),
+                new PostSeeder(),
+                new LikeSeeder(),
+                new CommentSeeder()
+            };
+
+            foreach (var seeder in seeders)
             {
                 Console.WriteLine("Seeding: {0}", seeder);
-                seeder.Seed(context);
-            });
+                await seeder.Seed(context);
+            }
         }
     }
 }

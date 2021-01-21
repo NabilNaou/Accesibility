@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualBasic;
 using StreetTalk.Data;
-using StreetTalk.Models;
 
 namespace StreetTalk.Seeders
 {
@@ -16,7 +11,7 @@ namespace StreetTalk.Seeders
 
         public override bool ShouldSeed => true;
 
-        public override void DoSeed(StreetTalkContext context)
+        public override async Task DoSeed(StreetTalkContext context)
         {
             var validators = new Collection<IRoleValidator<IdentityRole>>
             {
@@ -31,16 +26,16 @@ namespace StreetTalk.Seeders
                 null);
 
             if (!roleManager.RoleExistsAsync("Buurtbewoner").Result)
-                roleManager.CreateAsync(new IdentityRole { Name = "Buurtbewoner" }).Wait();
+                await roleManager.CreateAsync(new IdentityRole { Name = "Buurtbewoner" });
             
             if (!roleManager.RoleExistsAsync("Moderator").Result)
-                roleManager.CreateAsync(new IdentityRole { Name = "Moderator" }).Wait();
+                await roleManager.CreateAsync(new IdentityRole { Name = "Moderator" });
             
             if (!roleManager.RoleExistsAsync("Administrator").Result)
-                roleManager.CreateAsync(new IdentityRole { Name = "Administrator" }).Wait();
+                await roleManager.CreateAsync(new IdentityRole { Name = "Administrator" });
             
             if (!roleManager.RoleExistsAsync("Gemeentemedewerker").Result)
-                roleManager.CreateAsync(new IdentityRole { Name = "Gemeentemedewerker" }).Wait();
+                await roleManager.CreateAsync(new IdentityRole { Name = "Gemeentemedewerker" });
         }
     }
 }

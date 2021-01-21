@@ -1,5 +1,5 @@
 ﻿@model Comment
-@inject UserService userService
+@inject IUserService UserService
 
 <div class="card d-flex flex-row mb-4 p-3">
     <img class="rounded-circle profile-image mr-3" alt="Profiel foto van @Model.Author.GetDisplayName()" src="@Model.Author.GetProfilePhoto()"/>

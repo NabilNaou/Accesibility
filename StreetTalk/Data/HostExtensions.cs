@@ -13,7 +13,7 @@ namespace StreetTalk.Data
             var services = scope.ServiceProvider;
             var ctx = services.GetService<StreetTalkContext>();
             ctx.Database.Migrate();
-            DatabaseSeeder.SeedAll(ctx);
+            DatabaseSeeder.SeedAll(ctx).Wait();
 
             return host;
         }
