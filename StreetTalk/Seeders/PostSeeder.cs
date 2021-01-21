@@ -30,7 +30,7 @@ namespace StreetTalk.Seeders
                             Filename = "https://assets.nos.nl/data/image/2017/11/23/433105/xxl.jpg",
                         }
                     },
-                    User = Context.User.OrderBy(u => u.Id).Skip(0).First()
+                    User = Context.User.Single(u => u.Email == "19097530@student.hhs.nl")
                 },
                 CreateGarbagePost(2, 1),
                 CreateGarbagePost(3, 2),

@@ -9,7 +9,7 @@ using Xunit;
 
 namespace StreetTalkTests.ControllerTests
 {
-    public class Profile : BaseTest
+    public class ProfileTests : BaseTest
     {
         private ProfileController Controller => CreateController("moderator@streettalk.nl", "Moderator");
 

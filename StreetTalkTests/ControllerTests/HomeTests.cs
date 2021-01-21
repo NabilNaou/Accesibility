@@ -5,7 +5,7 @@ using Xunit;
 
 namespace StreetTalkTests.ControllerTests
 {
-    public class Home : BaseTest
+    public class HomeTests : BaseTest
     {
         private HomeController Controller => new HomeController(SeededCleanContext);
         

@@ -11,7 +11,7 @@ using Xunit;
 
 namespace StreetTalkTests.ControllerTests
 {
-    public class PublicPost : BaseTest
+    public class PublicPostTests : BaseTest
     {
         private PublicPostController Controller => CreateController("19097530@student.hhs.nl", "19097530@student.hhs.nl");
         
@@ -56,7 +56,7 @@ namespace StreetTalkTests.ControllerTests
         {
             var c = Controller;
             c.ModelState.AddModelError("test", "test");
-            var result = c.Create(new StreetTalk.Models.PublicPost()).Result;
+            var result = c.Create(new PublicPost()).Result;
 
             Assert.IsType<ViewResult>(result);
         }
@@ -64,7 +64,7 @@ namespace StreetTalkTests.ControllerTests
         [Fact]
         public void CreatePostSubmittedValidPost()
         {
-            var result = Controller.Create(new StreetTalk.Models.PublicPost()).Result;
+            var result = Controller.Create(new PublicPost()).Result;
             
             var redirect = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirect.ActionName);
@@ -76,7 +76,7 @@ namespace StreetTalkTests.ControllerTests
             var photo = new Mock<IFormFile>();
             photo.Setup(p => p.Length).Returns(1);
             
-            var result = Controller.Create(new StreetTalk.Models.PublicPost
+            var result = Controller.Create(new PublicPost
             {
                 UploadedPhoto = photo.Object,
                 UploadedPhotoIsSensitive = true
@@ -125,6 +125,15 @@ namespace StreetTalkTests.ControllerTests
         }
         
         [Fact]
+        public void PostLikeDuplicate()
+        {
+            var controller = Controller;
+            controller.PostLike(1);
+            var result = controller.PostLike(1);
+            Assert.IsType<JsonResult>(result);
+        }
+        
+        [Fact]
         public void PostLikeInvalidPost()
         {
             var result = Controller.PostLike(12414242);
@@ -150,8 +159,9 @@ namespace StreetTalkTests.ControllerTests
         [Fact]
         public void PostReportDuplicate()
         {
-            Controller.PostReport(1);
-            var result = Controller.PostReport(1);
+            var controller = Controller;
+            controller.PostReport(1);
+            var result = controller.PostReport(1);
             Assert.IsType<JsonResult>(result);
         }
         
@@ -160,6 +170,125 @@ namespace StreetTalkTests.ControllerTests
         {
             var result = Controller.PostReport(12414242);
             Assert.IsType<JsonResult>(result);
+        }
+
+        [Fact]
+        public void PostComment()
+        {
+            var result = Controller.PostComment(1, "Hello, world!");
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Post", redirect.ActionName);
+            Assert.Equal(1, (int)redirect.RouteValues["id"]);
+        }
+        
+        [Fact]
+        public void PostCommentEmpty()
+        {
+            var result = Controller.PostComment(1, null);
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Post", redirect.ActionName);
+            Assert.Equal(1, (int)redirect.RouteValues["id"]);
+        }
+
+        [Fact]
+        public void CensorComment()
+        {
+            var result = Controller.CensorComment(1, 1);
+            Assert.IsType<ViewResult>(result);
+        }
+        
+        [Fact]
+        public void CensorCommentSubmitted()
+        {
+            var result = Controller.CensorComment(1, 1, "Censored!");
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Post", redirect.ActionName);
+            Assert.Equal(1, (int)redirect.RouteValues["id"]);
+        }
+
+        [Fact]
+        public void PostEdit()
+        {
+            var result = Controller.Edit(1);
+            Assert.IsType<ViewResult>(result);
+        }
+        
+        [Fact]
+        public void PostEditSubmittedNotOwned()
+        {
+            var result = Controller.Edit(new PublicPost(), 3);
+            var redirect = Assert.IsAssignableFrom<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirect.ActionName);
+        }
+        
+        [Fact]
+        public void PostEditSubmittedOwned()
+        {
+            var result = Controller.Edit(new PublicPost
+            {
+                Title = "Test",
+                Content = "TestTestTest"
+            }, 1);
+            var redirect = Assert.IsAssignableFrom<RedirectToActionResult>(result);
+            Assert.Equal("Post", redirect.ActionName);
+        }
+        
+        [Fact]
+        public void PostEditSubmittedInvalidData()
+        {
+            var result = Controller.Edit(new PublicPost
+            {
+                Title = "a",
+                Content = "TestTestTest"
+            }, 1);
+            Assert.IsAssignableFrom<ViewResult>(result);
+        }
+
+        [Fact]
+        public void PostDeleteNotOwned()
+        {
+            var controller = CreateController("gemeentemedewerker@streettalk.nl", "test");
+            var result = controller.Delete(1);
+            var redirect = Assert.IsAssignableFrom<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirect.ActionName);
+        }
+        
+        [Fact]
+        public void PostDeleteOwned()
+        {
+            var result = Controller.Delete(1);
+            var redirect = Assert.IsAssignableFrom<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirect.ActionName);
+        }
+        
+        [Fact]
+        public void PostClose()
+        {
+            var result = Controller.Close(1);
+            var redirect = Assert.IsAssignableFrom<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirect.ActionName);
+        }
+        
+        [Fact]
+        public void PostCheckPostTitleSimilarityPositive()
+        {
+            //Gedeeltelijke match op "Overlast Touristen"
+            var result = Controller.CheckPostTitleSimilarity("Overlast Tourist");
+            Assert.IsAssignableFrom<OkObjectResult>(result);
+        }
+        
+        [Fact]
+        public void PostCheckPostTitleSimilarityNegative()
+        {
+            var result = Controller.CheckPostTitleSimilarity("Te weinig natuur");
+            Assert.IsAssignableFrom<NoContentResult>(result);
+        }
+        
+        [Fact]
+        public void PostCheckPostTitleSimilarityInvalid()
+        {
+            var result = Controller.CheckPostTitleSimilarity(null);
+            Assert.IsAssignableFrom<BadRequestResult>(result);
         }
     }
 }
