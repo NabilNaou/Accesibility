@@ -75,14 +75,14 @@ namespace StreetTalk.Services
         {
             var post = GetPublicPostById(id);
 
-            Db.Post.Remove(post);
+            Db.PublicPost.Remove(post);
 
             Db.SaveChanges();
         }
 
         public IEnumerable<string> GetRecentTitles()
         {
-            return Db.PublicPost
+            return Db.PublicPost.ToList()
                 .Where(p => (p.CreatedAt!.Value - DateTime.Now).TotalDays < 30)
                 .Select(p => p.Title)
                 .AsEnumerable();

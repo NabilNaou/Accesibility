@@ -8,12 +8,12 @@ namespace StreetTalk.Seeders
 {
     public class CommentSeeder : Seeder
     {
-        public override bool ShouldSeed => !Context.Post.OfType<PublicPost>().Single(p => p.Id == 1).Comments.Any();
+        public override bool ShouldSeed => !Context.PublicPost.OfType<PublicPost>().Single(p => p.Id == 1).Comments.Any();
 
         public override void DoSeed(StreetTalkContext context)
         {
-            var firstPost = Context.Post.OfType<PublicPost>().Single(p => p.Id == 1);
-            var secondPost = Context.Post.OfType<PublicPost>().Single(p => p.Id == 2);
+            var firstPost = Context.PublicPost.OfType<PublicPost>().Single(p => p.Id == 1);
+            var secondPost = Context.PublicPost.OfType<PublicPost>().Single(p => p.Id == 2);
             
             firstPost.Comments.Add(
                 new Comment

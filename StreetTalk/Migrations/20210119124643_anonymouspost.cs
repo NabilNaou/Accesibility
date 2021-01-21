@@ -4,10 +4,27 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace StreetTalk.Migrations
 {
-    public partial class @fixed : Migration
+    public partial class anonymouspost : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "anonymouspost",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Title = table.Column<string>(type: "varchar(64) CHARACTER SET utf8mb4", maxLength: 64, nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: false),
+                    Pseudonym = table.Column<string>(type: "varchar(64) CHARACTER SET utf8mb4", maxLength: 64, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_anonymouspost", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -193,6 +210,7 @@ namespace StreetTalk.Migrations
                     Street = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     HouseNumber = table.Column<int>(type: "int", nullable: true),
                     HouseNumberAddition = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    PostalCode = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     UserId = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
@@ -209,7 +227,7 @@ namespace StreetTalk.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Post",
+                name: "publicpost",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -217,23 +235,22 @@ namespace StreetTalk.Migrations
                     Title = table.Column<string>(type: "varchar(64) CHARACTER SET utf8mb4", maxLength: 64, nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: true),
-                    Discriminator = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: false),
-                    Closed = table.Column<bool>(type: "tinyint(1)", nullable: true),
-                    CategoryId = table.Column<int>(type: "int", nullable: true),
+                    Closed = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Post", x => x.Id);
+                    table.PrimaryKey("PK_publicpost", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Post_AspNetUsers_UserId",
+                        name: "FK_publicpost_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Post_PostCategory_CategoryId",
+                        name: "FK_publicpost_PostCategory_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "PostCategory",
                         principalColumn: "Id",
@@ -244,12 +261,14 @@ namespace StreetTalk.Migrations
                 name: "ProfilePhoto",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     PhotoId = table.Column<int>(type: "int", nullable: false),
                     ProfileId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProfilePhoto", x => new { x.PhotoId, x.ProfileId });
+                    table.PrimaryKey("PK_ProfilePhoto", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ProfilePhoto_Photo_PhotoId",
                         column: x => x.PhotoId,
@@ -286,9 +305,9 @@ namespace StreetTalk.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Comment_Post_PostId",
+                        name: "FK_Comment_publicpost_PostId",
                         column: x => x.PostId,
-                        principalTable: "Post",
+                        principalTable: "publicpost",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -310,9 +329,9 @@ namespace StreetTalk.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Like_Post_PostId",
+                        name: "FK_Like_publicpost_PostId",
                         column: x => x.PostId,
-                        principalTable: "Post",
+                        principalTable: "publicpost",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -321,13 +340,15 @@ namespace StreetTalk.Migrations
                 name: "PostPhoto",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Sensitive = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     PhotoId = table.Column<int>(type: "int", nullable: false),
-                    PostId = table.Column<int>(type: "int", nullable: false),
-                    Sensitive = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    PostId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostPhoto", x => new { x.PhotoId, x.PostId });
+                    table.PrimaryKey("PK_PostPhoto", x => x.Id);
                     table.ForeignKey(
                         name: "FK_PostPhoto_Photo_PhotoId",
                         column: x => x.PhotoId,
@@ -335,9 +356,9 @@ namespace StreetTalk.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PostPhoto_Post_PostId",
+                        name: "FK_PostPhoto_publicpost_PostId",
                         column: x => x.PostId,
-                        principalTable: "Post",
+                        principalTable: "publicpost",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -360,9 +381,9 @@ namespace StreetTalk.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Report_Post_PostId",
+                        name: "FK_Report_publicpost_PostId",
                         column: x => x.PostId,
-                        principalTable: "Post",
+                        principalTable: "publicpost",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -384,9 +405,9 @@ namespace StreetTalk.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_View_Post_PostId",
+                        name: "FK_View_publicpost_PostId",
                         column: x => x.PostId,
-                        principalTable: "Post",
+                        principalTable: "publicpost",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -444,14 +465,9 @@ namespace StreetTalk.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Post_CategoryId",
-                table: "Post",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Post_UserId",
-                table: "Post",
-                column: "UserId");
+                name: "IX_PostPhoto_PhotoId",
+                table: "PostPhoto",
+                column: "PhotoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PostPhoto_PostId",
@@ -466,10 +482,25 @@ namespace StreetTalk.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProfilePhoto_PhotoId",
+                table: "ProfilePhoto",
+                column: "PhotoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProfilePhoto_ProfileId",
                 table: "ProfilePhoto",
                 column: "ProfileId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_publicpost_CategoryId",
+                table: "publicpost",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_publicpost_UserId",
+                table: "publicpost",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Report_PostId",
@@ -484,6 +515,9 @@ namespace StreetTalk.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "anonymouspost");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -527,7 +561,7 @@ namespace StreetTalk.Migrations
                 name: "Profile");
 
             migrationBuilder.DropTable(
-                name: "Post");
+                name: "publicpost");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
