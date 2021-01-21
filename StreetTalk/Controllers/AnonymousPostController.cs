@@ -3,10 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using StreetTalk.Data;
 using StreetTalk.Models;
 using StreetTalk.Services;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 
 namespace StreetTalk.Controllers

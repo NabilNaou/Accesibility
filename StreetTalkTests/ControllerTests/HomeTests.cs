@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Mvc;
 using StreetTalk.Controllers;
 using Xunit;

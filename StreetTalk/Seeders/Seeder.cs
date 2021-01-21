@@ -1,5 +1,4 @@
 ﻿using StreetTalk.Data;
-using System;
 using System.Threading.Tasks;
 
 namespace StreetTalk.Seeders
