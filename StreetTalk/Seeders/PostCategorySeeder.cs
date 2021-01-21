@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using StreetTalk.Data;
 using StreetTalk.Models;
 
@@ -9,7 +10,7 @@ namespace StreetTalk.Seeders
     {
         public override bool ShouldSeed => !Context.PostCategory.Any();
         
-        public override void DoSeed(StreetTalkContext context)
+        public override async Task DoSeed(StreetTalkContext context)
         {
             var rows = new List<PostCategory>
             {
@@ -25,7 +26,7 @@ namespace StreetTalk.Seeders
                 }
             };
             
-            Context.PostCategory.AddRange(rows);
+            await Context.PostCategory.AddRangeAsync(rows);
         }
     }
 }

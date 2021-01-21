@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using StreetTalk.Data;
 using StreetTalk.Models;
 
@@ -15,20 +14,20 @@ namespace StreetTalk.Seeders
         
         public override bool ShouldSeed => !Context.User.Any();
         
-        public override void DoSeed(StreetTalkContext context)
+        public override async Task DoSeed(StreetTalkContext context)
         {
             userStore = new UserStore<StreetTalkUser>(context);
-            CreateUser("Timon", "Landmeter", "19097530@student.hhs.nl", "Qwerty123!", "Buurtbewoner");
-            CreateUser("Jelle", "Krupe", "19083181@student.hhs.nl", "Qwerty123!", "Buurtbewoner");
-            CreateUser("Rik", "Helder", "19050380@student.hhs.nl", "Qwerty123!", "Buurtbewoner");
-            CreateUser("Nabil", "Naou", "19037570@student.hhs.nl", "Qwerty123!", "Buurtbewoner");
+            await CreateUser("Timon", "Landmeter", "19097530@student.hhs.nl", "Qwerty123!", "Buurtbewoner");
+            await CreateUser("Jelle", "Krupe", "19083181@student.hhs.nl", "Qwerty123!", "Buurtbewoner");
+            await CreateUser("Rik", "Helder", "19050380@student.hhs.nl", "Qwerty123!", "Buurtbewoner");
+            await CreateUser("Nabil", "Naou", "19037570@student.hhs.nl", "Qwerty123!", "Buurtbewoner");
             
-            CreateUser("Moderator", "", "moderator@streettalk.nl", "Qwerty123!", "Moderator");
-            CreateUser("Administrator", "", "administrator@streettalk.nl", "Qwerty123!", "Administrator");
-            CreateUser("Gemeentemedewerker", "", "gemeentemedewerker@streettalk.nl", "Qwerty123!", "Gemeentemedewerker");
+            await CreateUser("Moderator", "", "moderator@streettalk.nl", "Qwerty123!", "Moderator");
+            await CreateUser("Administrator", "", "administrator@streettalk.nl", "Qwerty123!", "Administrator");
+            await CreateUser("Gemeentemedewerker", "", "gemeentemedewerker@streettalk.nl", "Qwerty123!", "Gemeentemedewerker");
         }
 
-        private void CreateUser(string firstName, string lastName, string email, string password, string role)
+        private async Task CreateUser(string firstName, string lastName, string email, string password, string role)
         {
             var user = new StreetTalkUser
             {
@@ -39,8 +38,15 @@ namespace StreetTalk.Seeders
                 EmailConfirmed = true,
                 LockoutEnabled = false,
                 SecurityStamp = Guid.NewGuid().ToString(),
+                LastKnownIpAddress = "",
                 Profile = new Profile
                 {
+                    DateOfBirth = DateTime.Now,
+                    City = "",
+                    Street = "",
+                    HouseNumber = 0,
+                    HouseNumberAddition = "",
+                    PostalCode = "",
                     FirstName = firstName,
                     LastName = lastName,
                     Photo = new ProfilePhoto {
@@ -58,8 +64,8 @@ namespace StreetTalk.Seeders
             var hashed = passwordHasher.HashPassword(user, password);
             user.PasswordHash = hashed;
             
-            userStore.CreateAsync(user).Wait();
-            userStore.AddToRoleAsync(user, role).Wait();
+            await userStore.CreateAsync(user);
+            await userStore.AddToRoleAsync(user, role);
         }
     }
 }

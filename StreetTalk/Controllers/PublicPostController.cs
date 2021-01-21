@@ -1,89 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Castle.Core.Internal;
 using F23.StringSimilarity;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using StreetTalk.Models;
 using StreetTalk.Data;
 using StreetTalk.Services;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using StreetTalk.Dtos;
 
 namespace StreetTalk.Controllers
 {
-    [Serializable]
-    public class PostJsonResult
-    {
-        public bool Succes { get; set; }
-        public string Error { get; set; } = "";
-        public int NewLikes { get; set; }
-    }
-
-    public class PublicPostWithExtraData
-    {
-        public PublicPost Post { get; set; }
-        public bool Liked { get; set; }
-
-        public bool Reported { get; set; }
-    }
-
-    public class PublicPostViewModel
-    {
-        public List<PublicPostWithExtraData> Posts { get; set; }
-        public PublicPostListFilters Filters { get; set; }
-        public int NextPage { get; set; }
-        public int PreviousPage { get; set; }
-    }
-
-    public class PublicPostListFilters
-    {
-        public bool ShowClosedPosts { get; set; }
-    }
 
     [Authorize]
     public class PublicPostController : BaseController
     {
-        private readonly PostService postService;
-        private readonly UserService userService;
-        private readonly IConfiguration config;
-        private readonly IWebHostEnvironment environment;
-        private readonly string[] permittedUploadExtensions = { ".png", ".jpg", ".jpeg" };
+        private readonly IPostService postService;
+        private readonly IUserService userService;
+        private readonly IFileUploadService fileUploadService;
 
-        public PublicPostController(StreetTalkContext context, PostService postService, UserService userService,
-            IConfiguration config, IWebHostEnvironment environment) : base(context)
+        public PublicPostController(StreetTalkContext context, IPostService postService, IUserService userService, IFileUploadService fileUploadService) : base(context)
         {
             this.postService = postService;
             this.userService = userService;
-            this.config = config;
-            this.environment = environment;
+            this.fileUploadService = fileUploadService;
         }
 
         public IActionResult Index(PublicPostListFilters filters, int page = 1, bool createSuccess = false)
         {
             ViewData["createSuccess"] = createSuccess;
-            //TODO: Refactor this
             var perPage = 10;
             var skip = Math.Max(page - 1, 0) * perPage;
+            var posts = Db.PublicPost.Where(p => !p.Closed || filters.ShowClosedPosts);
 
-            var posts = Db.PublicPost
-                .Where(p => !p.Closed || filters.ShowClosedPosts)
-                .OrderBy(p => p.CreatedAt)
-                .Skip(skip)
-                .Take(perPage);
+
+            if (filters.OnlyLikedPosts)
+            {
+                posts = MyLikedPosts(posts);
+            }
+
+            posts = DateRange(posts, filters);
+            posts = ZoekFilter(posts, filters.ZoekFilter);
+
+
+            switch (filters.SorteerOptie)
+            {
+                case "likes": posts = SorteerOpLikes(posts); break;
+                case "views": posts = SorteerOpViews(posts); break;
+                default: posts = SorteerOpDatum(posts); break;
+            }
+
+            posts = posts.Skip(skip).Take(perPage);
 
             var publicPostsWithLikes = posts.Select(a =>
                 new PublicPostWithExtraData
                 {
                     Post = a,
-                    Liked = a.Likes.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser()?.Id),
-                    Reported = a.Reports.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser()?.Id)
+                    Liked = a.Likes.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser().Id),
+                    Reported = a.Reports.Any(b => b.UserId == userService.GetCurrentlyLoggedInUser().Id)
                 }
             ).ToList();
 
@@ -95,7 +72,53 @@ namespace StreetTalk.Controllers
                 NextPage = page + 1
             };
 
+
             return View(viewModelData);
+        }
+
+        private IQueryable<PublicPost> SorteerOpLikes(IEnumerable<PublicPost> posts)
+        {
+            return posts.OrderByDescending(p => p.Likes.Count).AsQueryable();
+        }
+        private IQueryable<PublicPost> SorteerOpViews(IEnumerable<PublicPost> posts)
+        {
+            return posts.OrderByDescending(p => p.Views.Count).AsQueryable();
+        }
+        private IQueryable<PublicPost> SorteerOpDatum(IEnumerable<PublicPost> posts)
+        {
+            return posts.OrderByDescending(p => p.CreatedAt).AsQueryable();
+        }
+
+        private IQueryable<PublicPost> ZoekFilter(IEnumerable<PublicPost> post, string zoekterm)
+        {
+            if (!string.IsNullOrEmpty(zoekterm))
+            {
+                return post
+                    .Where(s => s.Title.ToUpper().Contains(zoekterm.ToUpper()))
+                    .AsQueryable();
+            }
+            
+            return post.AsQueryable();
+        }
+
+        private IQueryable<PublicPost> MyLikedPosts(IEnumerable<PublicPost> post)
+        {
+            var user = userService.GetCurrentlyLoggedInUser();
+            return post
+                .ToList()
+                .Where(p => p.Likes.Any(b => b.UserId == user.Id))
+                .AsQueryable();
+        }
+
+        private IQueryable<PublicPost> DateRange(IEnumerable<PublicPost> posts, PublicPostListFilters filters)
+        {
+            if (!(filters.StartTime < new DateTime (1950, 01, 01)) && !(filters.EndTime < new DateTime(1950, 01, 01)))
+            {
+                return posts
+                    .Where(p => p.ToDate(p.CreatedAt) <= filters.EndTime.Date && p.ToDate(p.CreatedAt) >= filters.StartTime.Date)
+                    .AsQueryable();
+            }
+            return posts.AsQueryable();
         }
 
         public IActionResult Create()
@@ -117,28 +140,8 @@ namespace StreetTalk.Controllers
             //Photo upload
             if (post.UploadedPhoto != null && post.UploadedPhoto.Length > 0)
             {
-                var extenstion = Path.GetExtension(post.UploadedPhoto.FileName);
-                if (extenstion == null || !permittedUploadExtensions.Contains(extenstion))
-                    return View(post);
-
-                var newFilename = Path.GetRandomFileName() + extenstion;
-                var filePath = Path.Combine(config["StoredFilesPath"], newFilename);
-                var uploadsPath = Path.Combine(environment.WebRootPath, config["StoredFilesPath"]);
-
-                if (!Directory.Exists(uploadsPath))
-                    Directory.CreateDirectory(uploadsPath);
-
-                await using var stream = System.IO.File.Create(Path.Combine(environment.WebRootPath, filePath));
-                await post.UploadedPhoto.CopyToAsync(stream);
-
-                post.Photo = new PostPhoto
-                {
-                    Sensitive = post.UploadedPhotoIsSensitive,
-                    Photo = new Photo
-                    {
-                        Filename = "/" + filePath
-                    }
-                };
+                var postPhoto = fileUploadService.HandlePostPhotoUpload(post.UploadedPhoto, post.UploadedPhotoIsSensitive);
+                post.Photo = postPhoto;
             }
 
             var user = userService.GetCurrentlyLoggedInUser();
@@ -152,9 +155,15 @@ namespace StreetTalk.Controllers
 
         public IActionResult Post(int id)
         {
-            ViewData["CurrentUserId"] = userService.GetCurrentlyLoggedInUser().Id;
+            ViewData["CurrentUserId"] = userService.GetCurrentlyLoggedInUser()?.Id;
             var post = postService.GetPublicPostById(id);
             var user = userService.GetCurrentlyLoggedInUser();
+            
+            if(post == null)
+                return BadRequest("Post is null");
+            
+            if(user == null)
+                return BadRequest("User is null");
             
             if (!postService.UserViewedPost(user.Id, post))
                 postService.AddView(user.Id, post);
@@ -224,15 +233,17 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Post", new { id });
         }
 
+        [Authorize(Roles = "Moderator, Administrator")]
         [HttpGet]
-        public IActionResult EditComment(int id, int commentId)
+        public IActionResult CensorComment(int id, int commentId)
         {
             ViewData["PublicPostId"] = id;
             return View(postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId));
         }
 
+        [Authorize(Roles = "Moderator, Administrator")]
         [HttpPost]
-        public IActionResult EditComment(int commentId, int id, string newContent)
+        public IActionResult CensorComment(int commentId, int id, string newContent)
         {
             postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId).Content = newContent;
             Db.SaveChanges();
@@ -240,19 +251,7 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Post", new { id });
         }
 
-        public IActionResult DeleteComment(int id, int commentId)
-        {
-            postService.GetPublicPostById(id).Comments.RemoveAll(c => c.Id == commentId);
-            Db.SaveChanges();
-
-
-            return RedirectToAction("Post", new { id });
-        }
-
-    
-
-
-    public IActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             return View(postService.GetPublicPostById(id));
         }
@@ -267,11 +266,11 @@ namespace StreetTalk.Controllers
                 return RedirectToAction("Index");
             }
 
-            var EditedPost = postService.EditPostById(id, post);
+            var editedPost = postService.EditPostById(id, post);
 
-            var context = new ValidationContext(EditedPost);
+            var context = new ValidationContext(editedPost);
             var validationResults = new List<ValidationResult>();
-            bool isValid = Validator.TryValidateObject(EditedPost, context, validationResults, true);
+            bool isValid = Validator.TryValidateObject(editedPost, context, validationResults, true);
 
             if (!isValid) return View(post);
 

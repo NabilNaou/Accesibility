@@ -53,8 +53,9 @@ namespace StreetTalk
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddResponseCompression();
             services.AddHttpContextAccessor();
-            services.AddTransient<PostService>();
-            services.AddTransient<UserService>();
+            services.AddTransient<IFileUploadService, FileUploadService>();
+            services.AddTransient<IPostService, PostService>();
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<StreetTalkSignInManager>();
             services.AddRazorPages();
             services.AddIdentity<StreetTalkUser, IdentityRole>

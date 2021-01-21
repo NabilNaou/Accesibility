@@ -1,8 +1,8 @@
-﻿@model StreetTalk.Controllers.PublicPostWithExtraData
+﻿@model StreetTalk.Dtos.PublicPostWithExtraData
 
 <div class="post-row card mb-4 w-100 d-flex flex-row">
-    <div aria-label="Melding status" class="status-indicator @(Model.Post.Closed ? "closed" : "open")">
-        <span>@(Model.Post.Closed ? "gesloten" : "open")</span>
+    <div aria-label="Melding status" class="status-indicator @(Model.Post.IsClosed() ? "closed" : "open")">
+        <span>@(Model.Post.IsClosed() ? "gesloten" : "open")</span>
     </div>
     <div class="row-content w-100">
         <div class="d-flex flex-column justify-content-center align-items-center">

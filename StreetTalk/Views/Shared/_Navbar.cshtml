@@ -1,6 +1,6 @@
 ﻿@inject StreetTalkSignInManager SignInManager
 @inject UserManager<StreetTalkUser> UserManager
-@inject UserService UserService;
+@inject IUserService UserService;
 
 <nav class="st-navbar d-flex flex-column" aria-label="Hoofd navigatie menu">
     <div class="st-nav-item flex-grow-0 d-flex flex-column pb-2">
@@ -21,7 +21,7 @@
             <img alt="Bestand icoon" src="~/img/file-outline.svg"/>
             <span>Publiekelijk melden</span>
         </a>
-        <a aria-label="Anonieme melding maken" class="st-nav-link" href="#">
+        <a aria-label="Anonieme melding maken" class="st-nav-link" asp-controller="AnonymousPost" asp-action="Create">
             <img alt="Bestand icoon met slot" src="~/img/file-lock-outline.svg"/>
             <span>Anoniem melden</span>
         </a>

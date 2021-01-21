@@ -6,18 +6,34 @@ using StreetTalk.Models;
 
 namespace StreetTalk.Services
 {
-    public class PostService
+    public interface IPostService
     {
-        private readonly StreetTalkContext Db;
+        PublicPost GetPublicPostById(int id);
+        bool UserLikedPost(PublicPost post, string userId);
+        void RemoveLikeFromPost(PublicPost post, string userId);
+        void AddLikeForPost(PublicPost post, string userId);
+        void ToggleLikeForPost(PublicPost post, string userId);
+        bool UserReportedPost(PublicPost post, string userId);
+        void AddReportForPost(PublicPost post, string userId);
+        void DeletePostById(int id);
+        IEnumerable<string> GetRecentTitles();
+        PublicPost EditPostById(int id, PublicPost newPost);
+        void AddView(string userid, PublicPost post);
+        bool UserViewedPost(string userid, PublicPost post);
+    }
+
+    public class PostService : IPostService
+    {
+        private readonly StreetTalkContext db;
 
         public PostService(StreetTalkContext context)
         {
-            Db = context;
+            db = context;
         }
 
         public PublicPost GetPublicPostById(int id)
         {
-            return Db.PublicPost.Single(p => p.Id == id);
+            return db.PublicPost.SingleOrDefault(p => p.Id == id);
         }
 
         public bool UserLikedPost(PublicPost post, string userId)
@@ -29,7 +45,7 @@ namespace StreetTalk.Services
         {
             post.Likes.RemoveAll(b => b.UserId == userId);
 
-            Db.SaveChanges();
+            db.SaveChanges();
         }
 
         public void AddLikeForPost(PublicPost post, string userId)
@@ -42,7 +58,7 @@ namespace StreetTalk.Services
 
             post.Likes.Add(like);
 
-            Db.SaveChanges();
+            db.SaveChanges();
         }
 
         public void ToggleLikeForPost(PublicPost post, string userId)
@@ -68,36 +84,36 @@ namespace StreetTalk.Services
 
             post.Reports.Add(report);
 
-            Db.SaveChanges();
+            db.SaveChanges();
         }
 
         public void DeletePostById(int id)
         {
             var post = GetPublicPostById(id);
 
-            Db.Post.Remove(post);
+            db.PublicPost.Remove(post);
 
-            Db.SaveChanges();
+            db.SaveChanges();
         }
 
         public IEnumerable<string> GetRecentTitles()
         {
-            return Db.PublicPost
+            return db.PublicPost.ToList()
                 .Where(p => (p.CreatedAt!.Value - DateTime.Now).TotalDays < 30)
                 .Select(p => p.Title)
                 .AsEnumerable();
         }
 
-        public PublicPost EditPostById(int id, PublicPost newpost)
+        public PublicPost EditPostById(int id, PublicPost newPost)
         {
             var post = GetPublicPostById(id);
 
-            post.Title = newpost.Title;
-            post.Content = newpost.Content;
+            post.Title = newPost.Title;
+            post.Content = newPost.Content;
 
             return post;
         }
-        public void AddView(String userid, PublicPost post)
+        public void AddView(string userid, PublicPost post)
         {
             var view = new View
             {
@@ -105,12 +121,11 @@ namespace StreetTalk.Services
                 UserId = userid
             };
             post.Views.Add(view);
-            Db.SaveChanges();
+            db.SaveChanges();
         }
 
-        public bool UserViewedPost(String userid, PublicPost post)
+        public bool UserViewedPost(string userid, PublicPost post)
         {
-
             return post.Views.Any(view => view.UserId == userid);
         }
     }

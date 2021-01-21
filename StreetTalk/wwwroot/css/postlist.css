@@ -147,7 +147,7 @@ button:not([disabled]) .post-action-icon:hover {
 }
 
 #filters {
-    max-width: 400px;
+    max-width: 800px;
     height: auto;
     max-height: 0;
     overflow: hidden;
@@ -155,7 +155,7 @@ button:not([disabled]) .post-action-icon:hover {
 }
 
 #filters.show {
-    max-height: 300px;
+    max-height: 500px;
 }
 
 @media(max-width: 1000px) {
