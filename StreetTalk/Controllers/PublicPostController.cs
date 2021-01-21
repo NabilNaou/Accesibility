@@ -73,7 +73,8 @@ namespace StreetTalk.Controllers
             var skip = Math.Max(page - 1, 0) * perPage;
 
             var posts = Db.PublicPost
-                .Where(p => !p.Closed || filters.ShowClosedPosts)
+                .ToList()
+                .Where(p => !p.IsClosed() || filters.ShowClosedPosts)
                 .OrderBy(p => p.CreatedAt)
                 .Skip(skip)
                 .Take(perPage);
@@ -155,7 +156,7 @@ namespace StreetTalk.Controllers
             ViewData["CurrentUserId"] = userService.GetCurrentlyLoggedInUser().Id;
             var post = postService.GetPublicPostById(id);
             var user = userService.GetCurrentlyLoggedInUser();
-            
+
             if (!postService.UserViewedPost(user.Id, post))
                 postService.AddView(user.Id, post);
             
@@ -224,15 +225,17 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Post", new { id });
         }
 
+        [Authorize(Roles = "Moderator, Administrator")]
         [HttpGet]
-        public IActionResult EditComment(int id, int commentId)
+        public IActionResult CensorComment(int id, int commentId)
         {
             ViewData["PublicPostId"] = id;
             return View(postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId));
         }
 
+        [Authorize(Roles = "Moderator, Administrator")]
         [HttpPost]
-        public IActionResult EditComment(int commentId, int id, string newContent)
+        public IActionResult CensorComment(int commentId, int id, string newContent)
         {
             postService.GetPublicPostById(id).Comments.Single(c => c.Id == commentId).Content = newContent;
             Db.SaveChanges();
@@ -240,19 +243,7 @@ namespace StreetTalk.Controllers
             return RedirectToAction("Post", new { id });
         }
 
-        public IActionResult DeleteComment(int id, int commentId)
-        {
-            postService.GetPublicPostById(id).Comments.RemoveAll(c => c.Id == commentId);
-            Db.SaveChanges();
-
-
-            return RedirectToAction("Post", new { id });
-        }
-
-    
-
-
-    public IActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             return View(postService.GetPublicPostById(id));
         }
