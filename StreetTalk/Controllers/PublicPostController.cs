@@ -15,37 +15,10 @@ using StreetTalk.Data;
 using StreetTalk.Services;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using StreetTalk.Dtos;
 
 namespace StreetTalk.Controllers
 {
-    [Serializable]
-    public class PostJsonResult
-    {
-        public bool Succes { get; set; }
-        public string Error { get; set; } = "";
-        public int NewLikes { get; set; }
-    }
-
-    public class PublicPostWithExtraData
-    {
-        public PublicPost Post { get; set; }
-        public bool Liked { get; set; }
-
-        public bool Reported { get; set; }
-    }
-
-    public class PublicPostViewModel
-    {
-        public List<PublicPostWithExtraData> Posts { get; set; }
-        public PublicPostListFilters Filters { get; set; }
-        public int NextPage { get; set; }
-        public int PreviousPage { get; set; }
-    }
-
-    public class PublicPostListFilters
-    {
-        public bool ShowClosedPosts { get; set; } = false;
-    }
 
     [Authorize]
     public class PublicPostController : BaseController
@@ -65,16 +38,29 @@ namespace StreetTalk.Controllers
         public IActionResult Index(PublicPostListFilters filters, int page = 1, bool createSuccess = false)
         {
             ViewData["createSuccess"] = createSuccess;
-            //TODO: Refactor this
             var perPage = 10;
             var skip = Math.Max(page - 1, 0) * perPage;
+            var posts = Db.PublicPost.Where(p => !p.Closed || filters.ShowClosedPosts);
 
-            var posts = Db.PublicPost
-                .ToList()
-                .Where(p => !p.IsClosed() || filters.ShowClosedPosts)
-                .OrderBy(p => p.CreatedAt)
-                .Skip(skip)
-                .Take(perPage);
+
+            if (filters.OnlyLikedPosts)
+            {
+                posts = MyLikedPosts(posts);
+            }
+
+            posts = DateRange(posts, filters);
+            posts = ZoekFilter(posts, filters.ZoekFilter);
+
+
+            switch (filters.SorteerOptie)
+            {
+                case "likes": posts = SorteerOpLikes(posts); break;
+                case "views": posts = SorteerOpViews(posts); break;
+                default: posts = SorteerOpDatum(posts); break;
+            }
+
+            posts.Skip(skip)
+           .Take(perPage);
 
             var publicPostsWithLikes = posts.Select(a =>
                 new PublicPostWithExtraData
@@ -93,7 +79,45 @@ namespace StreetTalk.Controllers
                 NextPage = page + 1
             };
 
+
             return View(viewModelData);
+        }
+
+        private IEnumerable<PublicPost> SorteerOpLikes(IEnumerable<PublicPost> posts)
+        {
+            return posts.OrderByDescending(p => p.Likes.Count);
+        }
+        private IEnumerable<PublicPost> SorteerOpViews(IEnumerable<PublicPost> posts)
+        {
+            return posts.OrderByDescending(p => p.Views.Count);
+        }
+        private IEnumerable<PublicPost> SorteerOpDatum(IEnumerable<PublicPost> posts)
+        {
+            return posts.OrderByDescending(p => p.CreatedAt);
+        }
+
+        private IEnumerable<PublicPost> ZoekFilter(IEnumerable<PublicPost> post, string zoekterm)
+        {
+            if (!String.IsNullOrEmpty(zoekterm))
+            {
+                return post.Where(s => s.Title.ToUpper().Contains(zoekterm.ToUpper()));
+            }
+            return post;
+        }
+
+        private IEnumerable<PublicPost> MyLikedPosts(IEnumerable<PublicPost> post)
+        {
+            var user = userService.GetCurrentlyLoggedInUser();
+            return post.ToList().Where(p => p.Likes.Any(b => b.UserId == user.Id));
+        }
+
+        private IEnumerable<PublicPost> DateRange(IEnumerable<PublicPost> posts, PublicPostListFilters filters)
+        {
+            if (!(filters.StartTime < new DateTime (1950, 01, 01)) && !(filters.EndTime < new DateTime(1950, 01, 01)))
+            {
+                return posts.Where(p => p.ToDate(p.CreatedAt) <= filters.EndTime.Date && p.ToDate(p.CreatedAt) >= filters.StartTime.Date);
+            }
+            return posts;
         }
 
         public IActionResult Create()

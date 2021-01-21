@@ -1,5 +1,6 @@
 ﻿using System;
 
+
 namespace StreetTalk.Models
 {
     public class Timestamped
@@ -7,6 +8,12 @@ namespace StreetTalk.Models
         public virtual DateTime? CreatedAt { get; set; }
         
         public virtual DateTime? ModifiedAt { get; set; }
+
+        public DateTime? ToDate(DateTime? date)
+        {
+            DateTime temp = (DateTime) date;
+            return temp.Date; 
+        }
         
         public Timestamped()
         {
