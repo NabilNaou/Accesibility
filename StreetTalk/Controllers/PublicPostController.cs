@@ -15,49 +15,10 @@ using StreetTalk.Data;
 using StreetTalk.Services;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
+using StreetTalk.Dtos;
 
 namespace StreetTalk.Controllers
 {
-    [Serializable]
-    public class PostJsonResult
-    {
-        public bool Succes { get; set; }
-        public string Error { get; set; } = "";
-        public int NewLikes { get; set; }
-    }
-
-    public class PublicPostWithExtraData
-    {
-        public PublicPost Post { get; set; }
-        public bool Liked { get; set; }
-
-        public bool Reported { get; set; }
-    }
-
-    public class PublicPostViewModel
-    {
-        public List<PublicPostWithExtraData> Posts { get; set; }
-        public PublicPostListFilters Filters { get; set; }
-        public int NextPage { get; set; }
-        public int PreviousPage { get; set; }
-    }
-
-    public class PublicPostListFilters
-    {
-        public bool ShowClosedPosts { get; set; }
-        public string SorteerOptie { get; set; }
-        public bool OnlyLikedPosts { get; set; }
-        public string ZoekFilter { get; set; }
-
-        [DisplayName("Start Date")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        public DateTime StartTime { get; set; }
-        
-        [DisplayName("End Date")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        public DateTime EndTime { get; set; }
-    }
 
     [Authorize]
     public class PublicPostController : BaseController
