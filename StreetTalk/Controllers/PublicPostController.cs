@@ -36,7 +36,6 @@ namespace StreetTalk.Controllers
             var skip = Math.Max(page - 1, 0) * perPage;
             var posts = Db.PublicPost.Where(p => !p.Closed || filters.ShowClosedPosts);
 
-
             if (filters.OnlyLikedPosts)
             {
                 posts = MyLikedPosts(posts);
@@ -45,13 +44,22 @@ namespace StreetTalk.Controllers
             posts = DateRange(posts, filters);
             posts = ZoekFilter(posts, filters.ZoekFilter);
 
-
             switch (filters.SorteerOptie)
             {
                 case "likes": posts = SorteerOpLikes(posts); break;
                 case "views": posts = SorteerOpViews(posts); break;
                 default: posts = SorteerOpDatum(posts); break;
             }
+
+            int maxPages;
+            if (posts.Count() % perPage != 0)
+            {
+                maxPages = (posts.Count() / perPage) + 1;
+            }
+            else maxPages = (posts.Count() / perPage);
+
+            ViewData["maxPages"] = maxPages;
+
 
             posts = posts.Skip(skip).Take(perPage);
 
