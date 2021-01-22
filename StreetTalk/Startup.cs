@@ -94,6 +94,9 @@ namespace StreetTalk
 
             app.UseHttpsRedirection();
 
+            //Blacklist
+            if (!File.Exists("./blacklist.txt"))
+                File.Create("./blacklist.txt").Dispose();
             app.UseIpBlacklist(File.ReadLines("./blacklist.txt").ToList());
             
             app.UseStaticFiles();
