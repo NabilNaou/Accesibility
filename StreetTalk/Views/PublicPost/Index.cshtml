@@ -26,7 +26,7 @@
         <div class="d-flex flex-row align-items-center justify-content-between">
             <div id="filter-button" role="button">
                 <img src="~/img/filter_list.svg" alt="Filter icoon" />
-                <span class="d-inline-block ml-2">Filteren</span>
+                <span class="d-inline-block ml-2">Filter & Sorteer</span>
             </div>
         </div>
         <div id="filters">
@@ -38,11 +38,11 @@
                         <div class="column col-12 col-md-6">
                             <div class="form-check">
                                 @Html.CheckBoxFor(m => m.Filters.ShowClosedPosts)
-                                @Html.Label("Sorteer op gesloten melding")
+                                @Html.Label("Gesloten meldingen weergeven")
                             </div>
                             <div class="form-check">
                                 @Html.CheckBoxFor(m => m.Filters.OnlyLikedPosts)
-                                @Html.Label("Alleen gelikete posts")
+                                @Html.Label("Posts die ik leuk vind")
                             </div>
                             <div class="form-group">
                                 @{
@@ -54,7 +54,7 @@
 
                         }, "value", "text");
                                 }
-                                @Html.Label("Sorteeropties:")
+                                @Html.Label("Filteropties:")
                                 @Html.DropDownListFor(m => m.Filters.SorteerOptie, showSortOptions, new { @class = "form-control" })
                             </div>
                             <div class="form-group">
@@ -66,12 +66,12 @@
                         <div class="column col-12 col-md-6">
                             <div class="form-group">
 
-                                @Html.LabelFor(m => m.Filters.StartTime)
+                                @Html.Label("Begindatum:")
                                 @Html.TextBoxFor(m => m.Filters.StartTime, new { type = "date", @class = "form-control" })
                             </div>
                             <div class="form-group">
 
-                                @Html.Label("Eind datum")
+                                @Html.Label("Einddatum:")
                                 @Html.TextBoxFor(m => m.Filters.EndTime, new { type = "date", @class = "form-control" })
                             </div>
 
@@ -95,13 +95,30 @@
         }
     </ul>
     <div class="d-flex flex-row">
-        @Html.ActionLink("Vorige", "Index", new RouteValueDictionary {
-             {"Filters.ShowClosedPosts", Model.Filters.ShowClosedPosts },
-             {"page", Model.PreviousPage}
-        }, new { @class = "btn btn-secondary mr-3" })
-        @Html.ActionLink("Volgende", "Index", new RouteValueDictionary {
-             {"Filters.ShowClosedPosts", Model.Filters.ShowClosedPosts },
-             {"page", Model.NextPage}
-        }, new { @class = "btn btn-secondary" })
-    </div>
+        @if (Model.NextPage - 1 != 1)
+        {
+            @Html.ActionLink("Vorige", "Index", new RouteValueDictionary {
+                 {"Filters.ShowClosedPosts", Model.Filters.ShowClosedPosts },
+                 {"Filters.SorteerOptie", Model.Filters.SorteerOptie },
+                 {"Filters.OnlyLikedPosts", Model.Filters.OnlyLikedPosts },
+                 {"Filters.ZoekFilter", Model.Filters.ZoekFilter },
+                 {"Filters.StartTime", Model.Filters.StartTime },
+                 {"Filters.EndTime", Model.Filters.EndTime },
+                 {"page", Model.PreviousPage}
+            }, new { @class = "btn btn-secondary mr-3" })
+        }
+
+        @if ((int)ViewData["maxPages"] != Model.NextPage - 1)
+        {
+            @Html.ActionLink("Volgende", "Index", new RouteValueDictionary {
+                 {"Filters.ShowClosedPosts", Model.Filters.ShowClosedPosts },
+                 {"Filters.SorteerOptie", Model.Filters.SorteerOptie },
+                 {"Filters.OnlyLikedPosts", Model.Filters.OnlyLikedPosts },
+                 {"Filters.ZoekFilter", Model.Filters.ZoekFilter },
+                 {"Filters.StartTime", Model.Filters.StartTime },
+                 {"Filters.EndTime", Model.Filters.EndTime },
+                 {"page", Model.NextPage}
+            }, new { @class = "btn btn-secondary" })
+        }
+        </div>
 </div>
