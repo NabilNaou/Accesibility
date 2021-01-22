@@ -51,6 +51,16 @@ namespace StreetTalk.Controllers
                 default: posts = SorteerOpDatum(posts); break;
             }
 
+            int maxPages;
+            if (posts.Count() % perPage != 0)
+            {
+                maxPages = (posts.Count() / perPage) + 1;
+            }
+            else maxPages = (posts.Count() / perPage);
+
+            ViewData["maxPages"] = maxPages;
+
+
             posts = posts.Skip(skip).Take(perPage);
 
             var publicPostsWithLikes = posts.Select(a =>

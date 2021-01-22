@@ -95,23 +95,30 @@
         }
     </ul>
     <div class="d-flex flex-row">
-        @Html.ActionLink("Vorige", "Index", new RouteValueDictionary {
-             {"Filters.ShowClosedPosts", Model.Filters.ShowClosedPosts },
-             {"Filters.SorteerOptie", Model.Filters.SorteerOptie },
-             {"Filters.OnlyLikedPosts", Model.Filters.OnlyLikedPosts },
-             {"Filters.ZoekFilter", Model.Filters.ZoekFilter },
-             {"Filters.StartTime", Model.Filters.StartTime },
-             {"Filters.EndTime", Model.Filters.EndTime },
-             {"page", Model.PreviousPage}
-        }, new { @class = "btn btn-secondary mr-3" })
-        @Html.ActionLink("Volgende", "Index", new RouteValueDictionary {
-             {"Filters.ShowClosedPosts", Model.Filters.ShowClosedPosts },
-             {"Filters.SorteerOptie", Model.Filters.SorteerOptie },
-             {"Filters.OnlyLikedPosts", Model.Filters.OnlyLikedPosts },
-             {"Filters.ZoekFilter", Model.Filters.ZoekFilter },
-             {"Filters.StartTime", Model.Filters.StartTime },
-             {"Filters.EndTime", Model.Filters.EndTime },
-             {"page", Model.NextPage}
-        }, new { @class = "btn btn-secondary" })
-    </div>
+        @if (Model.NextPage - 1 != 1)
+        {
+            @Html.ActionLink("Vorige", "Index", new RouteValueDictionary {
+                 {"Filters.ShowClosedPosts", Model.Filters.ShowClosedPosts },
+                 {"Filters.SorteerOptie", Model.Filters.SorteerOptie },
+                 {"Filters.OnlyLikedPosts", Model.Filters.OnlyLikedPosts },
+                 {"Filters.ZoekFilter", Model.Filters.ZoekFilter },
+                 {"Filters.StartTime", Model.Filters.StartTime },
+                 {"Filters.EndTime", Model.Filters.EndTime },
+                 {"page", Model.PreviousPage}
+            }, new { @class = "btn btn-secondary mr-3" })
+        }
+
+        @if ((int)ViewData["maxPages"] != Model.NextPage - 1)
+        {
+            @Html.ActionLink("Volgende", "Index", new RouteValueDictionary {
+                 {"Filters.ShowClosedPosts", Model.Filters.ShowClosedPosts },
+                 {"Filters.SorteerOptie", Model.Filters.SorteerOptie },
+                 {"Filters.OnlyLikedPosts", Model.Filters.OnlyLikedPosts },
+                 {"Filters.ZoekFilter", Model.Filters.ZoekFilter },
+                 {"Filters.StartTime", Model.Filters.StartTime },
+                 {"Filters.EndTime", Model.Filters.EndTime },
+                 {"page", Model.NextPage}
+            }, new { @class = "btn btn-secondary" })
+        }
+        </div>
 </div>
