@@ -1,4 +1,4 @@
-﻿# StreetTalk
+﻿# StreetTalk (2021)
  
 This repository contains the code for StreetTalk, a .NET web application that allows users to share information about their neighborhood and connect with their community. The application uses Entity Framework Core and a fully functional database to store user information, posts, and comments. The project includes a set of tests to ensure the application is working correctly.
 
